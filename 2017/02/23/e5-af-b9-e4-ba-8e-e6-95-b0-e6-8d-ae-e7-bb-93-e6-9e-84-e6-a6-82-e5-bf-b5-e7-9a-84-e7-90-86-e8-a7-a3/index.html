@@ -1,0 +1,695 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="学习了一些基本的数据结构之后，我们会知道有链表、堆栈、队列、树、图、哈希表等数据结构，同时我们也会掌握一些对应的算法，最简单的比如堆栈的push和pop操作。但我总感觉对“数据结构”这个概念不是很理解，有一种模糊感。到底什么是“数据结构”？应该如何理解这个概念？下面是我的一些理解，当然，它可能并不准确，或者并不正确，只是作为自己的一些认知将其纪录下来。 数据结构，顾名思义，就是数据＋结构。数据是抽">
+<meta property="og:type" content="article">
+<meta property="og:title" content="对于“数据结构”概念的理解">
+<meta property="og:url" content="https://ShengAndXian.github.io/2017/02/23/e5-af-b9-e4-ba-8e-e6-95-b0-e6-8d-ae-e7-bb-93-e6-9e-84-e6-a6-82-e5-bf-b5-e7-9a-84-e7-90-86-e8-a7-a3/index.html">
+<meta property="og:site_name" content="hys&#39;s blog">
+<meta property="og:description" content="学习了一些基本的数据结构之后，我们会知道有链表、堆栈、队列、树、图、哈希表等数据结构，同时我们也会掌握一些对应的算法，最简单的比如堆栈的push和pop操作。但我总感觉对“数据结构”这个概念不是很理解，有一种模糊感。到底什么是“数据结构”？应该如何理解这个概念？下面是我的一些理解，当然，它可能并不准确，或者并不正确，只是作为自己的一些认知将其纪录下来。 数据结构，顾名思义，就是数据＋结构。数据是抽">
+<meta property="og:updated_time" content="2017-07-06T04:11:09.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="对于“数据结构”概念的理解">
+<meta name="twitter:description" content="学习了一些基本的数据结构之后，我们会知道有链表、堆栈、队列、树、图、哈希表等数据结构，同时我们也会掌握一些对应的算法，最简单的比如堆栈的push和pop操作。但我总感觉对“数据结构”这个概念不是很理解，有一种模糊感。到底什么是“数据结构”？应该如何理解这个概念？下面是我的一些理解，当然，它可能并不准确，或者并不正确，只是作为自己的一些认知将其纪录下来。 数据结构，顾名思义，就是数据＋结构。数据是抽">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ShengAndXian.github.io/2017/02/23/e5-af-b9-e4-ba-8e-e6-95-b0-e6-8d-ae-e7-bb-93-e6-9e-84-e6-a6-82-e5-bf-b5-e7-9a-84-e7-90-86-e8-a7-a3/"/>
+
+
+
+
+
+  <title>对于“数据结构”概念的理解 | hys's blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">hys's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">记录学习中的点滴</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://ShengAndXian.github.io/2017/02/23/e5-af-b9-e4-ba-8e-e6-95-b0-e6-8d-ae-e7-bb-93-e6-9e-84-e6-a6-82-e5-bf-b5-e7-9a-84-e7-90-86-e8-a7-a3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hys">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/head_pic.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hys's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">对于“数据结构”概念的理解</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-23T15:23:45+08:00">
+                2017-02-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>学习了一些基本的数据结构之后，我们会知道有链表、堆栈、队列、树、图、哈希表等数据结构，同时我们也会掌握一些对应的算法，最简单的比如堆栈的push和pop操作。但我总感觉对“数据结构”这个概念不是很理解，有一种模糊感。到底什么是“数据结构”？应该如何理解这个概念？下面是我的一些理解，当然，它可能并不准确，或者并不正确，只是作为自己的一些认知将其纪录下来。</p>
+<p><strong>数据结构</strong>，顾名思义，就是数据＋结构。数据是抽象意义上的一种集合，其中的元素可以是整数、小数、字符等，这些元素同时也是对计算机中的位(bit)的一种抽象。而结构就是就是这些数据的组织方式，其分为<strong>逻辑结构</strong>和<strong>物理结构</strong>。逻辑结构分为四种，分别为集合结构、线性结构、树状结构、网络结构，这些结构反应了数据在逻辑上的关系。物理结构是逻辑结构在内存中的存储镜像，其需要将数据按照逻辑结构映射到内存中。映射模型有四种，分别为顺序(sequential)、链接(linked)、索引(indexed)、哈希(hashing)。组合4种逻辑结构和4种物理结构可以得到16种结构，但不是每种结构都合理。因此，如果有一个数据集合，然后将其按照某种逻辑结构组织起来，再按照某种物理结构映射到内存，这样就构成了一种数据结构。</p>
+<p>根据上面的理解，数组和链表都是一种数据结构，它们都是将数据以线性结构组织起来，但数组使用了顺序的映射模型，而链表使用了链接的映射模型。同理，树和图都是数据结构。</p>
+<p>接下来，我们谈谈<strong>抽象数据类型(ADT)</strong>。ADT比数据结构更抽象一层，因为它在数据结构的基础上还抽象了相应的操作。比如堆栈(stack)就是将数据按照线性结构组织，然后加上了push和pop操作，将数据结构(准确地说，应该是数据＋逻辑结构，物理结构更倾向于ADT的实现)和操作一起抽象就是堆栈ADT。由于物理结构可以有不同的选择，堆栈可以使用顺序模型，也可以使用链接模型，因此堆栈可以用数组实现，也可以用链表实现。又比如堆(heap)，数据以树状结构组织，配合以PercolateUp和PercolateDown等操作，抽象成了堆ADT，由于堆是一个完全二叉树，所以在实现物理结构可以使用数组实现。而当数据以树或图的形式组织时，可以配合很多操作，这些操作可以自己定义(通过函数)，将操作和数据结构抽象就成了一个ADT。</p>
+<p>从上面可以看出，数据结构或者更抽象的ADT都是对数据的组织和操作(就是算法)，和使用何种编程语言无关，编程语言只是用来具体实现这些数据结构和算法的。当我们考虑问题时，首先应该思考使用何种数据结构，接着是用什么算法解决问题，最后才是如何编码实现。</p>
+<p>以上。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/23/pat-e7-94-b2-e7-ba-a71073-scientific-notationc/" rel="next" title="PAT甲级1073 Scientific Notation(C++)">
+                <i class="fa fa-chevron-left"></i> PAT甲级1073 Scientific Notation(C++)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/02/24/pat-e7-94-b2-e7-ba-a71074-reversing-linked-list/" rel="prev" title="PAT甲级1074 Reversing Linked List(C++)">
+                PAT甲级1074 Reversing Linked List(C++) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/head_pic.jpg"
+               alt="hys" />
+          <p class="site-author-name" itemprop="name">hys</p>
+           
+              <p class="site-description motion-element" itemprop="description">ZJU SE</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">140</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">hys</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

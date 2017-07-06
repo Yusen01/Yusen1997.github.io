@@ -1,0 +1,823 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="STL," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="最近在学习STL，看了网上的一些资料后稍微弄清楚了一些，这里主要记录STL容器的使用、迭代器的概念和使用以及一些通用的算法。 1、迭代器 迭代器用来遍历容器中的元素，顺序容器和关联容器都有各自对应的迭代器。 迭代器定义的格式为container::iterator variable，比如vector::iterator it; 迭代器的基本操作是和++，表示获取迭代器所指的内容，++表示迭代器向前">
+<meta name="keywords" content="STL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="STL入门">
+<meta property="og:url" content="https://ShengAndXian.github.io/2017/02/25/stl-e5-85-a5-e9-97-a8/index.html">
+<meta property="og:site_name" content="hys&#39;s blog">
+<meta property="og:description" content="最近在学习STL，看了网上的一些资料后稍微弄清楚了一些，这里主要记录STL容器的使用、迭代器的概念和使用以及一些通用的算法。 1、迭代器 迭代器用来遍历容器中的元素，顺序容器和关联容器都有各自对应的迭代器。 迭代器定义的格式为container::iterator variable，比如vector::iterator it; 迭代器的基本操作是和++，表示获取迭代器所指的内容，++表示迭代器向前">
+<meta property="og:updated_time" content="2017-07-06T04:11:09.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="STL入门">
+<meta name="twitter:description" content="最近在学习STL，看了网上的一些资料后稍微弄清楚了一些，这里主要记录STL容器的使用、迭代器的概念和使用以及一些通用的算法。 1、迭代器 迭代器用来遍历容器中的元素，顺序容器和关联容器都有各自对应的迭代器。 迭代器定义的格式为container::iterator variable，比如vector::iterator it; 迭代器的基本操作是和++，表示获取迭代器所指的内容，++表示迭代器向前">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ShengAndXian.github.io/2017/02/25/stl-e5-85-a5-e9-97-a8/"/>
+
+
+
+
+
+  <title>STL入门 | hys's blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">hys's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">记录学习中的点滴</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://ShengAndXian.github.io/2017/02/25/stl-e5-85-a5-e9-97-a8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hys">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/head_pic.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hys's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">STL入门</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-25T03:41:54+08:00">
+                2017-02-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/C/" itemprop="url" rel="index">
+                    <span itemprop="name">C++</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近在学习STL，看了网上的一些资料后稍微弄清楚了一些，这里主要记录STL容器的使用、迭代器的概念和使用以及一些通用的算法。</p>
+<p><strong>1、迭代器</strong></p>
+<p>迭代器用来遍历容器中的元素，顺序容器和关联容器都有各自对应的迭代器。</p>
+<p>迭代器定义的格式为<strong>container::iterator variable</strong>，比如vector<int>::iterator it;</int></p>
+<p>迭代器的基本操作是<em>和++，</em>表示获取迭代器所指的内容，++表示迭代器向前移动一个元素。常用的迭代器有begin()和end()。</p>
+<p>迭代器共有五种：</p>
+<ul>
+<li><strong>Input Iterator</strong>:支持单步向前迭代，但只能读取迭代器内容而不能修改</li>
+<li><strong>Output Iterator</strong>:支持单步向前迭代，但只能写不能读</li>
+<li><strong>Forward Iterator</strong>:支持单步向前迭代，拥有Input的全部特性和Output的部分特性</li>
+<li><strong>Bidirectional Iterator</strong>:在Forward的基础上支持向后迭代</li>
+<li><strong>Random Access Iterator</strong>:随机访问迭代器，不仅支持单步迭代，同时还可以进行算术计算</li>
+</ul>
+<p>所有的迭代器都可以进行不等的判断，但只有随机访问迭代器才能比较迭代器的大小(&gt;,&gt;=,&lt;,&lt;=)，同时也只有随机访问迭代器支持算术计算，其他迭代器只能单步向前或向后迭代。</p>
+<p><strong>容器和相应的迭代器</strong></p>
+<ul>
+<li>vector和dequeue支持随机访问迭代器</li>
+<li>list、set、map支持双向迭代器</li>
+<li>stack和queue不支持迭代器</li>
+</ul>
+<p><strong>2、容器</strong></p>
+<p>容器用来储存数据。</p>
+<p>(一)vector</p>
+<p>(1)定义和初始化</p>
+<ul>
+<li>vector&lt;type&#62; vec1; //定义一个vector容器vec1，容器中的元素类型为type;</li>
+<li>vector&lt;type&#62; vec2(size); //定义一个初始大小为size的vector容器;</li>
+<li>vector&lt;type&#62; vec3(size,value); //定义一个初始大小为size，每一个元素值为value的vector容器;</li>
+<li>vector&lt;type&#62; vec4(another vector); //定义一个vector容器，它是另一个vector容器的副本;</li>
+<li>vector&lt;type&#62; vec5(first,last); //根据两个迭代器之间的元素常见vector;</li>
+</ul>
+<p>(2)基本操作</p>
+<ul>
+<li>v.empty():检查v是否为空，是返回true，否则返回false</li>
+<li>v.size():返回v的元素个数</li>
+<li>v.push_back(t):在v的后面添加一个元素，v的长度加一</li>
+<li>v.pop_back():删除v最后一个元素</li>
+<li>v.resize(n):重新设置v的大小，n比现有元素数量大，则扩展v，不够的添0，否则截去多余的部分</li>
+<li>v.erase(it):删除迭代器it所指的元素，返回被删除元素后一个元素的迭代器</li>
+<li>v.erase(first,last):删除迭代器first和last之间的元素，返回被删段后面的元素的迭代器</li>
+<li>v.clear():清除所有元素</li>
+<li>v.insert(it,x):在迭代器it所指元素前插入x，返回新元素的迭代器</li>
+<li>v.reverse():翻转元素顺序</li>
+<li>v.swap(v1):和另一个vector交换，两个容器的元素类型应一致</li>
+</ul>
+<p>(二)list</p>
+<p>(1)定义和初始化</p>
+<p>list的定义和初始化与vector类似。</p>
+<p>(2)基本操作</p>
+<ul>
+<li>l.front():返回链表第一个节点的值</li>
+<li>l.back():返回链表最后一个节点的值</li>
+<li>l.push_back(t):向链表尾部添加一个节点</li>
+<li>l.push_front(t):向链表头部添加一个节点</li>
+<li>l.pop_back():删除最后一个节点</li>
+<li>l.pop_front():删除第一个节点</li>
+<li>l.remove(val):删除所有值为val的节点</li>
+<li>l.sort(prev):根据给定的谓词对链表进行排序，默认为升序</li>
+</ul>
+<p>(三)dequeue</p>
+<p>(1)定义和初始化</p>
+<p>dequeue定义和初始化和vector类似。</p>
+<p>(2)基本操作</p>
+<ul>
+<li>d[]:支持下标运算</li>
+<li>d.front():返回队列第一个元素的值</li>
+<li>d.back():返回队列最后一个元素的值</li>
+<li>d.push_front(t):向队列的头部插入一个新元素</li>
+<li>d.push_back(t):向队列的尾部插入一个新元素</li>
+<li>d.pop_front():删除队列的第一个元素</li>
+<li>d.pop_back():删除队列的最后一个元素</li>
+</ul>
+<p>(四)stack</p>
+<p>(1)定义和初始化</p>
+<p>stack&lt;type&#62; variable;</p>
+<p>(2)基本操作</p>
+<ul>
+<li>s.empty():检查栈是否为空，是返回true，否则返回false</li>
+<li>s.size():返回栈中元素的个数</li>
+<li>s.push(t):将元素压入栈顶</li>
+<li>s.pop():将栈顶元素删除，但不返回其值</li>
+<li>s.top():返回栈顶元素的值，但不删除</li>
+</ul>
+<p>(五)queue</p>
+<p>(1)定义和初始化</p>
+<p>queue&lt;type&#62; variable;</p>
+<p>(2)基本操作</p>
+<ul>
+<li>q.empty():判断队列是否为空</li>
+<li>q.size():返回队列中的元素个数</li>
+<li>q.push():向队尾添加元素</li>
+<li>q.pop():删除队首的元素，但不返回其值</li>
+<li>q.front():返回队首元素的值</li>
+<li>q.back():返回队尾元素的值</li>
+</ul>
+<p>(六)map</p>
+<p>(1)定义和初始化</p>
+<ul>
+<li>map&lt;key,value&#62; m1; //定义一个空的map容器</li>
+<li>map&lt;key,value&#62; m2(m); //m2是m的副本</li>
+<li>map&lt;key,value&#62; m3(first,last); //根据两个迭代器之间的元素构建map</li>
+<li>map&lt;key,value,comp&#62; m4; //根据comp决定key的存放顺序，默认使用&lt;号比较，key必须可以进行比较</li>
+</ul>
+<p>(2)基本操作</p>
+<ul>
+<li>m[key]:下标访问，如果key不存在，则会建立一个key</li>
+<li>m.cout(k):返回key为k的元素的个数，由于map的key不重复，因此返回值为0和1，用来检查某个key是否存在</li>
+<li>m.find(k):返回key为k的元素的迭代器，如果不存在返回m.end()</li>
+<li>m.erase(k):删除key为k的元素，返回被删除元素的个数</li>
+<li>m.erase(it):删除迭代器所指的元素，迭代器不能为m.end()</li>
+<li>m.insert(e):e为pair类型，如果e.first在m中不存在，则插入，返回一个pair类型的值，其第一个元素是指向插入元素的map迭代器，第二个元素为bool类型，表示是否插入</li>
+</ul>
+<p>(七)set</p>
+<p>(1)定义和初始化</p>
+<p>常规定义方法。</p>
+<p>(2)基本操作</p>
+<ul>
+<li>s.insert(key):如果key不存在，插入key，否则不做任何操作，返回类型的值为pair类型，first表示插入的位置，second表示是否插入成功</li>
+<li>s.insert(first,last):将两个迭代器之间的元素插入，返回void</li>
+<li>s.find(key):查找key，找到则返回对于的迭代器，否则返回s.end()</li>
+<li>s.erase(key):删除key</li>
+<li>s.erase(it):删除迭代器所指元素</li>
+</ul>
+<p><strong>3、算法</strong></p>
+<p>sort(RandomAccessIterator1 , RandomAccessIterator2 , cmp); //根据comp函数对序列排序</p>
+<p>find(Iterator1 , Iterator2 , value); //在序列中查找value</p>
+<p>copy(Iterator1 , Iterator2 , Iterator3); //将序列拷贝到容器中，以iterator3为起点。copy只负责拷贝不负责内存分配，因此需要保证拷贝前有足够的内存。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/STL/" rel="tag"># STL</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/24/pat-e7-94-b2-e7-ba-a71076-forwards-on-weibo/" rel="next" title="PAT甲级1076 Forwards on Weibo(C++)">
+                <i class="fa fa-chevron-left"></i> PAT甲级1076 Forwards on Weibo(C++)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/02/25/pat-e7-94-b2-e7-ba-a7-kuchiguse/" rel="prev" title="PAT甲级1077 Kuchiguse(C++)">
+                PAT甲级1077 Kuchiguse(C++) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/head_pic.jpg"
+               alt="hys" />
+          <p class="site-author-name" itemprop="name">hys</p>
+           
+              <p class="site-description motion-element" itemprop="description">ZJU SE</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">140</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">hys</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

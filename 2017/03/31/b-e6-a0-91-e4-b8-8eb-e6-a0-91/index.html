@@ -1,0 +1,828 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="B树," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="转载请注明出处。www.huangyusheng.com  B树和B+树是我一直没搞懂的数据结构，今天花了一些时间，大概理清楚了基本的知识，写在博客里以记录。 1、B树(一)定义其实一开始自己搞不懂B树，是因为B树的定义比较模糊。关于B树的定义本来就不统一，加上网上许多博客在写关于B树的技术资料时有许多错误（可能也不算错误，但确实有些混淆），于是就越来越搞不懂了。但真正理解定义之后，B树也就不算">
+<meta name="keywords" content="B树">
+<meta property="og:type" content="article">
+<meta property="og:title" content="B树与B+树">
+<meta property="og:url" content="https://ShengAndXian.github.io/2017/03/31/b-e6-a0-91-e4-b8-8eb-e6-a0-91/index.html">
+<meta property="og:site_name" content="hys&#39;s blog">
+<meta property="og:description" content="转载请注明出处。www.huangyusheng.com  B树和B+树是我一直没搞懂的数据结构，今天花了一些时间，大概理清楚了基本的知识，写在博客里以记录。 1、B树(一)定义其实一开始自己搞不懂B树，是因为B树的定义比较模糊。关于B树的定义本来就不统一，加上网上许多博客在写关于B树的技术资料时有许多错误（可能也不算错误，但确实有些混淆），于是就越来越搞不懂了。但真正理解定义之后，B树也就不算">
+<meta property="og:image" content="http://olrdynjoh.bkt.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202017-03-31%20%E4%B8%8B%E5%8D%885.15.42.png">
+<meta property="og:image" content="http://olrdynjoh.bkt.clouddn.com/1.jpg">
+<meta property="og:image" content="http://olrdynjoh.bkt.clouddn.com/2.jpg">
+<meta property="og:image" content="http://olrdynjoh.bkt.clouddn.com/3.jpg">
+<meta property="og:image" content="http://olrdynjoh.bkt.clouddn.com/4.jpg">
+<meta property="og:image" content="http://olrdynjoh.bkt.clouddn.com/5.jpg">
+<meta property="og:image" content="http://olrdynjoh.bkt.clouddn.com/6.jpg">
+<meta property="og:image" content="http://olrdynjoh.bkt.clouddn.com/7.jpg">
+<meta property="og:image" content="http://olrdynjoh.bkt.clouddn.com/8.jpg">
+<meta property="og:image" content="http://olrdynjoh.bkt.clouddn.com/9.jpg">
+<meta property="og:image" content="http://olrdynjoh.bkt.clouddn.com/10.jpg">
+<meta property="og:image" content="http://olrdynjoh.bkt.clouddn.com/11.jpg">
+<meta property="og:image" content="http://olrdynjoh.bkt.clouddn.com/12.jpg">
+<meta property="og:image" content="http://olrdynjoh.bkt.clouddn.com/13.jpg">
+<meta property="og:image" content="http://olrdynjoh.bkt.clouddn.com/17.png">
+<meta property="og:updated_time" content="2017-07-06T04:11:09.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="B树与B+树">
+<meta name="twitter:description" content="转载请注明出处。www.huangyusheng.com  B树和B+树是我一直没搞懂的数据结构，今天花了一些时间，大概理清楚了基本的知识，写在博客里以记录。 1、B树(一)定义其实一开始自己搞不懂B树，是因为B树的定义比较模糊。关于B树的定义本来就不统一，加上网上许多博客在写关于B树的技术资料时有许多错误（可能也不算错误，但确实有些混淆），于是就越来越搞不懂了。但真正理解定义之后，B树也就不算">
+<meta name="twitter:image" content="http://olrdynjoh.bkt.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202017-03-31%20%E4%B8%8B%E5%8D%885.15.42.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ShengAndXian.github.io/2017/03/31/b-e6-a0-91-e4-b8-8eb-e6-a0-91/"/>
+
+
+
+
+
+  <title>B树与B+树 | hys's blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">hys's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">记录学习中的点滴</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://ShengAndXian.github.io/2017/03/31/b-e6-a0-91-e4-b8-8eb-e6-a0-91/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hys">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/head_pic.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hys's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">B树与B+树</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-31T12:06:09+08:00">
+                2017-03-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>转载请注明出处。www.huangyusheng.com</p>
+</blockquote>
+<p>B树和B+树是我一直没搞懂的数据结构，今天花了一些时间，大概理清楚了基本的知识，写在博客里以记录。</p>
+<h4 id="1、B树"><a href="#1、B树" class="headerlink" title="1、B树"></a>1、B树</h4><h5 id="一-定义"><a href="#一-定义" class="headerlink" title="(一)定义"></a>(一)定义</h5><p>其实一开始自己搞不懂B树，是因为B树的定义比较模糊。关于B树的定义本来就不统一，加上网上许多博客在写关于B树的技术资料时有许多错误（可能也不算错误，但确实有些混淆），于是就越来越搞不懂了。但真正理解定义之后，B树也就不算太难了。</p>
+<p><strong>第一种是用阶来定义B树</strong></p>
+<p>根据维基百科，一个m阶的B树定义为：</p>
+<ul>
+<li>根结点最少有2个孩子结点，最多有m个孩子结点。</li>
+<li>每一个非根非叶结点最少有⌈<em>m</em>/2⌉(m/2取上限)个孩子结点，最多有m个孩子结点</li>
+<li>所有有k个孩子结点的非叶子结点有k - 1个关键字</li>
+<li>所有的叶子结点都在同一层</li>
+</ul>
+<p>内部结点是指根结点和叶子结点之外的结点，它有至少⌈<em>m</em>/2⌉(m/2取上限)个孩子，至多有m个孩子。</p>
+<p>根结点至少有2个孩子，至多有m个孩子。</p>
+<p>叶子结点没有孩子结点和指向孩子结点的指针，但关键词的个数受到和内部结点一样的限制，即关键词个数在⌈<em>m</em>/2⌉ - 1 和m - 1之间。</p>
+<p><strong>第二种是用度来定义B树</strong></p>
+<p>阶的定义是用孩子结点的个数限制关键词个数，而度的定义则是用关键词的个数来限制孩子结点的个数。</p>
+<p>根据算法导论中，一个最小度数为t的B树定义为：</p>
+<ul>
+<li>每个结点包含的关键词的个数有一个上界和一个下界</li>
+<li>除了根结点之外的所有结点都至少含有t - 1个关键词，至多含有2t - 1个关键词</li>
+<li>根结点至少含有1个关键词，至多含有2t - 1个关键词</li>
+<li>其他定义和阶定义相同</li>
+</ul>
+<h5 id="二-树的高度"><a href="#二-树的高度" class="headerlink" title="(二)树的高度"></a>(二)树的高度</h5><p>关于B树的高度，算法导论有相应的结论以及证明。</p>
+<p><img src="http://olrdynjoh.bkt.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202017-03-31%20%E4%B8%8B%E5%8D%885.15.42.png" alt=""></p>
+<h5 id="三-B树的插入"><a href="#三-B树的插入" class="headerlink" title="(三)B树的插入"></a>(三)B树的插入</h5><p>B树的插入操作还是比较简单的。大致步骤如下：</p>
+<ul>
+<li>首先根据插入的关键字，在B树中搜索，找到对应的叶子结点</li>
+<li>将关键字放入叶子结点</li>
+<li>放入后，如果该结点的关键字个数超过了限制，比如大于2t - 1，则将该结点分裂，提出中间关键字将其放入父结点。</li>
+<li>如果父结点的关键字个数也超过了限制，那么继续分裂，按此步骤一直执行，直到所有结点都满足B树的定义。最坏的情况下，可以一直分裂到根结点，最终树高加1。</li>
+</ul>
+<p>下面引用<a href="http://blog.csdn.net/v_july_v/article/details/6530142" target="_blank" rel="external">july的从B 树、B+ 树、B* 树谈到R 树</a>中的例子来说明B树的插入操作：</p>
+<p>我们要将C N G A H E K Q M F W L T Z D P R X Y S按顺序插入到一颗空的B树，假设阶数为5，因此每个结点（根结点除外）的关键字数量为2～4。</p>
+<p>前4个字母可以简单地直接插入：</p>
+<p><img src="http://olrdynjoh.bkt.clouddn.com/1.jpg" alt=""></p>
+<p>接着插入H，插入后结点过满，将中间关键字G提出，放入父结点(由于没有父结点，G变成了根结点)，剩下的分裂成两个结点。</p>
+<p><img src="http://olrdynjoh.bkt.clouddn.com/2.jpg" alt=""></p>
+<p>接着插入E、K、Q，不需要任何操作。</p>
+<p><img src="http://olrdynjoh.bkt.clouddn.com/3.jpg" alt=""></p>
+<p>插入M时，结点过满，提出M放入父结点，剩下的分裂成两个结点。</p>
+<p><img src="http://olrdynjoh.bkt.clouddn.com/4.jpg" alt=""></p>
+<p>插入F、L、W、T，不需要多余操作。</p>
+<p><img src="http://olrdynjoh.bkt.clouddn.com/5.jpg" alt=""></p>
+<p>插入Z，结点过满，将中间关键字T提出，放入父结点。</p>
+<p><img src="http://olrdynjoh.bkt.clouddn.com/6.jpg" alt=""></p>
+<p>插入D，结点过满，将D提出放入父结点。接下来的P、R、X、Y简单插入即可。</p>
+<p><img src="http://olrdynjoh.bkt.clouddn.com/7.jpg" alt=""></p>
+<p>最后插入S，结点过满，将Q提出放入父结点，剩下的结点分裂，但是注意到父结点在接受了Q之后也过满，因此将父结点的中间关键字M提出，放入根结点，剩下的结点分裂成两个结点。</p>
+<p><img src="http://olrdynjoh.bkt.clouddn.com/8.jpg" alt=""></p>
+<p>至此，全部元素插入完毕。</p>
+<h5 id="四-B树的删除"><a href="#四-B树的删除" class="headerlink" title="(四)B树的删除"></a>(四)B树的删除</h5><p>B树的删除操作大致步骤如下：</p>
+<ul>
+<li>找到要删除的关键字</li>
+<li>如果该关键字有两个孩子，则先删除关键字，然后从结点数较多的孩子中取一个关键字(左子树取最大的，右子树取最小的)代替被删除的关键字的位置。如果该关键字没有孩子，则直接删除关键字。</li>
+<li>删除关键字之后，如果某一结点的关键字个数小于最小关键字个数，比如小于(m/2取下限)，则需要对其调整。如果该结点的兄弟结点的关键字个数大于最小关键字个数(不能等于)，则向父结点借一关键字放入该结点，并从兄弟结点中取一关键字放入父结点。如果兄弟结点的关键字个数也都刚好等于最小关键字个数，则需要将该结点和某一兄弟结点合并。</li>
+<li>如果合并之后造成父结点的关键字个数小于最小关键字个数，则对父结点执行步骤三，以此类推。最坏的情况下，一直合并到根结点，树的高度减一。</li>
+</ul>
+<p>下面使用上面构建好的B树来说明删除操作：</p>
+<p>我们依次删除H、T、R、E。</p>
+<p>首先删除H，找到H的位置，由于H没有孩子，因此简单删除，删除发现结点仍然满足B树的性质，因此不需要额外操作：</p>
+<p><img src="http://olrdynjoh.bkt.clouddn.com/9.jpg" alt=""></p>
+<p>接着删除T，找到T的位置，由于T有孩子，因此我们先删除T，然后从右子树中选择W放入T的位置。操作结束后发现所有结点都满足B树的性质，因此不需要额外操作：</p>
+<p><img src="http://olrdynjoh.bkt.clouddn.com/10.jpg" alt=""></p>
+<p>接着删除R，先找到R的位置，发现R没有孩子，简单删除之。删除后我们发现结点的关键字个数少于最小的关键字个数，因此需要对其调整。可以看到兄弟结点有3个关键字，多于最小的关键字个数，因此我们把父结点的W关键字放入原来R结点所在的结点，并把X关键字放入父结点：</p>
+<p><img src="http://olrdynjoh.bkt.clouddn.com/11.jpg" alt=""></p>
+<p>最后我们删除E，先找到E的位置，E没有孩子，简单将其删除。删除后我们发现结点关键字个数少于最小的关键字个数，因此要对其调整。可以看到，兄弟结点的关键字个数也都刚好等于最小关键字个数，因此不能向父结点借关键字，只能将结点和它的兄弟结点合并。我们选择和左兄弟结点合并，得到结果：</p>
+<p><img src="http://olrdynjoh.bkt.clouddn.com/12.jpg" alt=""></p>
+<p>合并后，我们发现G所在结点不满足B树性质，因此也要对其调整。G所在结点的兄弟结点的关键字个数刚好等于最小关键字个数，因此需要将G所在结点和兄弟结点合并：</p>
+<p><img src="http://olrdynjoh.bkt.clouddn.com/13.jpg" alt=""></p>
+<p>至此，我们完成了删除操作。</p>
+<h5 id="五-B树的意义"><a href="#五-B树的意义" class="headerlink" title="(五)B树的意义"></a>(五)B树的意义</h5><p>谈到B树，大家都会说B树适合文件系统和数据库，在磁盘操作上有很大优势。但一开始的时候我就搞不明白为什么B树会有这些优点，感觉它跟普通的树也没啥差别啊，不就是一个结点可以有很多个孩子，树比较矮吗，咋就有利于磁盘IO了呢？</p>
+<p>其实我犯了一个比较蠢的错误，我一直以为B树的储存就像普通的树一样，都是放在内存中的，只不过结点中的关键字对应有一个指向所谓“卫星数据”的指针。因此我一直不理解为什么B树的高度低会有利于磁盘读写(因为理解成在内存中储存结构的话，搜索关键字的过程是不需要磁盘读写的)。</p>
+<p>后来我才意识到(可能是自己比较笨)，原来B树之所以厉害，是因为它的所有结点并不是储存在内存中，而是放在磁盘上，这样一来，每个结点就能储存大量的关键字信息而不受内存大小的限制，因此我们每访问一个结点都需要对磁盘进行一次读写操作，而B树的高度较低，因此磁盘读写的次数就非常的少。正是因为B树能够储存大量的关键字信息，并且访问时需要较少的磁盘IO，因此才适合在文件系统和数据库中使用。</p>
+<h4 id="2、B-树"><a href="#2、B-树" class="headerlink" title="2、B+树"></a>2、B+树</h4><p>B+树是B树的一个变种，它和B树不同点在于：</p>
+<ul>
+<li>B+树中所有的关键字信息储存在叶子结点，非叶子结点只做为索引。</li>
+<li>B+树的叶子结点分裂时，中间关键字不会从原来的结点删除，而是保留在分裂后产生的右结点中。但其他非叶子结点分裂则和B树相同。</li>
+<li>B+树的删除只能从叶子结点删除，删除之后再进行调整。(B+树的删除操作的具体规则我暂时也不是很清楚，留着以后解决)</li>
+</ul>
+<p>B+树和B树另一个不同点就是B+树中的叶子结点是链接在一起的，像是一个链表，如下图所示。</p>
+<p><img src="http://olrdynjoh.bkt.clouddn.com/17.png" alt=""></p>
+<p><strong>B+树的优点</strong></p>
+<ul>
+<li>非叶子结点只包含关键字，不包含指向“卫星数据”的指针，因此如果一个结点的磁盘空间是固定的，那么一个结点可以储存更多的关键字。</li>
+<li>由于B+树中所有信息都储存在叶子结点，而这些叶子结点又是相互连接的，因此可以很方便的遍历所有关键字，而在B树中只能采用中序遍历。</li>
+</ul>
+<p>B+树的这些优点使得B+树比B树更适合数据库系统或文件系统。</p>
+<h4 id="3、结语"><a href="#3、结语" class="headerlink" title="3、结语"></a>3、结语</h4><p>总算把B树和B+树这个坑给填了，撒花～</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/B树/" rel="tag"># B树</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/14/e7-ba-a2-e9-bb-91-e6-a0-91red-black-tree/" rel="next" title="红黑树(red-black tree)">
+                <i class="fa fa-chevron-left"></i> 红黑树(red-black tree)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/03/e5-b7-a6-e5-bc-8f-e5-a0-86leftist-heap-e4-b8-8e-e6-96-9c-e5-a0-86skew-heap/" rel="prev" title="左式堆(leftist heap)与斜堆(skew heap)">
+                左式堆(leftist heap)与斜堆(skew heap) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/head_pic.jpg"
+               alt="hys" />
+          <p class="site-author-name" itemprop="name">hys</p>
+           
+              <p class="site-description motion-element" itemprop="description">ZJU SE</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">140</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、B树"><span class="nav-number">1.</span> <span class="nav-text">1、B树</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#一-定义"><span class="nav-number">1.1.</span> <span class="nav-text">(一)定义</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#二-树的高度"><span class="nav-number">1.2.</span> <span class="nav-text">(二)树的高度</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#三-B树的插入"><span class="nav-number">1.3.</span> <span class="nav-text">(三)B树的插入</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#四-B树的删除"><span class="nav-number">1.4.</span> <span class="nav-text">(四)B树的删除</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#五-B树的意义"><span class="nav-number">1.5.</span> <span class="nav-text">(五)B树的意义</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、B-树"><span class="nav-number">2.</span> <span class="nav-text">2、B+树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、结语"><span class="nav-number">3.</span> <span class="nav-text">3、结语</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">hys</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

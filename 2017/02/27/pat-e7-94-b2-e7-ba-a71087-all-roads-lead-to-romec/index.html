@@ -1,0 +1,848 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="PAT,Dijkstra,DFS," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="PAT甲级1087 All Roads Lead to Rome，原题地址：https://www.patest.cn/contests/pat-a-practise/1087解题分析：Dijkstra加DFS。先用Dijkstra求出Rome的最短路径，然后从起点出发DFS，搜索时保存走过的路长，如果比Rome的最短路径长直接返回，以此减少程序的运行时间。搜索到Rome时，需要和之前的最优路径，">
+<meta name="keywords" content="PAT,Dijkstra,DFS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PAT甲级1087 All Roads Lead to Rome(C++)">
+<meta property="og:url" content="https://ShengAndXian.github.io/2017/02/27/pat-e7-94-b2-e7-ba-a71087-all-roads-lead-to-romec/index.html">
+<meta property="og:site_name" content="hys&#39;s blog">
+<meta property="og:description" content="PAT甲级1087 All Roads Lead to Rome，原题地址：https://www.patest.cn/contests/pat-a-practise/1087解题分析：Dijkstra加DFS。先用Dijkstra求出Rome的最短路径，然后从起点出发DFS，搜索时保存走过的路长，如果比Rome的最短路径长直接返回，以此减少程序的运行时间。搜索到Rome时，需要和之前的最优路径，">
+<meta property="og:updated_time" content="2017-07-06T04:11:09.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PAT甲级1087 All Roads Lead to Rome(C++)">
+<meta name="twitter:description" content="PAT甲级1087 All Roads Lead to Rome，原题地址：https://www.patest.cn/contests/pat-a-practise/1087解题分析：Dijkstra加DFS。先用Dijkstra求出Rome的最短路径，然后从起点出发DFS，搜索时保存走过的路长，如果比Rome的最短路径长直接返回，以此减少程序的运行时间。搜索到Rome时，需要和之前的最优路径，">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ShengAndXian.github.io/2017/02/27/pat-e7-94-b2-e7-ba-a71087-all-roads-lead-to-romec/"/>
+
+
+
+
+
+  <title>PAT甲级1087 All Roads Lead to Rome(C++) | hys's blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">hys's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">记录学习中的点滴</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://ShengAndXian.github.io/2017/02/27/pat-e7-94-b2-e7-ba-a71087-all-roads-lead-to-romec/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hys">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/head_pic.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hys's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">PAT甲级1087 All Roads Lead to Rome(C++)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-27T12:44:50+08:00">
+                2017-02-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PAT甲级/" itemprop="url" rel="index">
+                    <span itemprop="name">PAT甲级</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>PAT甲级1087 All Roads Lead to Rome，原题地址：<a href="https://www.patest.cn/contests/pat-a-practise/1087" target="_blank" rel="external">https://www.patest.cn/contests/pat-a-practise/1087</a><br>解题分析：<br>Dijkstra加DFS。先用Dijkstra求出Rome的最短路径，然后从起点出发DFS，搜索时保存走过的路长，如果比Rome的最短路径长直接返回，以此减少程序的运行时间。搜索到Rome时，需要和之前的最优路径，如果happy值比它高，则最优路径为当前路径，如果相等，再比较平均happy值，如果比它高，则最优路径也为当前路径。用容器储存路径上的点，最后输出即可。</p>
+<pre><code>#include&amp;lt;iostream&amp;gt;
+#include&amp;lt;string&amp;gt;
+#include&amp;lt;vector&amp;gt;
+#include&amp;lt;algorithm&amp;gt;
+using namespace std;
+#define Max 210
+#define INFINITY 100000
+
+int G[Max][Max];
+int hp[Max];
+int Distance[Max];
+int Visited[Max];
+int currentDistance;
+int currentFun , fun , avfun;
+int cnt , num;
+int t;
+vector&amp;lt;string&amp;gt; v1;
+vector&amp;lt;string&amp;gt; v2;   
+int n , k;
+
+// 最短路径算法，太常用了就不解释了
+void Dijkstra(){
+    int i;
+    int index , min;
+
+    while(1){
+        min = INFINITY;
+        for(i = 0;i &amp;lt; n;i++){
+            if(Visited[i] == 0 &amp;amp;&amp;amp; Distance[i] &amp;lt; min){
+                min = Distance[i];
+                index = i;
+            }
+        }
+        if(min == INFINITY)
+            break;
+        Visited[index] = 1;
+        for(i = 0;i &amp;lt; n;i++){
+            if(G[index][i] &amp;gt; 0 &amp;amp;&amp;amp; Visited[i] == 0 &amp;amp;&amp;amp; G[index][i] + Distance[index] &amp;lt; Distance[i])
+                Distance[i] = G[index][i] + Distance[index];
+        }
+    }
+}
+
+// DFS
+bool DFS(int start){
+    bool flag = false;
+    int i;
+
+    // 剪枝
+    if(currentDistance &amp;gt; Distance[t])
+        return false;
+
+    // 更新一些全局变量
+    num++;
+    currentFun += hp[start];
+    Visited[start] = 1;
+    // 如果是Rome点
+    if(start == t){
+        // 路径条数加一
+        cnt++;
+        // 如果happy比它大
+        if(currentFun &amp;gt; fun){
+            fun = currentFun;
+            avfun = fun / (num - 1);
+            v2.clear();
+            v2.push_back(v1[start]);
+            flag = true;
+        }
+        // 如果happy值相等，但平均happy比它大
+        else if(currentFun == fun &amp;amp;&amp;amp; currentFun / (num - 1) &amp;gt; avfun){
+            avfun = currentFun / (num - 1);
+            v2.clear();
+            v2.push_back(v1[start]);
+            flag = true;
+        }
+    }
+    // 不是Rome点
+    else{
+        for(i = 0;i &amp;lt; n;i++){
+            // 遍历其他点
+            if(G[start][i] &amp;gt; 0 &amp;amp;&amp;amp; Visited[i] == 0){
+                currentDistance += G[start][i];
+                if(DFS(i))
+                    flag = true;
+                currentDistance -= G[start][i];
+            }
+        }
+        // 如果当前点在路径上
+        if(flag)
+            v2.push_back(v1[start]);
+    }
+
+    // 重新更新全局变量
+    num--;
+    currentFun -= hp[start];
+    Visited[start] = 0;
+    if(flag)
+        return true;
+    else
+        return false;
+}
+int main(){
+    string s , a , b;
+    int i;
+    int temp;
+    int t1 , t2;
+
+    cin &amp;gt;&amp;gt; n &amp;gt;&amp;gt; k &amp;gt;&amp;gt; s;
+    v1.push_back(s);
+    for(i = 1;i &amp;lt;= n - 1;i++){
+        cin &amp;gt;&amp;gt; s &amp;gt;&amp;gt; temp;
+        // v1容器保存字符串
+        v1.push_back(s);
+        // hp数组保存happy值
+        hp[i] = temp;
+    }
+    for(i = 0;i &amp;lt; k;i++){
+        cin &amp;gt;&amp;gt; a &amp;gt;&amp;gt; b &amp;gt;&amp;gt; temp;
+        // 求出对应字符串的序列号
+        t1 = find(v1.begin() , v1.end() , a) - v1.begin();
+        t2 = find(v1.begin() , v1.end() , b) - v1.begin();
+        // 储存图信息
+        G[t1][t2] = temp;
+        G[t2][t1] = temp;
+    }
+    // 初始化
+    for(i = 0;i &amp;lt; n;i++){
+        Distance[i] = INFINITY;
+        Visited[i] = 0;
+    }
+    // 求最短路径
+    Distance[0] = 0;
+    Dijkstra();
+    // Rome的索引
+    t = find(v1.begin() , v1.end() , &quot;ROM&quot;) - v1.begin();
+    for(i = 0;i &amp;lt; n;i++)
+        Visited[i] = 0;
+    // DFS
+    DFS(0);
+    // 输出
+    cout &amp;lt;&amp;lt; cnt &amp;lt;&amp;lt; &quot; &quot; &amp;lt;&amp;lt; Distance[t] &amp;lt;&amp;lt; &quot; &quot; &amp;lt;&amp;lt; fun &amp;lt;&amp;lt; &quot; &quot; &amp;lt;&amp;lt;  avfun &amp;lt;&amp;lt; endl;
+    for(i = v2.size() - 1;i &amp;gt;= 0;i--){
+        cout &amp;lt;&amp;lt; v2[i];
+        if(i != 0)
+            cout &amp;lt;&amp;lt; &quot;-&amp;gt;&quot;;
+    }
+}
+</code></pre>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/PAT/" rel="tag"># PAT</a>
+          
+            <a href="/tags/Dijkstra/" rel="tag"># Dijkstra</a>
+          
+            <a href="/tags/DFS/" rel="tag"># DFS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/27/pat-e7-94-b2-e7-ba-a71086-tree-traversals-againc/" rel="next" title="PAT甲级1086 Tree Traversals Again(C++)">
+                <i class="fa fa-chevron-left"></i> PAT甲级1086 Tree Traversals Again(C++)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/02/28/pat-e7-94-b2-e7-ba-a71088-rational-arithmetic/" rel="prev" title="PAT甲级1088 Rational Arithmetic(C++)">
+                PAT甲级1088 Rational Arithmetic(C++) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/head_pic.jpg"
+               alt="hys" />
+          <p class="site-author-name" itemprop="name">hys</p>
+           
+              <p class="site-description motion-element" itemprop="description">ZJU SE</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">140</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">hys</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

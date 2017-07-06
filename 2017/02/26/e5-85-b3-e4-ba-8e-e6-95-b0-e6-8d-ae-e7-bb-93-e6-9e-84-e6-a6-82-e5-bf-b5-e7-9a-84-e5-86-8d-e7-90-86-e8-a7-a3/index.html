@@ -1,0 +1,745 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="转载请加上链接http://www.huangyusheng.com/关于数据结构概念的再理解/  引言之前写过一篇文章叫做“关于数据结构概念的理解”，其中简单的记录了我对数据结构这一概念的一些见解。但在后来我又查阅了一些资料，思考之后发现之前的文章中并没有清晰的阐明什么是数据结构，因此又有了这篇文章。下面是我对数据结构概念的新的理解。 关于数据结构，它的名词定义是  数据结构是指相互之间存在着">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于“数据结构”概念的再理解">
+<meta property="og:url" content="https://ShengAndXian.github.io/2017/02/26/e5-85-b3-e4-ba-8e-e6-95-b0-e6-8d-ae-e7-bb-93-e6-9e-84-e6-a6-82-e5-bf-b5-e7-9a-84-e5-86-8d-e7-90-86-e8-a7-a3/index.html">
+<meta property="og:site_name" content="hys&#39;s blog">
+<meta property="og:description" content="转载请加上链接http://www.huangyusheng.com/关于数据结构概念的再理解/  引言之前写过一篇文章叫做“关于数据结构概念的理解”，其中简单的记录了我对数据结构这一概念的一些见解。但在后来我又查阅了一些资料，思考之后发现之前的文章中并没有清晰的阐明什么是数据结构，因此又有了这篇文章。下面是我对数据结构概念的新的理解。 关于数据结构，它的名词定义是  数据结构是指相互之间存在着">
+<meta property="og:updated_time" content="2017-07-06T04:11:09.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="关于“数据结构”概念的再理解">
+<meta name="twitter:description" content="转载请加上链接http://www.huangyusheng.com/关于数据结构概念的再理解/  引言之前写过一篇文章叫做“关于数据结构概念的理解”，其中简单的记录了我对数据结构这一概念的一些见解。但在后来我又查阅了一些资料，思考之后发现之前的文章中并没有清晰的阐明什么是数据结构，因此又有了这篇文章。下面是我对数据结构概念的新的理解。 关于数据结构，它的名词定义是  数据结构是指相互之间存在着">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ShengAndXian.github.io/2017/02/26/e5-85-b3-e4-ba-8e-e6-95-b0-e6-8d-ae-e7-bb-93-e6-9e-84-e6-a6-82-e5-bf-b5-e7-9a-84-e5-86-8d-e7-90-86-e8-a7-a3/"/>
+
+
+
+
+
+  <title>关于“数据结构”概念的再理解 | hys's blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">hys's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">记录学习中的点滴</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://ShengAndXian.github.io/2017/02/26/e5-85-b3-e4-ba-8e-e6-95-b0-e6-8d-ae-e7-bb-93-e6-9e-84-e6-a6-82-e5-bf-b5-e7-9a-84-e5-86-8d-e7-90-86-e8-a7-a3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hys">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/head_pic.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hys's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">关于“数据结构”概念的再理解</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-26T04:15:34+08:00">
+                2017-02-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>转载请加上链接<a href="http://www.huangyusheng.com/关于数据结构概念的再理解/" target="_blank" rel="external">http://www.huangyusheng.com/关于数据结构概念的再理解/</a></p>
+</blockquote>
+<h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>之前写过一篇文章叫做“关于数据结构概念的理解”，其中简单的记录了我对数据结构这一概念的一些见解。但在后来我又查阅了一些资料，思考之后发现之前的文章中并没有清晰的阐明什么是数据结构，因此又有了这篇文章。下面是我对数据结构概念的新的理解。</p>
+<p>关于数据结构，它的名词定义是</p>
+<blockquote>
+<p>数据结构是指相互之间存在着一种或多种关系的数据元素的集合和该集合中数据元素的关系组成。记为:<br>Data_Structure=(D,R)，其中D指数据元素的集合，R指数据元素关系的有限集合。</p>
+</blockquote>
+<p>这个定义看起来有些不知所然，所以我更喜欢Robert L.Kruse在《数据结构与程序设计》一书给出的解释：</p>
+<blockquote>
+<p>数据结构的设计分为抽象层、数据结构层和实现层。其中，抽象层是指抽象数据类型层，主要讨论数据的逻辑结构和运算，数据结构层和实现层讨论数据结构的表示和在计算机内存储的细节以及运算的实现。</p>
+</blockquote>
+<h3 id="阐释"><a href="#阐释" class="headerlink" title="阐释"></a>阐释</h3><p><strong>1、抽象层</strong></p>
+<p>抽象层其实就是抽象数据类型层。抽象数据类型，也就是所谓的ADT(Abstract Data Type)，是指一个数学模型和定义在该模型上的一组操作。记得在刚学数据结构的时候，老师上课给出的第一个概念就是ADT，当时由于并不了解数据结构，只沉浸在学习堆栈、队列、树这些听起来很牛逼的东西上，对ADT也就是一听而过，现在才想起来ADT是多么重要！</p>
+<p>一般来说，计算机在解决问题时，大致需要这么几个步骤：从具体问题中抽象出一个适当数学模型，然后根据模型设计适当的算法，最后编程、调试直到解决问题。从具体问题中抽象出来的数学模型代表了问题中所有数据元素之间的相互关系，这些关系就构成了一种逻辑结构。</p>
+<p>逻辑结构分为四种：<br>1.集合<br>各元素之间除了同处于一个集合的相互关系外，没有其他的关系<br>2.线性结构<br>元素之间存在一对一的相互关系<br>3.树状结构<br>元素之间存在一对多的相互关系<br>4.图形结构<br>元素之间存在多对多的相互关系</p>
+<p>至于为什么就是这么四种结构，我觉得是跟现实生活中人们遇到的问题有关，大部分问题抽象出来的模型都是四种结构中的一种或多种。</p>
+<p>现在，我们有了数据的逻辑结构，剩下的就是在这些逻辑结构上的操作了。没有操作的逻辑结构没有任何意义，你只能看看不能对它有任何的想法，那还有啥意思嘞。</p>
+<p>不同的逻辑结构可以有很多不同的操作，但必须包含以下的基本操作：<br>1.查找数据元素<br>2.插入数据元素<br>3.删除数据元素</p>
+<p>对于同一个逻辑结构，不同的操作可以使它称为不同的数据结构。用二叉树来举个例子，如果插入元素时元素的值比根节点的值小就插在左边，比它大就插在右边，这样一种插入操作就形成了二叉搜索树这种数据结构，如果插入时还要保持树的平衡，比如加上旋转操作，就构成了AVL树这种数据结构。有些数据结构还隐含了某种规则约束，规定用户使用给定的操作来对数据结构进行操作，比如堆栈、队列。</p>
+<p>ADT就是数据的逻辑结构和定义在其上的操作的集合，之所以给它一个“抽象”的前缀，是因为ADT并不涉及到任何实现，它并不关心数据的类型，逻辑结构如何在计算中表示和储存，也并不关心这些操作该如何实现，它只是一种抽象。因此，我觉得C++中的STL就是多种ADT的集合，我们使用STL的时候不需要关心我们需要的数据结构是如何实现的，也不需要知道这些操作是怎么实现的，我们只要给定数据类型，知道使用它们就能完成任务就可以了。</p>
+<p><strong>2、数据结构层</strong></p>
+<p>数据结构层对应数据结构中的储存结构，它实现了逻辑结构在计算机中的表示和储存。</p>
+<p>数据结构的储存结构也分为四种：<br>1.顺序储存<br>逻辑上相邻的点被储存在物理上相邻的位置上，通常用数组来实现。<br>2.链接储存<br>逻辑上相邻的点在物理位置并不相邻，通过指针可以访问相邻的点。<br>3.索引储存<br>建立一个索引表，通过关键字在索引表中索引，找到对应值的储存地址。<br>4.散列储存<br>直接对关键字进行计算得出对于值的储存地址。</p>
+<p>不同的逻辑结构有不同的储存结构，同一种逻辑结构也可以有不同的储存方式。比如，堆的逻辑结构是二叉树，但能通过线性化使用顺序储存，而不是链接储存。不同的储存结构有着不同的运算效率，根据情况选择合适的储存结构。</p>
+<p><strong>3、实现层</strong></p>
+<p>在实现层中，我们需要通过程序设计语言实现在抽象层中定义的运算，它是具体的。运算的实现依赖于程序设计语言以及数据结构的储存结构，它的效率和数据结构的逻辑结构和储存结构有着很大的关联。</p>
+<h3 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h3><p>讲到这里，数据结构这一概念应该算是讲清楚了，数据结构就是值数据的逻辑结构、储存结构和运算。数据的逻辑结构和抽象的运算对于数据结构设计的抽象层(ADT)，储存结构对于数据结构层，运算的实现对应实现层。我们所学习的都是计算机科学家幸幸苦苦研究出来的成果，它们都具有很广泛的应用，其实只要你足够牛，自己定义一个数据结构也未尝不可。</p>
+<p>还有一个问题是，<strong>我们为什么要学习数据结构呢？</strong></p>
+<p>鄙人知识量很少，也没开发过什么项目，但单从编程的角度看，遇到一个问题的时候，如果不知道一些数据结构，面对这些问题完全就是束手无策，就算最后能解决，那代码一定惨不忍睹。因此，我认为数据结构是我们解决问题所必需掌握的，只有知道一些数据结构的知识，在遇到问题的时候就可以将问题很好的抽象出来，然后将数据组成一些结构，有了数据结构之后，自然而然地可以想出算法，然后我们再编程实现它们就可以解决问题啦。</p>
+<p>以上。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/25/pat-e7-94-b2-e7-ba-a71080-graduate-admissionc/" rel="next" title="PAT甲级1080 Graduate Admission(C++)">
+                <i class="fa fa-chevron-left"></i> PAT甲级1080 Graduate Admission(C++)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/02/26/pat-e7-94-b2-e7-ba-a71081-rational-sumc/" rel="prev" title="PAT甲级1081 Rational Sum(C++)">
+                PAT甲级1081 Rational Sum(C++) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/head_pic.jpg"
+               alt="hys" />
+          <p class="site-author-name" itemprop="name">hys</p>
+           
+              <p class="site-description motion-element" itemprop="description">ZJU SE</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">140</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#引言"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#阐释"><span class="nav-number">2.</span> <span class="nav-text">阐释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#结语"><span class="nav-number">3.</span> <span class="nav-text">结语</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">hys</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

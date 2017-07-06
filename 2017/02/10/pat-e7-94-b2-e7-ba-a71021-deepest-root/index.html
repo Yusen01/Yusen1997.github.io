@@ -1,0 +1,784 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="PAT,并查集,BFS,联通分量," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="PAT甲级1021 Deepest Root，原题地址：https://www.patest.cn/contests/pat-a-practise/1021解题分析：无向图的联通分量的求解以及BFS的应用。由于内存的限制，只能使用邻接链表储存各条边，同时使用一个一维数组E储存所有边。利用边集E和并查集就可以计算出联通分量的个数。然后再以任一个节点为根节点，宽度搜索遍历整张图，计算高度。所有节点都依">
+<meta name="keywords" content="PAT,并查集,BFS,联通分量">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PAT甲级1021 Deepest Root">
+<meta property="og:url" content="https://ShengAndXian.github.io/2017/02/10/pat-e7-94-b2-e7-ba-a71021-deepest-root/index.html">
+<meta property="og:site_name" content="hys&#39;s blog">
+<meta property="og:description" content="PAT甲级1021 Deepest Root，原题地址：https://www.patest.cn/contests/pat-a-practise/1021解题分析：无向图的联通分量的求解以及BFS的应用。由于内存的限制，只能使用邻接链表储存各条边，同时使用一个一维数组E储存所有边。利用边集E和并查集就可以计算出联通分量的个数。然后再以任一个节点为根节点，宽度搜索遍历整张图，计算高度。所有节点都依">
+<meta property="og:updated_time" content="2017-07-06T04:11:09.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="PAT甲级1021 Deepest Root">
+<meta name="twitter:description" content="PAT甲级1021 Deepest Root，原题地址：https://www.patest.cn/contests/pat-a-practise/1021解题分析：无向图的联通分量的求解以及BFS的应用。由于内存的限制，只能使用邻接链表储存各条边，同时使用一个一维数组E储存所有边。利用边集E和并查集就可以计算出联通分量的个数。然后再以任一个节点为根节点，宽度搜索遍历整张图，计算高度。所有节点都依">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ShengAndXian.github.io/2017/02/10/pat-e7-94-b2-e7-ba-a71021-deepest-root/"/>
+
+
+
+
+
+  <title>PAT甲级1021 Deepest Root | hys's blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">hys's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">记录学习中的点滴</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://ShengAndXian.github.io/2017/02/10/pat-e7-94-b2-e7-ba-a71021-deepest-root/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hys">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/head_pic.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hys's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">PAT甲级1021 Deepest Root</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-02-10T01:25:58+08:00">
+                2017-02-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/PAT甲级/" itemprop="url" rel="index">
+                    <span itemprop="name">PAT甲级</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>PAT甲级1021 Deepest Root，原题地址：<br><a href="https://www.patest.cn/contests/pat-a-practise/1021" target="_blank" rel="external">https://www.patest.cn/contests/pat-a-practise/1021</a><br>解题分析：<br>无向图的联通分量的求解以及BFS的应用。由于内存的限制，只能使用邻接链表储存各条边，同时使用一个一维数组E储存所有边。利用边集E和并查集就可以计算出联通分量的个数。然后再以任一个节点为根节点，宽度搜索遍历整张图，计算高度。所有节点都依次作为根节点，有最大高度的节点储存在stack里，最后输出即可。</p>
+<pre lang="c" line="1" escaped="true">
+#include<stdio.h>
+#include<stdlib.h>
+
+#define Max 10001
+#define INFINITY 100000
+struct node{
+    int index;
+    struct node *next;
+};//邻接链表的节点
+struct edge{
+    int start;
+    int end;
+};//边集中的一条边
+
+void connect(struct node *G[] , int s1 , int s2);
+int find_components(struct edge E[] , int n);
+int find(int *union_find , int n);
+int get_height(struct node *G[] , int v , int n);
+
+int main(){
+    struct node *G[Max];
+    struct edge E[Max];
+    int stack[Max];
+    int top = -1;
+    int max = -INFINITY;
+    int n;
+    int k;
+    int s1 , s2;
+    int i , j;
+    int height;
+
+    scanf("%d" , &n);
+    // 初始化
+    for(i = 1;i <= n;i++)="" g[i]="NULL;" for(i="0;i" <="" n="" -="" 1;i++){="" scanf("%d="" %d"="" ,="" &s1="" &s2);="" 连接两个点="" connect(g="" s1="" s2);="" s2="" s1);="" 将边存入边集="" e[i].start="s1;" e[i].end="s2;" }="" 计算联通分量个数="" k="find_components(E" n);="" 如果不为1，则输出error="" if(k="" !="1){" printf("error:="" %d="" components"="" k);="" return="" 0;="" 遍历所有节点，每次都以一个节点作为根节点="" 计算高度="" height="get_height(G" i="" 如果高度比之前的高度大="" if(height=""> max){
+            // 更新最大高度
+            max = height;
+            // 清空stack，并将当前点放入
+            top = -1;
+            stack[++top] = i;
+        }
+        // 如果高度与最大高度相等，则直接放入stack
+        else if(height == max){
+            stack[++top] = i;
+        }
+    }
+    // 输出
+    for(i = 0;i <= top;i++)="" printf("%d\n"="" ,="" stack[i]);="" }="" 连接两点="" void="" connect(struct="" node="" *g[]="" int="" s1="" s2){="" struct="" *ptr;="" ptr="(struct" node*)malloc(sizeof(struct="" node));="" ptr-="">index = s2;
+    ptr->next = G[s1];
+    G[s1] = ptr;
+}
+
+// 计算联通分量个数
+int find_components(struct edge E[] , int n){
+    int *union_find;
+    int i;
+    int k = 0;
+    int ancestor1 , ancestor2;
+
+    // 建立并查集
+    union_find = (int *)malloc(sizeof(int) * (n + 1));
+    // 初始化并查集
+    for(i = 1;i <= n;i++)="" union_find[i]="-1;" 遍历边集="" for(i="0;i" <="" n="" -="" 1;i++){="" 查找两个端点的祖先="" ancestor1="find(union_find" ,="" e[i].start);="" ancestor2="find(union_find" e[i].end);="" 如果两个端点的祖先不相等="" if(ancestor1="" !="ancestor2)" 合并="" union_find[ancestor1]="ancestor2;" }="" 计算联通分量个数="" if(union_find[i]="=" -1)="" k++;="" return="" k;="" 在并查集中查找祖先，并且压缩路径="" int="" find(int="" *union_find="" n){="" if(union_find[n]="" union_find[n]="find(union_find" union_find[n]);="" n;="" 计算高度="" get_height(struct="" node="" *g[]="" v="" queue[max];="" front="0" rear="-1;" i;="" count;="" visited[max];="" height="0;" struct="" *ptr;="" visited[i]="0;" 将根节点放入队列="" queue[++rear]="v;" while(1){="" 计算每一层的节点个数="" count="rear" +="" 1;="" 如果节点个数不是正数，则遍历结束="" if(count="" break;="" 高度加一="" height++;="" 遍历当前层的所有节点="" while(count--=""> 0){
+            // 出队
+            k = queue[front++];
+            // 设置为已访问
+            visited[k] = 1;
+            // 访问相邻的节点
+            ptr = G[k];
+            while(ptr != NULL){
+                // 如果相邻的节点未被访问
+                if(visited[ptr->index] == 0)
+                    // 入队
+                    queue[++rear] = ptr->index;
+                ptr = ptr->next;
+            }
+        }
+    }
+    // 返回
+    return height;
+}
+</=></=></=></stdlib.h></stdio.h></pre>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/PAT/" rel="tag"># PAT</a>
+          
+            <a href="/tags/并查集/" rel="tag"># 并查集</a>
+          
+            <a href="/tags/BFS/" rel="tag"># BFS</a>
+          
+            <a href="/tags/联通分量/" rel="tag"># 联通分量</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/10/pat-e7-94-b2-e7-ba-a71020-tree-traversals/" rel="next" title="PAT甲级1020 Tree Traversals">
+                <i class="fa fa-chevron-left"></i> PAT甲级1020 Tree Traversals
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/02/10/pat-e7-94-b2-e7-ba-a71022-digital-library/" rel="prev" title="PAT甲级1022 Digital Library">
+                PAT甲级1022 Digital Library <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/head_pic.jpg"
+               alt="hys" />
+          <p class="site-author-name" itemprop="name">hys</p>
+           
+              <p class="site-description motion-element" itemprop="description">ZJU SE</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">140</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">hys</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

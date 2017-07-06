@@ -1,0 +1,784 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="堆," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="左式堆(leftist heap)(一)定义与性质我们先来看看左式堆和二叉堆的异同： 相同点:  左式堆和二叉堆都是一种堆结构。 左式堆和二叉堆都具有堆结构的两个基本属性——结构性和有序性。  不同点:  二叉堆是一个完全二叉树，因此非常的平衡。而左式堆则要求整棵树尽可能不平衡，因此不是一个完全二叉树。 由于左式堆不是一个完全二叉树，因此必须使用指针来构建，而不能简单的使用数组。  大致了解了左式">
+<meta name="keywords" content="堆">
+<meta property="og:type" content="article">
+<meta property="og:title" content="左式堆(leftist heap)与斜堆(skew heap)">
+<meta property="og:url" content="https://ShengAndXian.github.io/2017/05/03/e5-b7-a6-e5-bc-8f-e5-a0-86leftist-heap-e4-b8-8e-e6-96-9c-e5-a0-86skew-heap/index.html">
+<meta property="og:site_name" content="hys&#39;s blog">
+<meta property="og:description" content="左式堆(leftist heap)(一)定义与性质我们先来看看左式堆和二叉堆的异同： 相同点:  左式堆和二叉堆都是一种堆结构。 左式堆和二叉堆都具有堆结构的两个基本属性——结构性和有序性。  不同点:  二叉堆是一个完全二叉树，因此非常的平衡。而左式堆则要求整棵树尽可能不平衡，因此不是一个完全二叉树。 由于左式堆不是一个完全二叉树，因此必须使用指针来构建，而不能简单的使用数组。  大致了解了左式">
+<meta property="og:image" content="http://olrdynjoh.bkt.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202017-05-03%20%E4%B8%8B%E5%8D%881.36.00.png">
+<meta property="og:image" content="http://olrdynjoh.bkt.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202017-05-03%20%E4%B8%8B%E5%8D%881.40.51.png">
+<meta property="og:image" content="http://olrdynjoh.bkt.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202017-05-03%20%E4%B8%8B%E5%8D%881.45.12.png">
+<meta property="og:updated_time" content="2017-07-06T04:11:09.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="左式堆(leftist heap)与斜堆(skew heap)">
+<meta name="twitter:description" content="左式堆(leftist heap)(一)定义与性质我们先来看看左式堆和二叉堆的异同： 相同点:  左式堆和二叉堆都是一种堆结构。 左式堆和二叉堆都具有堆结构的两个基本属性——结构性和有序性。  不同点:  二叉堆是一个完全二叉树，因此非常的平衡。而左式堆则要求整棵树尽可能不平衡，因此不是一个完全二叉树。 由于左式堆不是一个完全二叉树，因此必须使用指针来构建，而不能简单的使用数组。  大致了解了左式">
+<meta name="twitter:image" content="http://olrdynjoh.bkt.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202017-05-03%20%E4%B8%8B%E5%8D%881.36.00.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ShengAndXian.github.io/2017/05/03/e5-b7-a6-e5-bc-8f-e5-a0-86leftist-heap-e4-b8-8e-e6-96-9c-e5-a0-86skew-heap/"/>
+
+
+
+
+
+  <title>左式堆(leftist heap)与斜堆(skew heap) | hys's blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">hys's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">记录学习中的点滴</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://ShengAndXian.github.io/2017/05/03/e5-b7-a6-e5-bc-8f-e5-a0-86leftist-heap-e4-b8-8e-e6-96-9c-e5-a0-86skew-heap/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="hys">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/head_pic.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="hys's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">左式堆(leftist heap)与斜堆(skew heap)</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-03T05:55:55+08:00">
+                2017-05-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据结构/" itemprop="url" rel="index">
+                    <span itemprop="name">数据结构</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="左式堆-leftist-heap"><a href="#左式堆-leftist-heap" class="headerlink" title="左式堆(leftist heap)"></a>左式堆(leftist heap)</h4><h5 id="一-定义与性质"><a href="#一-定义与性质" class="headerlink" title="(一)定义与性质"></a>(一)定义与性质</h5><p>我们先来看看左式堆和二叉堆的异同：</p>
+<p><strong>相同点:</strong></p>
+<ul>
+<li>左式堆和二叉堆都是一种堆结构。</li>
+<li>左式堆和二叉堆都具有堆结构的两个基本属性——结构性和有序性。</li>
+</ul>
+<p><strong>不同点:</strong></p>
+<ul>
+<li>二叉堆是一个完全二叉树，因此非常的平衡。而左式堆则要求整棵树尽可能不平衡，因此不是一个完全二叉树。</li>
+<li>由于左式堆不是一个完全二叉树，因此必须使用指针来构建，而不能简单的使用数组。</li>
+</ul>
+<p>大致了解了左式堆和二叉堆的异同后，我们接着看几个基本概念。</p>
+<p><strong>npl(null path length):</strong> 一个结点的npl等于从该结点到一个没有两个孩子的结点的最短路径。</p>
+<p>在左式堆中，<strong>一个结点的左孩子的npl必须大于或等于右孩子的npl。</strong></p>
+<p>因此，空结点的nol为-1，单结点或只有一个孩子的结点的npl为0，有两个孩子的结点的npl等于它的右孩子的npl加1。</p>
+<p><strong>right path:</strong> 从根结点出发，一直向右结点搜索，直到遇到空结点，所得到的路径就是right path。</p>
+<p>为什么要有right path这个概念？我们在之前提到有两个孩子的结点的npl等于它的右孩子的npl加一。因此我们要计算一个结点的npl，就要计算右孩子的npl，而要计算右孩子的npl，就要计算右孩子的右孩子的npl…一直迭代下去直到遇到右孩子为空结点的结点。而整个计算的路径其实就是所谓的right path，一个结点的npl其实就是它的right path的路径长度。</p>
+<p>接下来我们给出一个定理:</p>
+<blockquote>
+<p>一个right path上共有r个结点的左式堆，它至少含有2^r - 1个结点。</p>
+</blockquote>
+<p><strong>使用数学归纳法可以对其进行简单证明:</strong></p>
+<ul>
+<li>basic step: 当r等于1时，显然至少含有一个结点。</li>
+<li>iductive step: 假设对于1,2,3…..r，上述定理均成立。当right path上有r + 1个结点时，根结点的右子树的right path共有r个结点。由于一个结点的npl等于right path的路径长度，也就是结点数减1，因此右结点的npl为r - 1。又因为左结点的npl要大于等于右结点的npl，因此左子树的right path也至少含有r个结点。所以根据假设，左子树的结点数至少为2^r - 1，右子树的结点数也至少为2^r - 1，两者相加再加上根结点后，至少包含2^(r + 1) - 1个结点，得证。</li>
+</ul>
+<p>由n &gt;= 2^r - 1，我们可以得到<strong>r &lt;= log(n + 1)</strong>。因此right path上的结点数为O(log n)，我们将在其上进行一系列操作。</p>
+<h5 id="二-相关操作"><a href="#二-相关操作" class="headerlink" title="(二)相关操作"></a>(二)相关操作</h5><p>左式堆中最重要的一个操作就是合并(merge)操作。</p>
+<p>假设存在两个左式堆H1，H2，均为最小堆。</p>
+<p><strong>1、merge</strong></p>
+<ul>
+<li>将两个树中的根结点较小者作为新的根结点。比如H1-&gt;val &lt; H2-&gt;val，则H1的根结点即为新的根结点。</li>
+<li>保留新的根结点的左子树。</li>
+<li>递归合并新的根结点的右子树和另一个左式堆，将其作为新的右子树。上例中即为合并H1的右子树和H2，得到的新的树作为H1的右子树。</li>
+<li>从right path的最后一个元素开始根据npl值逐步调整整棵树，使最终结果满足左式堆性质。</li>
+</ul>
+<p><strong>一个简单的例子</strong></p>
+<p><img src="http://olrdynjoh.bkt.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202017-05-03%20%E4%B8%8B%E5%8D%881.36.00.png" alt=""></p>
+<p>上述例子中，初始的两个堆的根结点的值分别为5和3，因此选择较小的3作为新的根结点，接着合并以5为根结点的堆和以8为根结点的堆。我们选择较小的5作为新的根结点，接着合并12和8。合并完成后返回各子树的根结点就可以得到完整的左式堆。如下所示。</p>
+<p><img src="http://olrdynjoh.bkt.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202017-05-03%20%E4%B8%8B%E5%8D%881.40.51.png" alt=""></p>
+<p>还有一点需要考虑，最终得到的堆可能并不符合左式堆的性质，因此我们需要对其进行调整。一般来说，调整发生在递归返回的时候，结点根据左右结点的npl选择交换或不交换两个子树。最终得到的左式堆如下图所示。</p>
+<p><img src="http://olrdynjoh.bkt.clouddn.com/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202017-05-03%20%E4%B8%8B%E5%8D%881.45.12.png" alt=""></p>
+<p><strong>2、insert</strong></p>
+<p>插入操作可以看成一个左式堆和一个单结点的左式堆合并。</p>
+<ul>
+<li>构造一个单结点的左式堆。</li>
+<li>将其与另一个左式堆合并。</li>
+</ul>
+<p><strong>3、deletemin</strong></p>
+<p>删除最小值操作也非常的简单。</p>
+<ul>
+<li>删除根结点。</li>
+<li>合并左右子树。</li>
+</ul>
+<h5 id="三-时间复杂度"><a href="#三-时间复杂度" class="headerlink" title="(三)时间复杂度"></a>(三)时间复杂度</h5><p>merge操作是对right path上的点进行操作，因此时间复杂度为O(log n)。</p>
+<p>insert操作基本也是一个合并操作，时间复杂度为O(log n)。</p>
+<p>deletemin操作也是一个合并操作，时间复杂度为O(log n)。</p>
+<h4 id="斜堆-skew-heap"><a href="#斜堆-skew-heap" class="headerlink" title="斜堆(skew heap)"></a>斜堆(skew heap)</h4><p>斜堆相比于左式堆来说更为简单，两者之间的区别在于:</p>
+<ul>
+<li>斜堆没有npl概念。</li>
+<li>合并操作时，对于所有right path上的点，我们都需要交换它的左右子树。</li>
+</ul>
+<p>斜堆的时间复杂度依靠摊还分析来支撑，每一个操作的摊还时间均为O(log n)。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/堆/" rel="tag"># 堆</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/31/b-e6-a0-91-e4-b8-8eb-e6-a0-91/" rel="next" title="B树与B+树">
+                <i class="fa fa-chevron-left"></i> B树与B+树
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/head_pic.jpg"
+               alt="hys" />
+          <p class="site-author-name" itemprop="name">hys</p>
+           
+              <p class="site-description motion-element" itemprop="description">ZJU SE</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">140</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">36</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#左式堆-leftist-heap"><span class="nav-number">1.</span> <span class="nav-text">左式堆(leftist heap)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#一-定义与性质"><span class="nav-number">1.1.</span> <span class="nav-text">(一)定义与性质</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#二-相关操作"><span class="nav-number">1.2.</span> <span class="nav-text">(二)相关操作</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#三-时间复杂度"><span class="nav-number">1.3.</span> <span class="nav-text">(三)时间复杂度</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#斜堆-skew-heap"><span class="nav-number">2.</span> <span class="nav-text">斜堆(skew heap)</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">hys</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
