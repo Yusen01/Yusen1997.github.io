@@ -93,17 +93,17 @@
 
 
 
-<meta name="description" content="PAT甲级1127 ZigZagging on a Tree，原题地址：https://www.patest.cn/contests/pat-a-practise/1127解题分析： 用后序遍历序列和中序遍历序列构建一个二叉树，然后层序遍历，这个zigzag输出也很简单，判断一下层数是奇数还是偶数就可以了。。。 #include&amp;amp;lt;iostream&amp;amp;gt; #include&amp;a">
+<meta name="description" content="PAT甲级1127 ZigZagging on a Tree，原题地址：https://www.patest.cn/contests/pat-a-practise/1127解题分析： 用后序遍历序列和中序遍历序列构建一个二叉树，然后层序遍历，这个zigzag输出也很简单，判断一下层数是奇数还是偶数就可以了。。。 1234567891011121314151617181920212223242526">
 <meta name="keywords" content="PAT">
 <meta property="og:type" content="article">
 <meta property="og:title" content="PAT甲级1127 ZigZagging on a Tree(C++)">
 <meta property="og:url" content="https://ShengAndXian.github.io/2017/03/13/pat-e7-94-b2-e7-ba-a71127-zigzagging-on-a-treec/index.html">
 <meta property="og:site_name" content="hys&#39;s blog">
-<meta property="og:description" content="PAT甲级1127 ZigZagging on a Tree，原题地址：https://www.patest.cn/contests/pat-a-practise/1127解题分析： 用后序遍历序列和中序遍历序列构建一个二叉树，然后层序遍历，这个zigzag输出也很简单，判断一下层数是奇数还是偶数就可以了。。。 #include&amp;amp;lt;iostream&amp;amp;gt; #include&amp;a">
-<meta property="og:updated_time" content="2017-07-06T04:11:09.000Z">
+<meta property="og:description" content="PAT甲级1127 ZigZagging on a Tree，原题地址：https://www.patest.cn/contests/pat-a-practise/1127解题分析： 用后序遍历序列和中序遍历序列构建一个二叉树，然后层序遍历，这个zigzag输出也很简单，判断一下层数是奇数还是偶数就可以了。。。 1234567891011121314151617181920212223242526">
+<meta property="og:updated_time" content="2017-07-06T07:04:53.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="PAT甲级1127 ZigZagging on a Tree(C++)">
-<meta name="twitter:description" content="PAT甲级1127 ZigZagging on a Tree，原题地址：https://www.patest.cn/contests/pat-a-practise/1127解题分析： 用后序遍历序列和中序遍历序列构建一个二叉树，然后层序遍历，这个zigzag输出也很简单，判断一下层数是奇数还是偶数就可以了。。。 #include&amp;amp;lt;iostream&amp;amp;gt; #include&amp;a">
+<meta name="twitter:description" content="PAT甲级1127 ZigZagging on a Tree，原题地址：https://www.patest.cn/contests/pat-a-practise/1127解题分析： 用后序遍历序列和中序遍历序列构建一个二叉树，然后层序遍历，这个zigzag输出也很简单，判断一下层数是奇数还是偶数就可以了。。。 1234567891011121314151617181920212223242526">
 
 
 
@@ -363,104 +363,8 @@
       
 
       
-        <p>PAT甲级1127 ZigZagging on a Tree，原题地址：<a href="https://www.patest.cn/contests/pat-a-practise/1127" target="_blank" rel="external">https://www.patest.cn/contests/pat-a-practise/1127</a><br>解题分析：<br> 用后序遍历序列和中序遍历序列构建一个二叉树，然后层序遍历，这个zigzag输出也很简单，判断一下层数是奇数还是偶数就可以了。。。</p>
-<pre><code>#include&amp;lt;iostream&amp;gt;
-#include&amp;lt;vector&amp;gt;
-#include&amp;lt;queue&amp;gt;
-using namespace std;
+        <p>PAT甲级1127 ZigZagging on a Tree，原题地址：<a href="https://www.patest.cn/contests/pat-a-practise/1127" target="_blank" rel="external">https://www.patest.cn/contests/pat-a-practise/1127</a><br>解题分析：<br> 用后序遍历序列和中序遍历序列构建一个二叉树，然后层序遍历，这个zigzag输出也很简单，判断一下层数是奇数还是偶数就可以了。。。<br> <figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;vector&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;queue&gt;</span></span></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">struct</span> <span class="title">node</span>&#123;</span></div><div class="line">    <span class="keyword">int</span> key;</div><div class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">node</span> *<span class="title">left</span>;</span></div><div class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">node</span> *<span class="title">right</span>;</span></div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">int</span> preOrder[<span class="number">50</span>];</div><div class="line"><span class="keyword">int</span> postOrder[<span class="number">50</span>];</div><div class="line"><span class="keyword">int</span> n;</div><div class="line"><span class="keyword">int</span> Index;</div><div class="line"></div><div class="line"><span class="comment">// 构建二叉树</span></div><div class="line"><span class="function">struct node *<span class="title">Construct</span><span class="params">(<span class="keyword">int</span> start , <span class="keyword">int</span> end)</span></span>&#123;</div><div class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">node</span> *<span class="title">ptr</span>;</span></div><div class="line">    <span class="keyword">int</span> i;</div><div class="line"></div><div class="line">    <span class="keyword">if</span>(start &gt; end)</div><div class="line">        <span class="keyword">return</span> <span class="literal">NULL</span>;</div><div class="line">    ptr = <span class="keyword">new</span> struct node;</div><div class="line">    ptr-&gt;key = postOrder[Index];</div><div class="line">    <span class="keyword">for</span>(i = start;i &lt;= end;i++)&#123;</div><div class="line">        <span class="keyword">if</span>(preOrder[i] == postOrder[Index]) </div><div class="line">            <span class="keyword">break</span>;</div><div class="line">    &#125;</div><div class="line">    Index--;</div><div class="line">    ptr-&gt;right = Construct(i + <span class="number">1</span> , end);</div><div class="line">    ptr-&gt;left = Construct(start , i - <span class="number">1</span>);</div><div class="line">    <span class="keyword">return</span> ptr;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 层序遍历</span></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">LevelOrder</span><span class="params">(struct node *root)</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> cnt = <span class="number">1</span>;</div><div class="line">    <span class="keyword">int</span> flag = <span class="number">1</span>;</div><div class="line">    <span class="built_in">queue</span>&lt;struct node *&gt; q;</div><div class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; v;</div><div class="line"></div><div class="line">    q.push(root);</div><div class="line">    <span class="keyword">while</span>(!q.empty())&#123;</div><div class="line">        <span class="keyword">int</span> t = q.size();</div><div class="line">        v.clear();</div><div class="line">        <span class="keyword">while</span>(t &gt; <span class="number">0</span>)&#123;</div><div class="line">            <span class="class"><span class="keyword">struct</span> <span class="title">node</span> *<span class="title">ptr</span> = <span class="title">q</span>.<span class="title">front</span>();</span></div><div class="line">            q.pop();</div><div class="line">            <span class="keyword">if</span>(ptr-&gt;left != <span class="literal">NULL</span>)</div><div class="line">                q.push(ptr-&gt;left);</div><div class="line">            <span class="keyword">if</span>(ptr-&gt;right != <span class="literal">NULL</span>)</div><div class="line">                q.push(ptr-&gt;right);</div><div class="line">            t--;</div><div class="line">            v.push_back(ptr-&gt;key);</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">if</span>(cnt % <span class="number">2</span> != <span class="number">0</span>)&#123;</div><div class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = v.size() - <span class="number">1</span>;i &gt;= <span class="number">0</span>;i--)&#123;</div><div class="line">                <span class="keyword">if</span>(flag)&#123;</div><div class="line">                    flag = <span class="number">0</span>;</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">else</span>&#123;</div><div class="line">                    <span class="built_in">cout</span> &lt;&lt; <span class="string">" "</span>;</div><div class="line">                &#125;</div><div class="line">                <span class="built_in">cout</span> &lt;&lt; v[i];</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">else</span>&#123;</div><div class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; v.size();i++)&#123;</div><div class="line">                <span class="keyword">if</span>(flag)&#123;</div><div class="line">                    flag = <span class="number">0</span>;</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">else</span>&#123;</div><div class="line">                    <span class="built_in">cout</span> &lt;&lt; <span class="string">" "</span>;</div><div class="line">                &#125;</div><div class="line">                <span class="built_in">cout</span> &lt;&lt; v[i];</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        cnt++;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">int</span> i;</div><div class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">node</span> *<span class="title">root</span> = <span class="title">NULL</span>;</span></div><div class="line"></div><div class="line">    <span class="built_in">cin</span> &gt;&gt; n;</div><div class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>;i &lt; n;i++)&#123;</div><div class="line">        <span class="built_in">cin</span> &gt;&gt; preOrder[i];</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">for</span>(i = <span class="number">0</span>;i &lt; n;i++)&#123;</div><div class="line">        <span class="built_in">cin</span> &gt;&gt; postOrder[i];</div><div class="line">    &#125;</div><div class="line">    Index = n - <span class="number">1</span>;</div><div class="line">    root = Construct(<span class="number">0</span> , n - <span class="number">1</span>);</div><div class="line">    LevelOrder(root);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 
-struct node{
-    int key;
-    struct node *left;
-    struct node *right;
-};
-
-int preOrder[50];
-int postOrder[50];
-int n;
-int Index;
-
-// 构建二叉树
-struct node *Construct(int start , int end){
-    struct node *ptr;
-    int i;
-
-    if(start &amp;gt; end)
-        return NULL;
-    ptr = new struct node;
-    ptr-&amp;gt;key = postOrder[Index];
-    for(i = start;i &amp;lt;= end;i++){
-        if(preOrder[i] == postOrder[Index]) 
-            break;
-    }
-    Index--;
-    ptr-&amp;gt;right = Construct(i + 1 , end);
-    ptr-&amp;gt;left = Construct(start , i - 1);
-    return ptr;
-}
-
-// 层序遍历
-void LevelOrder(struct node *root){
-    int cnt = 1;
-    int flag = 1;
-    queue&amp;lt;struct node *&amp;gt; q;
-    vector&amp;lt;int&amp;gt; v;
-
-    q.push(root);
-    while(!q.empty()){
-        int t = q.size();
-        v.clear();
-        while(t &amp;gt; 0){
-            struct node *ptr = q.front();
-            q.pop();
-            if(ptr-&amp;gt;left != NULL)
-                q.push(ptr-&amp;gt;left);
-            if(ptr-&amp;gt;right != NULL)
-                q.push(ptr-&amp;gt;right);
-            t--;
-            v.push_back(ptr-&amp;gt;key);
-        }
-        if(cnt % 2 != 0){
-            for(int i = v.size() - 1;i &amp;gt;= 0;i--){
-                if(flag){
-                    flag = 0;
-                }
-                else{
-                    cout &amp;lt;&amp;lt; &quot; &quot;;
-                }
-                cout &amp;lt;&amp;lt; v[i];
-            }
-        }
-        else{
-            for(int i = 0;i &amp;lt; v.size();i++){
-                if(flag){
-                    flag = 0;
-                }
-                else{
-                    cout &amp;lt;&amp;lt; &quot; &quot;;
-                }
-                cout &amp;lt;&amp;lt; v[i];
-            }
-        }
-        cnt++;
-    }
-}
-int main(){
-    int i;
-    struct node *root = NULL;
-
-    cin &amp;gt;&amp;gt; n;
-    for(i = 0;i &amp;lt; n;i++){
-        cin &amp;gt;&amp;gt; preOrder[i];
-    }
-    for(i = 0;i &amp;lt; n;i++){
-        cin &amp;gt;&amp;gt; postOrder[i];
-    }
-    Index = n - 1;
-    root = Construct(0 , n - 1);
-    LevelOrder(root);
-}
-</code></pre>
       
     </div>
 
