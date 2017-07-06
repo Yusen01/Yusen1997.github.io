@@ -367,99 +367,16 @@
       
         
           
-            <p>PAT甲级1100 Mars Numbers，原题地址：<a href="https://www.patest.cn/contests/pat-a-practise/1100" target="_blank" rel="external">https://www.patest.cn/contests/pat-a-practise/1100</a><br>解题分析：<br> 进制转换。需要注意的是输入的数字是13的倍数时，输出结果应该是一位，最低位的0不需要输出，字符串转数字同理。</p>
-<pre><code>#include&amp;lt;iostream&amp;gt;
-#include&amp;lt;vector&amp;gt;
-#include&amp;lt;string&amp;gt;
-using namespace std;
-
-int main(){
-    string arr[25] = {&quot;tret&quot;,&quot;jan&quot;,&quot;feb&quot;,&quot;mar&quot;,&quot;apr&quot;,&quot;may&quot;,&quot;jun&quot;,&quot;jly&quot;,&quot;aug&quot;,&quot;sep&quot;,&quot;oct&quot;,&quot;nov&quot;,&quot;dec&quot;,&quot;tam&quot;,&quot;hel&quot;,&quot;maa&quot;,&quot;huh&quot;,&quot;tou&quot;,&quot;kes&quot;,&quot;hei&quot;,&quot;elo&quot;,&quot;syy&quot;,&quot;lok&quot;,&quot;mer&quot;,&quot;jou&quot;};
-    char ch;
-    vector&amp;lt;char&amp;gt; v;
-    int n , i;
-    int flag;
-
-    cin &amp;gt;&amp;gt; n;
-    getchar();
-    for(i = 0;i &amp;lt; n;i++){
-        v.clear();
-        flag = 0;
-        // 输入
-        while((ch = getchar()) != &apos;\n&apos;){
-            v.push_back(ch);
-            if(ch == &apos; &apos;)
-                flag = 1;
-        }
-        // 如果是数字
-        if(v[0] &amp;gt;= &apos;0&apos; &amp;amp;&amp;amp; v[0] &amp;lt;= &apos;9&apos;){
-            int res = 0 , t = 1;
-            // 计算数字大小
-            for(int j = v.size() - 1;j &amp;gt;= 0;j--){
-                res += (v[j] - &apos;0&apos;) * t;
-                t *= 10;
-            }
-            // 如果在0到12之间
-            if(res &amp;gt;= 0 &amp;amp;&amp;amp; res &amp;lt;= 12)
-                cout &amp;lt;&amp;lt; arr[res] &amp;lt;&amp;lt; endl;
-            // 如果是13的倍数
-            else if(res % 13 == 0)
-                cout &amp;lt;&amp;lt; arr[res / 13 + 12] &amp;lt;&amp;lt; endl;
-            // 否则
-            else
-                cout&amp;lt;&amp;lt; arr[res / 13 + 12] &amp;lt;&amp;lt; &quot; &quot; &amp;lt;&amp;lt; arr[res % 13] &amp;lt;&amp;lt; endl;
-        }
-        // 如果是字符串
-        else{
-            string s;
-            int res = 0;
-            int j , k;
-            // 有两个字符串（有空格）
-            if(flag){
-                // 第一个字符串
-                for(j = 0;v[j] != &apos; &apos;;j++)
-                    s += v[j];
-                // 计算
-                for(k = 13;k &amp;lt; 25;k++)
-                    if(arr[k] == s){
-                        res += (k - 12) * 13;
-                        break;
-                    }
-                // 第二个字符串
-                s = &quot;&quot;;
-                for(k = j + 1;k &amp;lt; v.size();k++)
-                    s += v[k];
-                // 计算
-                for(k = 0;k &amp;lt; 13;k++)
-                    if(arr[k] == s){
-                        res += k;
-                        break;
-                    }
-                // 输出
-                cout &amp;lt;&amp;lt; res &amp;lt;&amp;lt; endl;
-            }
-            // 只有一个字符串
-            else{
-                // 计算
-                for(j = 0;j &amp;lt; v.size();j++)
-                    s += v[j];
-                // 输出
-                for(j = 0;j &amp;lt; 13;j++)
-                    if(arr[j] == s){
-                        cout &amp;lt;&amp;lt; j &amp;lt;&amp;lt; endl;
-                        break;
-                    }
-                for(j = 13;j &amp;lt; 25;j++)
-                    if(arr[j] == s){
-                        cout &amp;lt;&amp;lt; (j - 12) * 13 &amp;lt;&amp;lt; endl;
-                        break;
-                    }
-            }
-        }
-    }
-}
-</code></pre>
-          
+          PAT甲级1100 Mars Numbers，原题地址：https://www.patest.cn/contests/pat-a-practise/1100解题分析： 进制转换。需要注意的是输入的数字是13的倍数时，输出结果应该是一位，最低位的0不需要输出，字符串转数字同理。
+#include&am
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/03/04/pat-e7-94-b2-e7-ba-a71100-mars-numbersc/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -602,91 +519,15 @@ int main(){
       
         
           
-            <p>PAT甲级1099 Build A Binary Search Tree，原题地址：<a href="https://www.patest.cn/contests/pat-a-practise/1099" target="_blank" rel="external">https://www.patest.cn/contests/pat-a-practise/1099</a><br>解题分析：<br>给定一个序列和一个BST结构，可以构建一个唯一的BST。构建BST的关键是要计算出每一个节点它的左子树的节点个数，然后对序列排序后递归构建BST。构建好BST后层序遍历输出即可。</p>
-<pre><code>#include&amp;lt;iostream&amp;gt;
-#include&amp;lt;algorithm&amp;gt;
-#include&amp;lt;queue&amp;gt;
-using namespace std;
-
-struct node{
-    int key;
-    struct node *Left;
-    struct node *Right;
-};       
-
-int arr[110];
-int Left[110];
-int Right[110];
-int LeftNum[110];
-int RightNum[110];
-int n;
-
-// 构建BST
-struct node *Construct(int index , int start , int end){
-    struct node *ptr;
-    int t;
-
-    if(index == -1)
-        return NULL;
-    t = start + LeftNum[index];
-    ptr = new struct node;
-    ptr-&amp;gt;key = arr[t];
-    ptr-&amp;gt;Left = Construct(Left[index] , start , t - 1);
-    ptr-&amp;gt;Right = Construct(Right[index] , t + 1 , end);
-    return ptr;
-}
-
-// 层序遍历
-void LevelOrder(struct node *root){
-    queue&amp;lt;struct node&amp;gt; q;
-    struct node temp;
-    int flag = 1;
-
-    q.push(*root);
-    while(!q.empty()){
-        temp = q.front();
-        q.pop();
-        if(temp.Left != NULL)
-            q.push(*temp.Left);
-        if(temp.Right != NULL)
-            q.push(*temp.Right);
-        if(flag){
-            cout &amp;lt;&amp;lt; temp.key;
-            flag = 0;
-        }
-        else
-            cout &amp;lt;&amp;lt; &quot; &quot; &amp;lt;&amp;lt; temp.key;
-    }
-    cout &amp;lt;&amp;lt; endl;
-}
-
-// 计算每一个节点的左子树的节点个数
-int Calculate(int index){
-    if(index == -1)
-        return 0;
-    LeftNum[index] = Calculate(Left[index]);
-    RightNum[index] = Calculate(Right[index]);
-    return LeftNum[index] + RightNum[index] + 1;
-}
-
-int main(){
-    struct node *root;
-    int i;
-
-    cin &amp;gt;&amp;gt; n;
-    for(i = 0;i &amp;lt; n;i++){
-        cin &amp;gt;&amp;gt; Left[i] &amp;gt;&amp;gt; Right[i];
-    }
-    for(i = 0;i &amp;lt; n;i++){
-        cin &amp;gt;&amp;gt; arr[i];
-    }
-    Calculate(0);
-    sort(arr , arr + n);
-    root = Construct(0 , 0 , n - 1);
-    LevelOrder(root);
-}
-</code></pre>
-          
+          PAT甲级1099 Build A Binary Search Tree，原题地址：https://www.patest.cn/contests/pat-a-practise/1099解题分析：给定一个序列和一个BST结构，可以构建一个唯一的BST。构建BST的关键是要计算出每一个节点它的左子树的节
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/03/04/pat-e7-94-b2-e7-ba-a71099-build-a-binary-search-treec/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -829,150 +670,16 @@ int main(){
       
         
           
-            <p>PAT甲级1098 Insertion or Heap Sort，原题地址：<a href="https://www.patest.cn/contests/pat-a-practise/1098" target="_blank" rel="external">https://www.patest.cn/contests/pat-a-practise/1098</a><br>解题分析：<br>插入排序和堆排序。难度不是很大，但堆排序比较繁琐，需要自己建堆，然后再写一个Delete函数，注意细节即可。</p>
-<pre><code>#include&amp;lt;iostream&amp;gt;
-#include&amp;lt;vector&amp;gt;
-using namespace std;
-
-// 建堆
-void ConstructHeap(vector&amp;lt;int&amp;gt; &amp;amp;v){
-    int i;
-
-    for(i = v.size() / 2 - 1;i &amp;gt;= 0;i--){
-        int parent , child;
-        for(parent = i;parent * 2 + 1 &amp;lt; v.size();parent = child){
-            child = parent * 2 + 1;
-            if(child != v.size() - 1 &amp;amp;&amp;amp; v[child + 1] &amp;gt; v[child])
-                child = child + 1;
-            if(v[child] &amp;gt; v[parent]){
-                int t;
-                t = v[child];
-                v[child] = v[parent];
-                v[parent] = t;
-            }
-            else    
-                break;
-        }
-    }
-}
-
-// 删除顶部元素并返回其值
-int Delete(vector&amp;lt;int&amp;gt; &amp;amp;v , int cnt){
-    int ans;
-    int t;
-    int child;
-    int i;
-
-    ans = v[0];
-    t = v[v.size() - cnt];
-    for(i = 0;i * 2 + 1 &amp;lt; v.size() - cnt;i = child){
-        child = i * 2 + 1;
-        if(child != v.size() - cnt &amp;amp;&amp;amp; v[child + 1] &amp;gt; v[child])
-            child = child + 1;
-        if(v[child] &amp;gt; t)
-            v[i] = v[child];
-        else
-            break;
-    }
-    v[i] = t;
-    return ans;
-}
-
-// 判断两个序列是否相等
-bool IsEqual(vector&amp;lt;int&amp;gt; v1 , vector&amp;lt;int&amp;gt; v2){
-    int i;
-
-    for(i = 0;i &amp;lt; v1.size();i++)
-        if(v1[i] != v2[i])
-            return false;
-    return true;
-}
-
-// 是否是插入排序
-bool IsInsertionSort(vector&amp;lt;int&amp;gt; &amp;amp;v1 , vector&amp;lt;int&amp;gt; &amp;amp;v2 , vector&amp;lt;int&amp;gt; &amp;amp;res){
-    int i , j;
-    bool flag = false;
-
-    res.clear();
-    for(i = 0;i &amp;lt; v1.size();i++)
-        res.push_back(v1[i]);
-    for(i = 1;i &amp;lt; res.size();i++){
-        int t = res[i];
-        for(j = i - 1;j &amp;gt;= 0;j--){
-            if(res[j] &amp;gt; t)
-                res[j + 1] = res[j];
-            else
-                break;
-        }
-        res[j + 1] = t;
-        if(flag)
-            return true;
-        if(IsEqual(v2 , res))
-            flag = true;
-    }
-    return false;
-}
-
-// 是否是堆排序
-bool IsHeapSort(vector&amp;lt;int&amp;gt; &amp;amp;v1 , vector&amp;lt;int&amp;gt; &amp;amp;v2 , vector&amp;lt;int&amp;gt; &amp;amp;res){
-    int i;
-    bool flag = false;
-
-    res.clear();
-    for(i = 0;i &amp;lt; v1.size();i++)
-        res.push_back(v1[i]);
-    ConstructHeap(res);
-    for(i = 1;i &amp;lt;= res.size();i++){
-        int t = Delete(res , i);
-        res[res.size() - i] = t;
-        if(flag)
-            return true;
-        if(IsEqual(v2 , res))
-            flag = true;
-    }
-    return false;
-}
-
-int main(){
-    vector&amp;lt;int&amp;gt; v1;
-    vector&amp;lt;int&amp;gt; v2;
-    vector&amp;lt;int&amp;gt; res;
-    int n;
-    int i;
-    int num;
-
-    cin &amp;gt;&amp;gt; n;
-    for(i = 0;i &amp;lt; n;i++){
-        cin &amp;gt;&amp;gt; num;
-        v1.push_back(num);
-    }
-    for(i = 0;i &amp;lt; n;i++){
-        cin &amp;gt;&amp;gt; num;
-        v2.push_back(num);
-    }
-    // 判断是否是插入排序
-    if(IsInsertionSort(v1 , v2 , res)){
-        cout &amp;lt;&amp;lt; &quot;Insertion Sort&quot; &amp;lt;&amp;lt; endl;
-        for(i = 0;i &amp;lt; n;i++){
-            if(i != n - 1)
-                cout &amp;lt;&amp;lt; res[i] &amp;lt;&amp;lt; &quot; &quot;;
-            else
-                cout &amp;lt;&amp;lt; res[i] &amp;lt;&amp;lt; endl;
-        }
-    }
-    // 判断是否是堆排序
-    else if(IsHeapSort(v1 , v2 , res)){
-        cout &amp;lt;&amp;lt; &quot;Heap Sort&quot; &amp;lt;&amp;lt; endl;
-        for(i = 0;i &amp;lt; n;i++){
-            if(i != n - 1)
-                cout &amp;lt;&amp;lt; res[i] &amp;lt;&amp;lt; &quot; &quot;;
-            else
-                cout &amp;lt;&amp;lt; res[i] &amp;lt;&amp;lt; endl;
-        }
-    }
-}
-</code></pre>
-          
+          PAT甲级1098 Insertion or Heap Sort，原题地址：https://www.patest.cn/contests/pat-a-practise/1098解题分析：插入排序和堆排序。难度不是很大，但堆排序比较繁琐，需要自己建堆，然后再写一个Delete函数，注意细节即可。
+#i
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/03/04/pat-e7-94-b2-e7-ba-a71098-insertion-or-heap-sortc/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1115,66 +822,15 @@ int main(){
       
         
           
-            <p>PAT甲级1097 Deduplication on a Linked List，原题地址：<a href="https://www.patest.cn/contests/pat-a-practise/1097" target="_blank" rel="external">https://www.patest.cn/contests/pat-a-practise/1097</a><br>解题分析：<br>链表题。从头节点开始遍历整个链表，遇到一个节点，先在check里查询之前是否有相同绝对值的节点出现，如果没有则将该节点加入到第一个结果数组里，并且将对应的check数组的值加一表示该绝对值出现过了，如果有则将该节点加入到第二个结果数组。最后依次输出即可。</p>
-<pre><code>#include&amp;lt;iostream&amp;gt;
-#include&amp;lt;cstdio&amp;gt;
-#include&amp;lt;vector&amp;gt;
-using namespace std;
-
-struct node{
-    long address;
-    long key;
-    long next;
-};
-
-struct node arr[110000];
-vector&amp;lt;struct node&amp;gt; res1;
-vector&amp;lt;struct node&amp;gt; res2;
-long check[11000];
-long head , n;
-
-int main(){
-    long i;
-
-    cin &amp;gt;&amp;gt; head &amp;gt;&amp;gt; n;
-    for(i = 0;i &amp;lt; n;i++){
-        long address , key , next;
-        cin &amp;gt;&amp;gt; address &amp;gt;&amp;gt; key &amp;gt;&amp;gt; next;
-        arr[address].address = address;
-        arr[address].key = key;
-        arr[address].next = next;
-    }
-    // 遍历链表
-    for(i = head;i != -1;i = arr[i].next){
-        long t = arr[i].key &amp;gt; 0 ? arr[i].key : -arr[i].key;
-        // 如果没有出翔
-        if(check[t] == 0){
-            check[t]++;
-            res1.push_back(arr[i]);
-        }
-        // 如果出现过
-        else{
-            res2.push_back(arr[i]);
-        }
-    }
-    // 输出
-    for(i = 0;i &amp;lt; res1.size();i++){
-        printf(&quot;%05ld %ld &quot; , res1[i].address , res1[i].key);        
-        if(i != res1.size() - 1)
-            printf(&quot;%05ld\n&quot; , res1[i + 1].address);                
-        else
-            printf(&quot;-1\n&quot;);
-    }
-    for(i = 0;i &amp;lt; res2.size();i++){
-        printf(&quot;%05ld %ld &quot; , res2[i].address , res2[i].key);        
-        if(i != res2.size() - 1)
-            printf(&quot;%05ld\n&quot; , res2[i + 1].address);                
-        else    
-            printf(&quot;-1\n&quot;);
-    }
-}
-</code></pre>
-          
+          PAT甲级1097 Deduplication on a Linked List，原题地址：https://www.patest.cn/contests/pat-a-practise/1097解题分析：链表题。从头节点开始遍历整个链表，遇到一个节点，先在check里查询之前是否有相同绝对值的节点出现
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/03/04/pat-e7-94-b2-e7-ba-a71097-deduplication-on-a-linked-listc/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1317,61 +973,16 @@ int main(){
       
         
           
-            <p>PAT甲级1096 Consecutive Factors，原题地址：<a href="https://www.patest.cn/contests/pat-a-practise/1096" target="_blank" rel="external">https://www.patest.cn/contests/pat-a-practise/1096</a><br>解题分析：<br> 暴力搜索，每一种情况都计算过去，取最大的就行了。为了不超时，还要将n开一个根号。</p>
-<pre><code>#include&amp;lt;iostream&amp;gt;
-#include&amp;lt;cmath&amp;gt;
-using namespace std;
-
-int main(){
-    long n;
-    long i;
-    long temp;
-    long index;
-    long len = 0;
-    long max = 0;
-
-    cin &amp;gt;&amp;gt; n;
-    // n需要开根号
-    for(i = 2;i &amp;lt; sqrt(n);i++){
-        len = 0;
-        temp = i;
-        // 如果n能被i整除
-        if(n % i == 0){
-            len++;
-            // 尝试下一个连续值
-            for(int j = i + 1;j &amp;lt; n;j++){
-                temp *= j;
-                // 如果能整除n，长度加一
-                if(n % temp == 0)
-                    len++;
-                // 否则
-                else
-                    break;
-            }
-            // 如果长度比max大
-            if(len &amp;gt; max){
-                max = len;
-                index = i;
-            }
-        }
-    }
-    // 2和3
-    if(max == 0){
-        max = 1;
-        index = n;
-    }
-    // 输出
-    cout &amp;lt;&amp;lt; max &amp;lt;&amp;lt; endl;
-    for(i = 0;i &amp;lt; max;i++){
-        if(i &amp;gt; 0)
-            cout &amp;lt;&amp;lt; &quot;*&quot; &amp;lt;&amp;lt; index + i;
-        else
-            cout &amp;lt;&amp;lt; index + i;
-    }
-    cout &amp;lt;&amp;lt; endl;
-}
-</code></pre>
-          
+          PAT甲级1096 Consecutive Factors，原题地址：https://www.patest.cn/contests/pat-a-practise/1096解题分析： 暴力搜索，每一种情况都计算过去，取最大的就行了。为了不超时，还要将n开一个根号。
+#include&amp;lt;io
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/03/02/pat-e7-94-b2-e7-ba-a71096-consecutive-factorsc/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1514,124 +1125,15 @@ int main(){
       
         
           
-            <p>PAT甲级1095 Cars on Campus，原题地址：<a href="https://www.patest.cn/contests/pat-a-practise/1095" target="_blank" rel="external">https://www.patest.cn/contests/pat-a-practise/1095</a><br>解题分析：<br>排序题。先把所有数据排序，首先按车牌号排序，如果车牌号相同再按时间排序，排好后删去没有配对的记录，得到一个新纪录，这个过程中我们可以得到停留时间最长的车和最长停留时间。然后将新得到的记录表按时间排序，每次查询都在上次查询的结束位置开始，有车进来num就加一，有车出去就减一，最后输出即可。</p>
-<pre><code>#include&amp;lt;iostream&amp;gt;
-#include&amp;lt;cstdio&amp;gt;
-#include&amp;lt;vector&amp;gt;
-#include&amp;lt;string&amp;gt;
-#include&amp;lt;algorithm&amp;gt;
-using namespace std;
-
-struct record{
-    string plate;
-    int t;
-    int status;
-};
-
-vector&amp;lt;struct record&amp;gt; v1;
-vector&amp;lt;struct record&amp;gt; v2;
-vector&amp;lt;string&amp;gt; l;
-int pre , num;
-int Max;
-long n , k;
-
-// 配对
-void Update(){
-    int i;
-    int sum = 0;
-
-    for(i = 0;i &amp;lt; n;i++){
-        // 如果下一辆车的车牌号跟当前的不同，说明车牌号相同的车已经全部找到了
-        if(i == n - 1 || v1[i + 1].plate != v1[i].plate){
-            // 将该车牌号的车的停留时间和最长停留时间比较
-            if(sum &amp;gt; Max){
-                Max = sum;
-                l.clear();
-                l.push_back(v1[i].plate);
-            }
-            else if(sum == Max){
-                l.push_back(v1[i].plate);
-            }
-            sum = 0;
-        }
-        // 如果下一辆车的车牌号跟当前的相同，并且当前的车为进入，下一辆为出去，说明可配对。
-        else if(v1[i].status == 1 &amp;amp;&amp;amp; v1[i + 1].status == 0){
-            // 将可配对的记录加入到新纪录中
-            v2.push_back(v1[i]);
-            v2.push_back(v1[i + 1]);
-            // 计算停留时间
-            sum += v1[i + 1].t - v1[i].t;
-        }
-    }
-}
-
-// 查询
-void Query(int t){
-    int i;
-
-    // 从上一次结束的位置开始查询
-    for(i = pre;i &amp;lt; v2.size() &amp;amp;&amp;amp; v2[i].t &amp;lt;= t;i++){
-        // 进入
-        if(v2[i].status == 1)
-            num++;
-        // 出去
-        else
-            num--;
-    }
-    pre = i;
-    printf(&quot;%d\n&quot; , num);
-}
-
-bool cmp1(struct record a , struct record b){
-    if(a.plate != b.plate)
-        return a.plate &amp;lt; b.plate;
-    else
-        return a.t &amp;lt; b.t;
-}
-
-bool cmp2(struct record a , struct record b){
-    return a.t &amp;lt; b.t;
-}
-
-int main(){
-    int hour , minute , second;
-    int t;
-    long i;
-    string plate;
-    string status;
-    struct record R;
-
-    scanf(&quot;%ld%ld&quot; , &amp;amp;n , &amp;amp;k);
-    // 输入
-    for(i = 0;i &amp;lt; n;i++){
-        cin &amp;gt;&amp;gt; plate;
-        scanf(&quot;%d:%d:%d&quot; , &amp;amp;hour , &amp;amp;minute , &amp;amp;second);
-        cin &amp;gt;&amp;gt; status;
-
-        R.plate = plate;
-        R.t = hour * 3600 + minute * 60 + second;
-        R.status = status[0] == &apos;i&apos; ? 1 : 0;
-        v1.push_back(R);
-    }
-    // 排序
-    sort(v1.begin() , v1.end() , cmp1);
-    // 更新记录，删去不配对记录
-    Update();
-    // 排序
-    sort(v2.begin() , v2.end() , cmp2);
-    // 查询
-    for(i = 0;i &amp;lt; k;i++){
-        scanf(&quot;%d:%d:%d&quot; , &amp;amp;hour , &amp;amp;minute , &amp;amp;second);
-        t = hour * 3600 + minute * 60 + second;
-        Query(t);
-    }
-    // 输出
-    for(i = 0;i &amp;lt; l.size();i++)
-        cout &amp;lt;&amp;lt; l[i] &amp;lt;&amp;lt; &quot; &quot;;
-    printf(&quot;%02d:%02d:%02d\n&quot; , Max / 3600 , Max % 3600 / 60 , Max % 3600 % 60);
-}
-</code></pre>
-          
+          PAT甲级1095 Cars on Campus，原题地址：https://www.patest.cn/contests/pat-a-practise/1095解题分析：排序题。先把所有数据排序，首先按车牌号排序，如果车牌号相同再按时间排序，排好后删去没有配对的记录，得到一个新纪录，这个过程中我们可
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/03/02/pat-e7-94-b2-e7-ba-a71095-cars-on-campusc/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1774,62 +1276,16 @@ int main(){
       
         
           
-            <p>PAT甲级1094 The Largest Generation，原题地址：<a href="https://www.patest.cn/contests/pat-a-practise/1094" target="_blank" rel="external">https://www.patest.cn/contests/pat-a-practise/1094</a><br>解题分析：<br> 简单的BFS，对于队列中的元素，我们要一层一层处理，不能一个一个处理，其他就不解释了。</p>
-<pre><code>#include&amp;lt;iostream&amp;gt;
-#include&amp;lt;queue&amp;gt;
-using namespace std;
-#define Max 110
-
-int G[Max][Max];
-int visited[Max];
-int n , m;
-int cnt , lev;
-
-void BFS(int root){
-    queue&amp;lt;int&amp;gt; q;
-    int ccnt , clev = 1;
-    int index;
-
-    q.push(root);
-    visited[root] = 1;
-    while(!q.empty()){
-        ccnt = q.size();
-        if(ccnt &amp;gt; cnt){
-            cnt = ccnt;
-            lev = clev;
-        }
-        while(ccnt &amp;gt; 0){
-            index = q.front();
-            q.pop();
-            for(int i = 1;i &amp;lt;= n;i++){
-                if(G[index][i] == 1 &amp;amp;&amp;amp; visited[i] == 0){
-                    q.push(i);
-                    visited[i] = 1;
-                }
-            } 
-            ccnt--;
-        }
-        clev++;
-    }
-}
-
-int main(){
-    int i , j , k;
-    int pid , cid;
-
-     cin &amp;gt;&amp;gt; n &amp;gt;&amp;gt; m;
-     for(i = 0;i &amp;lt; m;i++){
-         cin &amp;gt;&amp;gt; pid &amp;gt;&amp;gt; k;
-         for(j = 0;j &amp;lt; k;j++){
-             cin &amp;gt;&amp;gt; cid;
-             G[pid][cid] = 1;
-         }
-     }
-     BFS(1);
-     cout &amp;lt;&amp;lt; cnt &amp;lt;&amp;lt; &quot; &quot; &amp;lt;&amp;lt; lev &amp;lt;&amp;lt; endl;
-}
-</code></pre>
-          
+          PAT甲级1094 The Largest Generation，原题地址：https://www.patest.cn/contests/pat-a-practise/1094解题分析： 简单的BFS，对于队列中的元素，我们要一层一层处理，不能一个一个处理，其他就不解释了。
+#include&amp
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/03/02/pat-e7-94-b2-e7-ba-a71094-the-largest-generationc/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1972,55 +1428,15 @@ int main(){
       
         
           
-            <p>PAT甲级1093 Count PAT’s，原题地址：<a href="https://www.patest.cn/contests/pat-a-practise/1093" target="_blank" rel="external">https://www.patest.cn/contests/pat-a-practise/1093</a><br>解题分析：<br>动态规划问题。假设我们有一个编号为0到n的序列，长度为n+1，我们从最后一个元素开始考虑，如果这个元素是T，那么PAT[n + 1]（表示长度为n+1的序列的PAT的个数）等于PAT[n]加上PA[n]（表示长度为n的序列的PA的个数）。如果这个元素是A，那么PA[n + 1]等于PA[n]加上P[n]（表示长度为n的序列的P的个数）。如果这个元素是P，那么P[n + 1]等于P[n] + 1。有了这些关系，我们就可以自底向上求解出长度为n+1时PAT的个数。另外，可以在输入的时候直接判断出最后一个T的位置，这样能减少一些不必要的运算。</p>
-<pre><code>#include&amp;lt;iostream&amp;gt;
-#define Max 110000
-using namespace std;
-typedef long long ll;
-
-char s[Max];
-ll P[Max];
-ll PA[Max];
-ll PAT[Max];
-ll n;
-
-int main(){
-    ll i;
-    char c;
-
-    i = 0;
-    while((c = getchar()) != &apos;\n&apos;){
-        s[i] = c;
-        // 得到最后一个T的位置
-        if(c == &apos;T&apos;)
-            n = i;
-        i++;
-    }
-    // 自底向上求解
-    for(i = 1;i &amp;lt;= n + 1;i++){
-        // 元素为P
-        if(s[i - 1] == &apos;P&apos;){
-            P[i] = P[i - 1] + 1;
-            PA[i] = PA[i - 1];
-            PAT[i] = PAT[i - 1];
-        }
-        // 元素为A
-        if(s[i - 1] == &apos;A&apos;){
-            PA[i] = PA[i - 1] + P[i - 1];
-            P[i] = P[i - 1];
-            PAT[i] = PAT[i - 1];
-        }
-        // 元素为T
-        if(s[i - 1] == &apos;T&apos;){
-            PAT[i] = PAT[i - 1] + PA[i - 1];
-            P[i] = P[i - 1];
-            PA[i] = PA[i - 1];
-        }
-    }
-    cout &amp;lt;&amp;lt; PAT[n + 1] % 1000000007;
-}
-</code></pre>
-          
+          PAT甲级1093 Count PAT’s，原题地址：https://www.patest.cn/contests/pat-a-practise/1093解题分析：动态规划问题。假设我们有一个编号为0到n的序列，长度为n+1，我们从最后一个元素开始考虑，如果这个元素是T，那么PAT[n + 1]（表
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/03/01/pat-e7-94-b2-e7-ba-a71093-count-patsc/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -2163,50 +1579,15 @@ int main(){
       
         
           
-            <p>PAT甲级1092 To Buy or Not to Buy，原题地址：<a href="https://www.patest.cn/contests/pat-a-practise/1092" target="_blank" rel="external">https://www.patest.cn/contests/pat-a-practise/1092</a><br>解题分析：<br>简单的一道题，输入第一个字符串的时候将每个字符转换成数组的下标，其对应的值加一。输入第二个的时候，同样把字符转成<br>下标，对应的值减一，如果对应的值是0，说明不满足需求，flag设为0，并记录还需要多少珠子。最后输出即可。</p>
-<pre><code>#include&amp;lt;iostream&amp;gt;
-using namespace std;
-
-int cnt[100];
-int total , need;
-
-int main(){
-    char c;
-    int index;
-    int flag = 1;
-
-    while((c = getchar()) != &apos;\n&apos;){
-        if(c &amp;gt;= &apos;0&apos; &amp;amp;&amp;amp; c &amp;lt;= &apos;9&apos;)
-            cnt[c - &apos;0&apos;]++;
-        else if(c &amp;gt;= &apos;a&apos; &amp;amp;&amp;amp; c &amp;lt;= &apos;z&apos;)
-            cnt[c - &apos;a&apos; + 10]++;
-        else
-            cnt[c - &apos;A&apos; + 36]++;
-        total++;
-    }
-    while((c = getchar()) != &apos;\n&apos;){
-        if(c &amp;gt;= &apos;0&apos; &amp;amp;&amp;amp; c &amp;lt;= &apos;9&apos;)
-            index = c - &apos;0&apos;;
-        else if(c &amp;gt;= &apos;a&apos; &amp;amp;&amp;amp; c &amp;lt;= &apos;z&apos;)
-            index = c - &apos;a&apos; + 10;
-        else
-            index = c - &apos;A&apos; + 36;
-        if(cnt[index] &amp;gt; 0){
-            cnt[index]--;
-            total--;
-        }
-        else{
-            flag = 0;
-            need++;
-        }
-    }
-    if(flag)
-        cout &amp;lt;&amp;lt; &quot;Yes &quot; &amp;lt;&amp;lt; total &amp;lt;&amp;lt; endl;
-    else
-        cout &amp;lt;&amp;lt; &quot;No &quot; &amp;lt;&amp;lt; need &amp;lt;&amp;lt; endl; 
-}
-</code></pre>
-          
+          PAT甲级1092 To Buy or Not to Buy，原题地址：https://www.patest.cn/contests/pat-a-practise/1092解题分析：简单的一道题，输入第一个字符串的时候将每个字符转换成数组的下标，其对应的值加一。输入第二个的时候，同样把字符转成下标，
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/03/01/pat-e7-94-b2-e7-ba-a71092-to-buy-or-not-to-buyc/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -2349,113 +1730,15 @@ int main(){
       
         
           
-            <p>PAT甲级1091 Acute Stroke，原题地址：<a href="https://www.patest.cn/contests/pat-a-practise/1091" target="_blank" rel="external">https://www.patest.cn/contests/pat-a-practise/1091</a><br>解题分析：<br>题目意思有些难以理解，大致是说大脑里有很多个片段，每个片段有很多个像素点，这些像素点构成的是一个m*n的矩阵，片段是竖直叠加起来的，因此在空间上是三维结构。题目中的图片的意思是每一个像素点，它的上下左右前后的点和它相连，以此类推可以得到一片区域，我们要做的就是计算区域内的1的个数，如果比下限大，就加到总数里面。为了实现这个目的，我们需要用BFS对一个点进行搜索，并在搜索的时候标记已经搜索过的点，避免重复搜索。遍历所有的像素点，使用BFS就可以得到总数了。</p>
-<pre><code>#include&amp;lt;cstdio&amp;gt;
-#include&amp;lt;queue&amp;gt;
-using namespace std;
-
-struct record{
-    long i;
-    long j;
-    long k;
-};
-int G[1300][130][70];
-int visited[1300][130][70];
-queue&amp;lt;struct record&amp;gt; q;
-long cnt;
-long m , n , l , t;
-
-void BFS(long i , long j , long k){
-    long temp = 0;
-    long a , b , c;
-    struct record R;
-
-    R.i = i;
-    R.j = j;
-    R.k = k;
-    q.push(R);
-    visited[i][j][k] = 1;
-    // 队列不为空
-    while(!q.empty()){
-        R = q.front();
-        q.pop();
-        temp++;
-        a = R.i;
-        b = R.j;
-        c = R.k;
-        // 后
-        if(a - 1 &amp;gt;= 0 &amp;amp;&amp;amp; G[a - 1][b][c] == 1 &amp;amp;&amp;amp; visited[a - 1][b][c] == 0){
-            R.i = a - 1;
-            R.j = b;
-            R.k = c;
-            q.push(R);
-            visited[R.i][R.j][R.k] = 1;
-        }
-        // 前
-        if(a + 1 &amp;lt; m &amp;amp;&amp;amp; G[a + 1][b][c] == 1 &amp;amp;&amp;amp; visited[a + 1][b][c] == 0){
-            R.i = a + 1;
-            R.j = b;
-            R.k = c;
-            q.push(R);
-            visited[R.i][R.j][R.k] = 1;
-        }
-        // 左
-        if(b - 1 &amp;gt;= 0 &amp;amp;&amp;amp; G[a][b - 1][c] == 1 &amp;amp;&amp;amp; visited[a][b - 1][c] == 0){
-            R.i = a;
-            R.j = b - 1;
-            R.k = c;
-            q.push(R);
-            visited[R.i][R.j][R.k] = 1;
-        }
-        // 右
-        if(b + 1 &amp;lt; n &amp;amp;&amp;amp; G[a][b + 1][c] == 1 &amp;amp;&amp;amp; visited[a][b + 1][c] == 0){
-            R.i = a;
-            R.j = b + 1;
-            R.k = c;
-            q.push(R);
-            visited[R.i][R.j][R.k] = 1;
-        }
-        // 下
-        if(c - 1 &amp;gt;= 0 &amp;amp;&amp;amp; G[a][b][c - 1] == 1 &amp;amp;&amp;amp; visited[a][b][c - 1] == 0){
-            R.i = a;
-            R.j = b;
-            R.k = c - 1;
-            q.push(R);
-            visited[R.i][R.j][R.k] = 1;
-        }
-        // 上
-        if(c + 1 &amp;lt; l &amp;amp;&amp;amp; G[a][b][c + 1] == 1 &amp;amp;&amp;amp; visited[a][b][c + 1] == 0){
-            R.i = a;
-            R.j = b;
-            R.k = c + 1;
-            q.push(R);
-            visited[R.i][R.j][R.k] = 1;
-        }
-    }
-    if(temp &amp;gt;= t)
-        cnt += temp;
-}
-int main(){
-    long i , j , k;
-
-    scanf(&quot;%ld%ld%ld%ld&quot; , &amp;amp;m , &amp;amp;n , &amp;amp;l , &amp;amp;t);
-    // 输入
-    for(k = 0;k &amp;lt; l;k++){
-        for(i = 0;i &amp;lt; m;i++)
-            for(j = 0;j &amp;lt; n;j++)
-                scanf(&quot;%d&quot; , &amp;amp;G[i][j][k]);
-    }    
-    // 遍历搜索点
-    for(k = 0;k &amp;lt; l;k++){
-        for(i = 0;i &amp;lt; m;i++)
-            for(j = 0;j &amp;lt; n;j++)
-                if(visited[i][j][k] == 0 &amp;amp;&amp;amp; G[i][j][k] == 1)
-                    BFS(i , j , k);
-    }
-    printf(&quot;%ld\n&quot; , cnt);
-}
-</code></pre>
-          
+          PAT甲级1091 Acute Stroke，原题地址：https://www.patest.cn/contests/pat-a-practise/1091解题分析：题目意思有些难以理解，大致是说大脑里有很多个片段，每个片段有很多个像素点，这些像素点构成的是一个m*n的矩阵，片段是竖直叠加起来的，因
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/03/01/pat-e7-94-b2-e7-ba-a71091-acute-strokec/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>

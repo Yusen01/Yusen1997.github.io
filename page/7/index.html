@@ -367,70 +367,15 @@
       
         
           
-            <p>PAT甲级1074 Reversing Linked List，原题地址：<a href="https://www.patest.cn/contests/pat-a-practise/1074" target="_blank" rel="external">https://www.patest.cn/contests/pat-a-practise/1074</a><br>解题分析：<br>用数组储存链表，通过头节点遍历链表，需要注意的是不是所有输入的节点都在链表中，每访问一个节点，将其放入temp数组中，当遍历k个节点后，将temp数组中的数据翻转后放入res数组，清空temp数组，重新计算访问过的节点数。遍历完成后，需要检查是否存在多余的节点，如果存在，将它们按原来顺序放入res数组。最后输出即可。</p>
-<pre><code>#include&amp;lt;iostream&amp;gt;
-#include&amp;lt;stdio.h&amp;gt;
-using namespace std;
-#define Max 100000
-
-struct node{
-    long data;
-    long next;
-};
-
-struct record{
-    long data;
-    long address;
-};
-
-struct node L[Max];
-struct record temp[Max];
-struct record res[Max];
-
-int main(){
-    long head , n , k;
-    long ad , d , next;
-    long i , j;
-    long cnt1 = 0 , cnt2 = 0 , cnt3 = 0;
-
-    cin &amp;gt;&amp;gt; head &amp;gt;&amp;gt; n &amp;gt;&amp;gt; k;
-    for(i = 0;i &amp;lt; n;i++){
-        cin &amp;gt;&amp;gt; ad &amp;gt;&amp;gt; d &amp;gt;&amp;gt; next;
-        L[ad].data = d;
-        L[ad].next = next;
-    }
-    for(i = head;i != -1;i = L[i].next){
-        // 访问过的节点数量加一
-        cnt1++;
-        // 将节点放入temp数组
-        temp[cnt2].data = L[i].data;
-        temp[cnt2].address = i;
-        cnt2++;
-        // 如果访问了k个节点
-        if(cnt1 == k){
-            // 将temp数组的数据翻转后放入res数组
-            for(j = cnt2 - 1;j &amp;gt;= 0;j--)
-                res[cnt3++] = temp[j];
-            // 清空temp数组，并重新计算已访问的节点数
-            cnt1 = cnt2 = 0;
-        }
-    }
-    // 如果有剩余节点
-    if(cnt1 &amp;lt; k){
-        for(j = 0;j &amp;lt; cnt2;j++)
-            res[cnt3++] = temp[j];
-    }
-    // 输出
-    for(i = 0;i &amp;lt; cnt3;i++){
-        printf(&quot;%05ld %ld &quot; , res[i].address , res[i].data);
-        if(i != cnt3 - 1)
-            printf(&quot;%05ld\n&quot; , res[i + 1].address);
-        else
-            printf(&quot;-1\n&quot;);
-    }
-}
-</code></pre>
-          
+          PAT甲级1074 Reversing Linked List，原题地址：https://www.patest.cn/contests/pat-a-practise/1074解题分析：用数组储存链表，通过头节点遍历链表，需要注意的是不是所有输入的节点都在链表中，每访问一个节点，将其放入temp数组中
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/02/24/pat-e7-94-b2-e7-ba-a71074-reversing-linked-list/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -573,14 +518,15 @@ int main(){
       
         
           
-            <p>学习了一些基本的数据结构之后，我们会知道有链表、堆栈、队列、树、图、哈希表等数据结构，同时我们也会掌握一些对应的算法，最简单的比如堆栈的push和pop操作。但我总感觉对“数据结构”这个概念不是很理解，有一种模糊感。到底什么是“数据结构”？应该如何理解这个概念？下面是我的一些理解，当然，它可能并不准确，或者并不正确，只是作为自己的一些认知将其纪录下来。</p>
-<p><strong>数据结构</strong>，顾名思义，就是数据＋结构。数据是抽象意义上的一种集合，其中的元素可以是整数、小数、字符等，这些元素同时也是对计算机中的位(bit)的一种抽象。而结构就是就是这些数据的组织方式，其分为<strong>逻辑结构</strong>和<strong>物理结构</strong>。逻辑结构分为四种，分别为集合结构、线性结构、树状结构、网络结构，这些结构反应了数据在逻辑上的关系。物理结构是逻辑结构在内存中的存储镜像，其需要将数据按照逻辑结构映射到内存中。映射模型有四种，分别为顺序(sequential)、链接(linked)、索引(indexed)、哈希(hashing)。组合4种逻辑结构和4种物理结构可以得到16种结构，但不是每种结构都合理。因此，如果有一个数据集合，然后将其按照某种逻辑结构组织起来，再按照某种物理结构映射到内存，这样就构成了一种数据结构。</p>
-<p>根据上面的理解，数组和链表都是一种数据结构，它们都是将数据以线性结构组织起来，但数组使用了顺序的映射模型，而链表使用了链接的映射模型。同理，树和图都是数据结构。</p>
-<p>接下来，我们谈谈<strong>抽象数据类型(ADT)</strong>。ADT比数据结构更抽象一层，因为它在数据结构的基础上还抽象了相应的操作。比如堆栈(stack)就是将数据按照线性结构组织，然后加上了push和pop操作，将数据结构(准确地说，应该是数据＋逻辑结构，物理结构更倾向于ADT的实现)和操作一起抽象就是堆栈ADT。由于物理结构可以有不同的选择，堆栈可以使用顺序模型，也可以使用链接模型，因此堆栈可以用数组实现，也可以用链表实现。又比如堆(heap)，数据以树状结构组织，配合以PercolateUp和PercolateDown等操作，抽象成了堆ADT，由于堆是一个完全二叉树，所以在实现物理结构可以使用数组实现。而当数据以树或图的形式组织时，可以配合很多操作，这些操作可以自己定义(通过函数)，将操作和数据结构抽象就成了一个ADT。</p>
-<p>从上面可以看出，数据结构或者更抽象的ADT都是对数据的组织和操作(就是算法)，和使用何种编程语言无关，编程语言只是用来具体实现这些数据结构和算法的。当我们考虑问题时，首先应该思考使用何种数据结构，接着是用什么算法解决问题，最后才是如何编码实现。</p>
-<p>以上。</p>
-
-          
+          学习了一些基本的数据结构之后，我们会知道有链表、堆栈、队列、树、图、哈希表等数据结构，同时我们也会掌握一些对应的算法，最简单的比如堆栈的push和pop操作。但我总感觉对“数据结构”这个概念不是很理解，有一种模糊感。到底什么是“数据结构”？应该如何理解这个概念？下面是我的一些理解，当然，它可能并不准
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/02/23/e5-af-b9-e4-ba-8e-e6-95-b0-e6-8d-ae-e7-bb-93-e6-9e-84-e6-a6-82-e5-bf-b5-e7-9a-84-e7-90-86-e8-a7-a3/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -723,55 +669,17 @@ int main(){
       
         
           
-            <p>PAT甲级1073 Scientific Notation，原题地址：<a href="https://www.patest.cn/contests/pat-a-practise/1073" target="_blank" rel="external">https://www.patest.cn/contests/pat-a-practise/1073</a><br>解题分析：<br> 科学技术法转成普通表示法，注意小数点位置即可。</p>
-<pre><code>#include&amp;lt;iostream&amp;gt;
-#include&amp;lt;string&amp;gt;
-#include&amp;lt;stdio.h&amp;gt;
-using namespace std;
-
-int main(){
-    char s1[20000];
-    string s2;
-    int i , j;
-    int temp = 0;
-    int point;
-
-    scanf(&quot;%s&quot; ,s1);
-    if(s1[0] == &apos;-&apos;)
-        printf(&quot;-&quot;);
-    for(i = 1;s1[i] != &apos;E&apos;;i++){
-        if(s1[i] != &apos;.&apos;)
-            s2 += s1[i];
-    }
-    for(j = i + 2;s1[j] != &apos;\0&apos;;j++)
-        temp = temp * 10 + s1[j] - &apos;0&apos;;
-    if(s1[i + 1] == &apos;-&apos;)
-        temp = -temp;
-    if(temp &amp;lt; 0){
-        cout &amp;lt;&amp;lt; &quot;0.&quot;;
-        temp = -temp;
-        for(i = 0;i &amp;lt; temp - 1;i++)
-            cout &amp;lt;&amp;lt; &quot;0&quot;;
-        cout &amp;lt;&amp;lt; s2;
-    }
-    else if(temp &amp;gt;= 0){
-        for(i = 0;i &amp;lt; s2.length() &amp;amp;&amp;amp; i &amp;lt; temp + 1;i++)
-            cout &amp;lt;&amp;lt; s2[i];
-        if(i == s2.length()){
-            for(;i &amp;lt; temp + 1;i++)
-                cout &amp;lt;&amp;lt; &quot;0&quot;;
-        }
-        else{
-            cout &amp;lt;&amp;lt; &quot;.&quot;;
-            for(;i &amp;lt; s2.length();i++)
-                cout &amp;lt;&amp;lt; s2[i];
-        }
-    }
-    cout &amp;lt;&amp;lt; endl;
-    return 0;
-}   
-</code></pre>
-          
+          PAT甲级1073 Scientific Notation，原题地址：https://www.patest.cn/contests/pat-a-practise/1073解题分析： 科学技术法转成普通表示法，注意小数点位置即可。
+#include&amp;lt;iostream&amp;gt;
+#i
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/02/23/pat-e7-94-b2-e7-ba-a71073-scientific-notationc/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -914,160 +822,15 @@ int main(){
       
         
           
-            <p>PAT甲级1072 Gas Station，原题地址：<a href="https://www.patest.cn/contests/pat-a-practise/1072" target="_blank" rel="external">https://www.patest.cn/contests/pat-a-practise/1072</a><br>解题分析：<br>Dijkstra算法的应用。将加油站和居民区看做同样的节点，加油站的索引为n+1到n+m，然后依次以各个加油站为起点，求最短路径，然后遍历所有居民区，求它们的最短路径中的最小的最短路径，并计算所有最短路径的和，如果从加油站无法到达居民区或到达某个居民区的最短路径超过给定的范围，该加油站就不可能是解决方案。所有加油站都处理完之后，遍历所有所有的加油站，不可能的加油站直接跳过，可能的加油站里优先考虑最小最短路径较大的（比较拗口，对应题目中的第一句话），如果相同，接着考虑平均最短路径较小的，如果还相同，考虑编号小的。最后输出即可。</p>
-<pre><code>#include&amp;lt;iostream&amp;gt;
-#include&amp;lt;string&amp;gt;
-#include&amp;lt;sstream&amp;gt;
-#include&amp;lt;stdio.h&amp;gt;
-using namespace std;
-#define Max 1100
-#define INFINITY 10000000
-
-// 纪录加油站信息
-struct record{
-    float minDis;
-    float aveDis;
-    bool possible;
-};
-
-int G[Max][Max];
-int Distance[Max];
-bool Visited[Max];
-struct record R[11];
-int n , m , k , d;
-
-// 将输入的字符串转换成整数
-void Convert(string &amp;amp;s , int &amp;amp;id){
-    stringstream stream;
-
-    if(s[0] != &apos;G&apos;){
-        stream &amp;lt;&amp;lt; s;
-        stream &amp;gt;&amp;gt; id;
-    }
-    else{
-        if(s.length() == 3)
-            id = n + 10;
-        else{
-            stream &amp;lt;&amp;lt; s[1];
-            stream &amp;gt;&amp;gt; id;
-            id += n;
-        }
-    }
-}
-
-// 最短路径算法
-void Dijkstra(int index){
-    int i , j;
-    int min;
-    int temp;
-
-    Distance[index] = 0;
-    while(1){
-        min = INFINITY;
-        for(i = 1;i &amp;lt;= n + m;i++){
-            if(Visited[i] == false &amp;amp;&amp;amp; Distance[i] &amp;lt; min){
-                min = Distance[i];
-                temp = i;
-            }
-        }
-        if(min == INFINITY)
-            break;
-        Visited[temp] = true;
-        for(j = 1;j &amp;lt;= n + m;j++){
-            if(j == temp || Visited[j] == true)
-                continue;
-            if(G[temp][j] &amp;gt; 0 &amp;amp;&amp;amp; G[temp][j] + Distance[temp] &amp;lt; Distance[j])
-                Distance[j] = G[temp][j] + Distance[temp];
-        }
-    }
-}
-
-int main(){
-    string s1 , s2;
-    int id1 , id2;
-    int len;
-    int i , j;
-    int index = -1;
-    float max;
-    float sum;
-    float min;
-
-    // 输入
-    cin &amp;gt;&amp;gt; n &amp;gt;&amp;gt; m &amp;gt;&amp;gt; k &amp;gt;&amp;gt; d;
-    for(i = 0;i &amp;lt; k;i++){
-        cin &amp;gt;&amp;gt; s1 &amp;gt;&amp;gt; s2 &amp;gt;&amp;gt; len;
-        Convert(s1 , id1);
-        Convert(s2 , id2);
-        G[id1][id2] = len;
-        G[id2][id1] = len;
-    }
-    // 每个加油站最初都可能是解决方案
-    for(i = 1;i &amp;lt; 11;i++)
-        R[i].possible = true;
-    // 依次处理各个加油站
-    for(i = n + 1;i &amp;lt;= n + m;i++){
-        // 初始化visited数组和distance数组
-        for(j = 1;j &amp;lt;= n + m;j++){
-            Visited[j] = false;
-            Distance[j] = INFINITY;
-        }
-        // 求最短路径
-        Dijkstra(i);
-        // 遍历居民区
-        for(j = 1;j &amp;lt;= n;j++){
-            // 无法到达某个居民区
-            if(Visited[j] == false){
-                R[i - n].possible = false;
-                break;
-            }
-        }
-        // 所有居民区都可到达
-        if(j == n + 1){
-            sum = 0;
-            min = INFINITY;
-            for(j = 1;j &amp;lt;= n;j++){
-                // 到达某个居民区的最短路径超过限制
-                if(Distance[j] &amp;gt; d){
-                    R[i - n].possible = false;
-                    break;
-                }
-                // 求最小最短路径
-                if(Distance[j] &amp;lt; min){
-                    min = Distance[j];
-                }
-                // 求最短路径的和
-                sum += Distance[j];
-            }
-            R[i - n].minDis = min;
-            R[i - n].aveDis = sum / n;
-        }
-    }
-    // 遍历所有加油站
-    for(i = 1;i &amp;lt;= m;i++){
-        // 不可能的直接跳过
-        if(R[i].possible == false)
-            continue;
-        // 最小最短路径较大的优先考虑
-        if(R[i].minDis &amp;gt; max){
-            max = R[i].minDis;
-            index = i;
-        }
-        else if(R[i].minDis == max){
-            // 接着考虑平均最短路径
-            if(R[i].aveDis &amp;lt; R[index].aveDis)
-                index = i;
-        }
-    }
-    // 输出
-    if(index == -1)
-        printf(&quot;No Solution\n&quot;);
-    else
-        printf(&quot;G%d\n%.1f %.1f\n&quot; , index , R[index].minDis , R[index].aveDis);
-    return 0;
-
-}
-</code></pre>
-          
+          PAT甲级1072 Gas Station，原题地址：https://www.patest.cn/contests/pat-a-practise/1072解题分析：Dijkstra算法的应用。将加油站和居民区看做同样的节点，加油站的索引为n+1到n+m，然后依次以各个加油站为起点，求最短路径，然后遍
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/02/23/pat-e7-94-b2-e7-ba-a71072-gas-stationc/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1210,63 +973,15 @@ int main(){
       
         
           
-            <p>PAT甲级1071 Speech Patterns，原题地址：<a href="https://www.patest.cn/contests/pat-a-practise/1071" target="_blank" rel="external">https://www.patest.cn/contests/pat-a-practise/1071</a><br>解题分析：<br>这题用C++中的string类可以很好的解决，只需要将每个单词分离出来，然后排序，最后计算相同的字符串有几个，输出最大的即可。如果用c的话，一个单词的长度没有给定，很难直接定义字符数组的大小，开太大了容易内存超限，所以c++<br> 更方便。</p>
-<pre><code>#include&amp;lt;iostream&amp;gt;
-#include&amp;lt;algorithm&amp;gt;
-#include&amp;lt;string&amp;gt;
-using namespace std;
-#define Max 1100000
-
-string s[Max];
-
-// 检测字符是否是数字或字母
-bool Check(char c){
-    if((c &amp;gt;= &apos;0&apos; &amp;amp;&amp;amp; c &amp;lt;= &apos;9&apos;) || (c &amp;gt;= &apos;a&apos; &amp;amp;&amp;amp; c &amp;lt;= &apos;z&apos;) || (c &amp;gt;= &apos;A&apos; &amp;amp;&amp;amp; c &amp;lt;= &apos;Z&apos;))
-        return true;
-    else    
-        return false;
-}
-
-int main(){
-    char c;
-    char pre = &apos;\n&apos;;
-    long cnt = 0;
-    long max = -1;
-    long index;
-    long start , end;
-
-    do{
-        c = getchar();
-        // 如果是数字或字母，则接到字符串后面
-        if(Check(c)){
-            if(c &amp;gt;= &apos;A&apos; &amp;amp;&amp;amp; c &amp;lt;=&apos;Z&apos;)
-                c = c - &apos;A&apos; + &apos;a&apos;;
-            s[cnt] += c;
-        }
-        // 如果不是数字或字母，但前一个字符是，说明上一个单词已经读取完成了
-        else if(Check(pre))
-            cnt++;
-        pre = c;
-    }while(c != &apos;\n&apos;);
-    // 排序
-    sort(s , s + cnt);
-    // 计算相同的字符串的个数
-    for(start = 0;start &amp;lt; cnt;start++){
-        end = start;
-        while(s[end] == s[end + 1])
-            end++;
-        // 选择个数最多的
-        if(end - start + 1 &amp;gt; max){
-            max = end - start + 1;
-            index = start;
-        }
-        start = end;
-    }
-    // 输出
-    cout &amp;lt;&amp;lt; s[index] &amp;lt;&amp;lt; &quot; &quot; &amp;lt;&amp;lt; max &amp;lt;&amp;lt; endl;
-}
-</code></pre>
-          
+          PAT甲级1071 Speech Patterns，原题地址：https://www.patest.cn/contests/pat-a-practise/1071解题分析：这题用C++中的string类可以很好的解决，只需要将每个单词分离出来，然后排序，最后计算相同的字符串有几个，输出最大的即可。如
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/02/23/pat-e7-94-b2-e7-ba-a71071-speech-patternsc/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1409,55 +1124,15 @@ int main(){
       
         
           
-            <p>PAT甲级1070 Mooncake，原题地址：<a href="https://www.patest.cn/contests/pat-a-practise/1070" target="_blank" rel="external">https://www.patest.cn/contests/pat-a-practise/1070</a><br>解题分析：<br> 贪心算法。每千吨收益最多的优先考虑，因此对输入的数据按每千吨收益从大到小排序，然后依次考虑，直到<br> 满足需求或没有库存为止。需要注意的是库存可能是小数，而不一定是整数。</p>
-<pre><code>#include&amp;lt;stdio.h&amp;gt;
-#include&amp;lt;stdlib.h&amp;gt;
-
-struct record{
-    float inv;
-    float price;
-    float profit;
-};
-
-int cmp(const void *a , const void *b);
-
-int main(){
-    struct record R[1000];
-    int n , d;
-    int i;
-    float res = 0;
-
-    scanf(&quot;%d%d&quot; , &amp;amp;n , &amp;amp;d);
-    for(i = 0;i &amp;lt; n;i++)
-        scanf(&quot;%f&quot; , &amp;amp;R[i].inv);
-    for(i = 0;i &amp;lt; n;i++){
-        scanf(&quot;%f&quot; , &amp;amp;R[i].price);
-        R[i].profit = R[i].price / R[i].inv;
-    }
-    // 按每千吨收益排序
-    qsort(R , n , sizeof(struct record) , cmp);
-    for(i = 0;i &amp;lt; n;i++){
-        // 如果当前月饼的库存比需要的多
-        if(R[i].inv &amp;gt;= d){
-            res += d * R[i].price / R[i].inv;
-            printf(&quot;%.2f\n&quot; , res);
-            return 0;
-        }
-        // 否则
-        else{
-            res += R[i].price;
-            d -= R[i].inv;
-        }
-    }
-    printf(&quot;%.2f\n&quot; , res);
-    return 0;
-}
-
-int cmp(const void *a , const void *b){
-    return (*(struct record *)b).profit &amp;gt; (*(struct record *)a).profit;
-}
-</code></pre>
-          
+          PAT甲级1070 Mooncake，原题地址：https://www.patest.cn/contests/pat-a-practise/1070解题分析： 贪心算法。每千吨收益最多的优先考虑，因此对输入的数据按每千吨收益从大到小排序，然后依次考虑，直到 满足需求或没有库存为止。需要注意的是库存可
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/02/22/pat-e7-94-b2-e7-ba-a71070-mooncake/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1600,78 +1275,15 @@ int cmp(const void *a , const void *b){
       
         
           
-            <p>PAT甲级1069 The Black Hole of Numbers，原题地址：<a href="https://www.patest.cn/contests/pat-a-practise/1069" target="_blank" rel="external">https://www.patest.cn/contests/pat-a-practise/1069</a><br>解题分析：<br> 被这题坑了。。。。其实是很简单的一道题，但要注意输入可以不是四位数，不满四位要补0，当输入为6174时，要输出7641 - 1467 = 6147.</p>
-<pre><code>#include&amp;lt;stdio.h&amp;gt;
-#include&amp;lt;stdlib.h&amp;gt;
-
-int DecreaseOrder(int n);
-int IncreaseOrder(int n);
-int cmp1(const void *a , const void *b);
-int cmp2(const void *a , const void *b);
-
-int main(){
-    int res;
-    int n1 , n2;
-
-    scanf(&quot;%d&quot; , &amp;amp;res);
-    do{
-        n1 = DecreaseOrder(res);
-        n2 = IncreaseOrder(res);
-        res = n1 - n2;
-        printf(&quot;%04d - %04d = %04d\n&quot; , n1 , n2 , res);
-    }while(res != 6174 &amp;amp;&amp;amp; res);
-    return 0;
-}
-
-int DecreaseOrder(int n){
-    int s[10];
-    int i;
-    int res = 0;
-    int temp = 1;
-
-    for(i = 0;i &amp;lt; 4;i++){
-        s[i] = n % 10;
-        n /= 10;
-    }
-    qsort(s , 4 , sizeof(int) , cmp1);
-    i--;
-    while(i &amp;gt;= 0){
-        res += s[i] * temp;
-        temp *= 10;
-        i--;
-    }
-    return res;
-}
-
-int IncreaseOrder(int n){
-    int s[10];
-    int i;
-    int res = 0;
-    int temp = 1;
-
-    for(i = 0;i &amp;lt; 4;i++){
-        s[i] = n % 10;
-        n /= 10;
-    }
-    qsort(s , 4 , sizeof(int) , cmp2);
-    i--;
-    while(i &amp;gt;= 0){
-        res += s[i] * temp;
-        temp *= 10;
-        i--;
-    }
-    return res;
-}
-
-int cmp1(const void *a , const void *b){
-    return (*(int *)b) - (*(int *)a);
-}
-
-int cmp2(const void *a , const void *b){
-    return (*(int *)a) - (*(int *)b);
-}
-</code></pre>
-          
+          PAT甲级1069 The Black Hole of Numbers，原题地址：https://www.patest.cn/contests/pat-a-practise/1069解题分析： 被这题坑了。。。。其实是很简单的一道题，但要注意输入可以不是四位数，不满四位要补0，当输入为6174时，要
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/02/22/pat-e7-94-b2-e7-ba-a71069-the-black-hole-of-numbers/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1814,131 +1426,18 @@ int cmp2(const void *a , const void *b){
       
         
           
-            <h1 id="AVL树的插入"><a href="#AVL树的插入" class="headerlink" title="AVL树的插入"></a>AVL树的插入</h1><p>AVL树是一种自平衡的二叉搜索树，它要求任何节点的左右两子树的高度差不超过1，因此也叫高度平衡树。我们把任何节点的左右两子树的高度差定义为该节点的平衡因子，那么平衡因子为-1，0，1的节点是平衡的，否则是不平衡的。</p>
-<p>这篇文章主要涉及对AVL树的插入操作。</p>
-<ul>
-<li><p>首先，AVL树是二叉搜索树，因此插入的方法和二叉搜索树的插入方法一样，也就是根据键值找到一个空位，然后插入。</p>
-</li>
-<li><p>其次，AVL树也有自己的特性，也就是每个节点的平衡因子的绝对值不能大于1，因此在用普通的二叉搜索树插入方法插入节点之后，我们还需要对整棵树做调整。所谓的调整就是一系列的旋转操作。</p>
-</li>
-</ul>
-<p>节点插入后，如果有节点因此失衡，则该节点在失衡时存在四种情况，每种情况对应一种旋转操作。下面是维基百科上关于AVL树插入节点后的一张详解图。(图显示的有些慢，可以尝试刷新一下)</p>
-<p><img src="http://olrdynjoh.bkt.clouddn.com/Tree_Rebalancing.png" alt=""></p>
-<p>接下来我们详细解释每一种情况</p>
-<p><strong>1.LL型</strong><br>LL型就是当前节点的左节点的左子树高度过高，从而导致当前节点失衡。在上图中，当前节点为5，其左节点为3，而3的左子树以2为根节点，该树导致5节点失衡。解决的方法就是将5节点绕着3节点往左旋转，使得3节点成为根节点，同时3节点的右子树变为5节点的左子树，这样新的树就重新达到了平衡。C代码实现如下：</p>
-<pre><code>// LL型旋转
-struct node *RoateWithLeft(struct node *root){
-    struct node *newRoot;
+          AVL树的插入AVL树是一种自平衡的二叉搜索树，它要求任何节点的左右两子树的高度差不超过1，因此也叫高度平衡树。我们把任何节点的左右两子树的高度差定义为该节点的平衡因子，那么平衡因子为-1，0，1的节点是平衡的，否则是不平衡的。
+这篇文章主要涉及对AVL树的插入操作。
 
-    newRoot = root-&amp;gt;left;
-    root-&amp;gt;left = newRoot-&amp;gt;right;
-    newRoot-&amp;gt;right = root;
-    return newRoot;
-}
-`&lt;/pre&gt;
-
-**2.RR型**
-RR型和LL型类似，当前节点由于右节点的右子树高度过高从而失衡。上图中，3为根节点，5为根节点的右节点，7是5节点的右子树的根节点。以7为根节点的树的高度过高，导致3节点失衡。解决的方法也和LL型类似，将5节点绕着3节点向右旋转，使得5节点成为根节点，同时5节点的左节点变为3节点的右节点，树又恢复了平衡。C代码实现如下：
-
-&lt;pre&gt;`// RR型旋转
-struct node *RoateWithRight(struct node *root){
-    struct node *newRoot;
-
-    newRoot = root-&amp;gt;right;
-    root-&amp;gt;right = newRoot-&amp;gt;left;
-    newRoot-&amp;gt;left = root;
-    return newRoot;
-}
-`&lt;/pre&gt;
-
-**3.LR型**
-LR型是指当前节点因为左节点的右子树高度过高，从而导致失衡。上图中5为根节点，3为根节点的左节点，4为3节点的右子树的根节点。以4为根节点的树高度过高，导致5节点失衡。解决的方法是，先将4节点绕着3节点往右旋转，和RR型一样，再将5节点绕着4节点往左旋转，和LL型一样。C代码实现如下：
-
-&lt;pre&gt;`// LR型旋转
-struct node *DoubleRoateWithLeft(struct node *root){
-    root-&amp;gt;left = RoateWithRight(root-&amp;gt;left);
-    return RoateWithLeft(root);
-}
-`&lt;/pre&gt;
-
-**4.RL型**
-RL型和LR型类似，在上图中，5节点先绕着4节点向左旋转，和LL型一样，然后3节点再绕着4节点向右旋转，和RR型一样。C代码实现如下：
-
-&lt;pre&gt;`// RL型旋转
-struct node *DoubleRoateWithRight(struct node *root){
-    root-&amp;gt;right = RoateWithLeft(root-&amp;gt;right);
-    return RoateWithRight(root);
-}
-`&lt;/pre&gt;
-
-**说完如何调整树的结构从而使其重新平衡，接下来的问题应该是哪些节点应该被调整？**
-
-我们在插入的时候使用的是二叉搜索树的插入方法，这是一种递归的插入方式，当找到一个空节点时，构造一个新节点，然后返回给上一个节点。因此利用递归的特性，当从上一个节点返回到当前节点时，我们需要判断当前节点的左右子树的高度差是否大于1，如果大于1，则该节点需要调整，接下来就是判断其属于4种情况中的哪一种，然后对该节点做相应的调整，如果小于等于1，则不需要调整，直接返回到上一个节点。因此，我们每次都会找到一个最小不平衡子树，然后把它调整至平衡。为了实现这些功能，我们需要一个计算高度的函数和一个插入函数。C代码如下：
-
-&lt;pre&gt;`// 计算树的高度
-int GetHeight(struct node *root){
-    int lh , rh;
-
-    if(root == NULL)
-        return -1;
-    lh = GetHeight(root-&amp;gt;left);
-    rh = GetHeight(root-&amp;gt;right);
-    return (lh + 1) &amp;gt; (rh + 1) ? (lh + 1) : (rh + 1);
-}
-// 插入key
-struct node *Insert(struct node *root , int key){
-    int lh , rh;
-    struct node *ptr;
-
-    // 根节点为空，构造节点后直接返回
-    if(root == NULL){
-        ptr = (struct node *)malloc(sizeof(struct node));
-        ptr-&amp;gt;key = key;
-        ptr-&amp;gt;left = NULL;
-        ptr-&amp;gt;right = NULL;
-        return ptr;
-    }
-    // 如果根节点的key大于要插入的key
-    if(root-&amp;gt;key &amp;gt; key)
-        // 递归插入
-        root-&amp;gt;left = Insert(root-&amp;gt;left , key);
-    // 如果根节点的key小于要插入的key
-    else
-        // 递归插入
-        root-&amp;gt;right = Insert(root-&amp;gt;right , key);  
-
-    // 计算根节点两个子树的高度
-    lh = GetHeight(root-&amp;gt;left);
-    rh = GetHeight(root-&amp;gt;right);
-    // 左子树高度比右子树高度大1以上
-    if(lh - rh &amp;gt; 1){
-        // 计算左子树根节点的左右子树的高度
-        lh = GetHeight(root-&amp;gt;left-&amp;gt;left);
-        rh = GetHeight(root-&amp;gt;left-&amp;gt;right);
-        // LL型
-        if(lh &amp;gt; rh)
-            root = RoateWithLeft(root);
-        // LR型
-        else
-            root = DoubleRoateWithLeft(root);
-    }
-    // 右子树高度比左子树高度大1以上
-    if(rh - lh &amp;gt; 1){
-        // 计算右子树根节点的左右子树的高度
-        lh = GetHeight(root-&amp;gt;right-&amp;gt;left);
-        rh = GetHeight(root-&amp;gt;right-&amp;gt;right);
-        // RR型
-        if(lh &amp;lt; rh)
-            root = RoateWithRight(root);
-        // RL型
-        else
-            root = DoubleRoateWithRight(root);
-    }
-    return root;
-}
-</code></pre><p>至此，AVL树的插入操作就已完成了。</p>
-
-          
+首先，AVL树是二叉搜索树，
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/02/22/avl-e6-a0-91-e7-9a-84-e6-8f-92-e5-85-a5/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -2081,57 +1580,21 @@ struct node *Insert(struct node *root , int key){
       
         
           
-            <blockquote>
-<p>转载声明：</p>
-<p>作者：Hawstein</p>
-<p>出处：<a href="\">http://hawstein.com/posts/dp-knapsack.html</a></p>
-<p>声明：本文采用以下协议进行授权： <a href="\">自由转载-非商用-非衍生-保持署名|Creative Commons BY-NC-ND 3.0</a> ，转载请注明作者及出处。</p>
-</blockquote>
-<p>一切都要从一则故事说起。</p>
-<p>话说有一哥们去森林里玩发现了一堆宝石，他数了数，一共有n个。 但他身上能装宝石的就只有一个背包，背包的容量为C。这哥们把n个宝石排成一排并编上号： 0,1,2,…,n-1。第i个宝石对应的体积和价值分别为V[i]和W[i] 。排好后这哥们开始思考： 背包总共也就只能装下体积为C的东西，那我要装下哪些宝石才能让我获得最大的利益呢？</p>
-<p>OK，如果是你，你会怎么做？你斩钉截铁的说：动态规划啊！恭喜你，答对了。 那么让我们来看看，动态规划中最最最重要的两个概念： 状态和状态转移方程在这个问题中分别是什么。</p>
-<p>我们要怎样去定义状态呢？这个状态总不能是凭空想象或是从天上掉下来的吧。 为了方便说明，让我们先实例化上面的问题。一般遇到n，你就果断地给n赋予一个很小的数， 比如n=3。然后设背包容量C=10，三个宝石的体积为5，4，3，对应的价值为20，10，12。 对于这个例子，我想智商大于0的人都知道正解应该是把体积为5和3的宝石装到背包里， 此时对应的价值是20+12=32。接下来，我们把第三个宝石拿走， 同时背包容量减去第三个宝石的体积（因为它是装入背包的宝石之一）， 于是问题的各参数变为：n=2，C=7，体积｛5，4｝，价值｛20，10｝。好了， 现在这个问题的解是什么？我想智商等于0的也解得出了：把体积为5的宝石放入背包 （然后剩下体积2，装不下第二个宝石，只能眼睁睁看着它溜走），此时价值为20。 这样一来，我们发现，n=3时，放入背包的是0号和2号宝石；当n=2时， 我们放入的是0号宝石。这并不是一个偶然，没错， 这就是传说中的“全局最优解包含局部最优解”（n=2是n=3情况的一个局部子问题）。 绕了那么大的圈子，你可能要问，这都哪跟哪啊？说好的状态呢？说好的状态转移方程呢？ 别急，它们已经呼之欲出了。</p>
-<p>我们再把上面的例子理一下。当n=2时，我们要求的是前2个宝石， 装到体积为7的背包里能达到的最大价值；当n=3时，我们要求的是前3个宝石， 装到体积为10的背包里能达到的最大价值。有没有发现它们其实是一个句式！OK， 让我们形式化地表示一下它们， 定义d(i,j)为前i个宝石装到剩余体积为j的背包里能达到的最大价值。 那么上面两句话即为：d(2, 7)和d(3, 10)。这样看着真是爽多了， 而这两个看着很爽的符号就是我们要找的状态了。 即<code>状态d(i,j)表示前i个宝石装到剩余体积为j的背包里能达到的最大价值</code>。 上面那么多的文字，用一句话概括就是：根据子问题定义状态！你找到子问题， 状态也就浮出水面了。而我们最终要求解的最大价值即为d(n, C)：前n个宝石 （0,1,2…,n-1）装入剩余容量为C的背包中的最大价值。状态好不容易找到了， 状态转移方程呢？顾名思义，状态转移方程就是描述状态是怎么转移的方程（好废话！）。 那么回到例子，d(2, 7)和d(3, 10)是怎么转移的？来，我们来说说2号宝石 （记住宝石编号是从0开始的）。从d(2, 7)到d(3, 10)就隔了这个2号宝石。 它有两种情况，装或者不装入背包。如果装入，在面对前2个宝石时， 背包就只剩下体积7来装它们，而相应的要加上2号宝石的价值12， d(3, 10)=d(2, 10-3)+12=d(2, 7)+12；如果不装入，体积仍为10，价值自然不变了， d(3, 10)=d(2, 10)。记住，d(3, 10)表示的是前3个宝石装入到剩余体积为10 的背包里能达到的<code>最大价值</code>，既然是最大价值，就有d(3, 10)=max{ d(2, 10), d(2, 7)+12 }。好了，这条方程描述了状态d(i, j)的一些关系， 没错，它就是状态转移方程了。把它形式化一下：d(i, j)=max{ d(i-1, j), d(i-1,j-V[i-1]) + W[i-1] }。注意讨论前i个宝石装入背包的时候， 其实是在考查第i-1个宝石装不装入背包（因为宝石是从0开始编号的）。至此， 状态和状态转移方程都已经有了。接下来，直接上代码。</p>
-<pre lang="\"c\"">
-for(int i=0; i<=n; 0="" ++i){="" for(int="" j="0;" j<="C;" ++j){="" d[i][j]="i==0" ?="" :="" d[i-1][j];="" if(i="">0 && j>=V[i-1])  d[i][j] >?= d[i-1][j-V[i-1]]+W[i-1];
-    }
- }
-</=n;></pre>
-
-<p>i=0时，d(i, j)为什么为0呢？因为前0个宝石装入背包就是没东西装入，所以最大价值为0。 if语句里，j&gt;=V[i-1]说明只有当背包剩余体积j大于等于i-1号宝石的体积时， 我才考虑把它装进来的情况，不然d[i][j]就直接等于d[i-1][j]。i&gt;0不用说了吧， 前0个宝石装入背包的情况是边界，直接等于0，只有i&gt;0才有必要讨论， 我是装呢还是不装呢。简单吧，核心算法就这么一丁点。<br>好，至此我们解决了背包问题中最基本的0/1背包问题。等等，这时你可能要问， 我现在只知道背包能装入宝石的最大价值，但我还不知道要往背包里装入哪些宝石啊。嗯， 好问题！让我们先定义一个数组x，对于其中的元素为1时表示对应编号的宝石放入背包， 为0则不放入。让我们回到上面的例子，对于体积为5，4，3，价值为20，10，12的3个宝石 ，如何求得其对应的数组x呢？（明显我们目测一下就知道x={1 0 1}， 但程序可目测不出来）OK，让我们还是从状态说起。如果我们把2号宝石放入了背包， 那么是不是也就意味着，前3个宝石放入背包的最大价值要比前2个宝石放入背包的价值大， 即：d(3, 10)&gt;d(2, 10)。再用字母代替具体的数字 （不知不觉中我们就用了不完全归纳法哈），当d(i, j)&gt;d(i-1, j)时，x(i-1)=1;OK， 上代码：</p>
-<pre lang="\"c\"">
-//输出打印方案
-int j = C;
-for(int i=n; i>0; --i){
-    if(d[i][j] > d[i-1][j]){
-        x[i-1] = 1;
-        j = j - V[i-1];//装入第i-1个宝石后背包能装入的体积就只剩下j - V[i-1]
-    }
-}
-for(int i=0; i<n; ++i)="" printf(\"%d="" \",="" x[i]);="" <="" pre="">
-
-<p>至此，好像该解决的问题都解决了。当一个问题找到一个放心可靠的解决方案后， 我们往往就要考虑一下是不是有优化方案了。为了保持代码的简洁， 我们暂且把宝石装包方案的求解去掉。该算法的时间复杂度是O(nC)， 即时间都花在两个for循环里了，这个应该是没办法再优化了。再看看空间复杂度， 数组d用来保存每个状态的值，空间复杂度为O(nC)； 数组V和W用来保存每个宝石的体积和价值，空间复杂度为O(n)。程序总的空间复杂度为 O(nC)，这个是可以进一步优化的。首先，我们先把数组V和W去掉， 因为它们没有保存的必要，改为一边读入一边计算：</p>
-<pre lang="\"c\"">
-int V = 0, W = 0;
-for(int i=0; i<=n; ++i){="" if(i="">0) scanf(\"%d %d\", &V,&W);
-    for(int j=0; j<=c;++j){ 0="" d[i][j]="i==0" ?="" :="" d[i-1][j];="" if(j="">=V && i>0) d[i][j] >?= d[i-1][j-V]+W;
-    }
-}
-</=c;++j){></=n;></pre>
-
-<p>好了，接下来让我们继续压榨空间复杂度。保存状态值我们开了一个二维数组d， 在看过把一维数组V和W变为一个变量后，我们是不是要思考一下， 有没有办法将这个二维数组也压榨一下呢？换言之， 这个二维数组中的每个状态值我们真的有必要都保存么？<br>由上面那一小段优化过后的代码可知，状态转移方程为：d(i, j)=max{ d(i-1, j), d(i-1, j-V)+W }，也就是在计算d(i, j)时我们用到了d(i-1,j)和d(i-1, j-V)的值。 如果我们只用一个一维数组d(0)～<code>d(C)</code>来保存状态值可以么？将i方向的维数去掉， 我们可以将原来二维数组表示为一维数据：d(i-1, j-V)变为d(j-V)， d(i-1, j)变为d(j)。当我们要计算d(i, j)时，只需要比较d(j)和d(j-V)+W的大小， 用较大的数更新d(j)即可。等等，如果我要计算d(i, j+1)，而它恰好要用到d(i-1, j)的值， 那么问题就出来了，因为你刚刚才把它更新为d(i, j)了。那么，怎么办呢？ 按照j递减的顺序即可避免这种问题。比如，你计算完d(i, j)， 接下来要计算的是d(i,j-1)，而它的状态转移方程为d(i, j-1)=max{ d(i-1, j-1), d(i-1, j-1-V)+W }，它不会再用到d(i-1,j)的值！所以， 即使该位置的值被更新了也无所谓。好，上代码：</p>
-<pre lang="\"c\"">
-memset(d, 0, sizeof(d));
-for(int i=0; i<=n; ++i){="" if(i="">0) scanf(\"%d %d\", &V,&W);
-    for(int j=C;j>=0; --j){
-        if(j>=V && i>0) d[j] >?= d[j-V]+W;
-    }
-}
-</=n;></pre>
-
-<p>OK，背包问题暂时先讲这么多，以后接着讲。</p>
-</n;></pre>
           
+转载声明：
+作者：Hawstein
+出处：http://hawstein.com/posts/dp-knapsack.html
+声明：本文采用以下协议进行授权： 自由转载-非商用-非衍生-保持署名|Creative Commons BY-NC-ND 3.0 ，转载请注明作者及出处。
+
+一切都要从一
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/02/21/e5-8a-a8-e6-80-81-e8-a7-84-e5-88-92-e4-b9-8b01-e8-83-8c-e5-8c-85-e9-97-ae-e9-a2-98/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -2274,54 +1737,15 @@ for(int i=0; i<=n; ++i){="" if(i="">0) scanf(\"%d %d\", &V,&W);
       
         
           
-            <p>PAT甲级1068 Find More Coins，原题地址：<br><a href="\">https://www.patest.cn/contests/pat-a-practise/1068</a><br>解题分析：<br>动态规划中的01背包问题。将要付的钱看作背包的容量，每一个硬币的值既为它的体积，同时也是它的价值。一个背包里所有硬币的体积相加不会超过背包的容量，因此背包内所有硬币的最大价值也不会超过背包的容量，即最大价值为背包的容量，也就是要付的钱。所以，通过求解最大价值，判断其是否等于要付的钱，如果等于则说明有解，否则无解。对于输入的硬币的值，先将它们按从大到小的顺序排序，然后依次放入背包，用二维数组select纪录它们放入的情况，遍历完之后，通过dp[m]判断是否有解，如果有解，再依次输出序列。</p>
-<pre lang="\"c\"" line="\"1\"" escaped="\"true\"">
-#include<stdio.h>
-#include<stdlib.h>
-
-int cmp(const void *a , const void *b);
-
-int n , m;
-int dp[110];
-int w[10010];
-int select[10010][110];
-
-int main(){
-    int i , j;
-    int t , v;
-    int flag = 1;
-
-    scanf(\"%d%d\" , &n , &m);
-    for(i = 0;i < n;i++)
-        scanf(\"%d\" , &w[i]);
-    // 从大到小排序
-    qsort(w , n , sizeof(int) , cmp);
-    // 依次放入背包
-    for(i = 0;i < n;i++){
-        for(j = m;j >= w[i];j--){
-            // 放入后得到更大的价值
-            if(dp[j] <= dp[j="" -="" w[i]]="" +="" w[i]){="" 更新当前背包容量对应的最大价值="" dp[j]="dp[j" w[i];="" 纪录放入信息="" select[i][j]="1;" }="" 判断是否有解="" if(dp[m]="" !="m){" printf(\"no="" solutionn\");="" return="" 0;="" 输出="" t="n" 1;="" v="m;" while(v=""> 0){
-        if(select[t][v] == 1){
-            if(flag){
-                printf(\"%d\" , w[t]);
-                flag = 0;
-            }
-            else{
-                printf(\" %d\" , w[t]);
-            }
-            v -= w[t];
-        }
-        t--;
-    }
-    printf(\"n\");
-    return 0;
-}
-
-int cmp(const void *a , const void *b){
-    return (*(int *)b) - (*(int *)a); 
-}
-</=></stdlib.h></stdio.h></pre>
-          
+          PAT甲级1068 Find More Coins，原题地址：https://www.patest.cn/contests/pat-a-practise/1068解题分析：动态规划中的01背包问题。将要付的钱看作背包的容量，每一个硬币的值既为它的体积，同时也是它的价值。一个背包里所有硬币的体积相加不
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/02/21/pat-e7-94-b2-e7-ba-a71068-find-more-coins/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
