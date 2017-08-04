@@ -93,17 +93,17 @@
 
 
 
-<meta name="description" content="最近我在学习Swift，通过&amp;lt;&amp;gt;对Swift这门语言有了一个大致的了解，因此准备写一篇文章对Swift的语法以及相关的语言特性做一个小结，顺便复习一下。 标准类型常见类型Swift内置的常见标准类型为:  整数(Int..) 浮点数(Float、Double…) String(支持Unicode编码的字符，所以在遍历时会有比较特殊的操作) Bool  可选类型可选类型是Swift独有的">
+<meta name="description" content="最近我在学习Swift，通过&amp;lt;&amp;gt;对Swift这门语言有了一个大致的了解，因此准备写一篇文章对Swift的语法以及相关的语言特性做一个小结，顺便复习一下。 标准类型常见类型Swift内置的常见标准类型为:  整数(Int..) 浮点数(Float、Double…) String Bool  可选类型可选类型是Swift独有的类型，其有两层含义:  一是变量是否有值(没有值时变量为nil)">
 <meta name="keywords" content="Swift">
 <meta property="og:type" content="article">
 <meta property="og:title" content="page">
 <meta property="og:url" content="https://ShengAndXian.github.io/2017/08/04/Swift语法小记/index.html">
 <meta property="og:site_name" content="hys&#39;s blog">
-<meta property="og:description" content="最近我在学习Swift，通过&amp;lt;&amp;gt;对Swift这门语言有了一个大致的了解，因此准备写一篇文章对Swift的语法以及相关的语言特性做一个小结，顺便复习一下。 标准类型常见类型Swift内置的常见标准类型为:  整数(Int..) 浮点数(Float、Double…) String(支持Unicode编码的字符，所以在遍历时会有比较特殊的操作) Bool  可选类型可选类型是Swift独有的">
-<meta property="og:updated_time" content="2017-08-04T11:58:17.000Z">
+<meta property="og:description" content="最近我在学习Swift，通过&amp;lt;&amp;gt;对Swift这门语言有了一个大致的了解，因此准备写一篇文章对Swift的语法以及相关的语言特性做一个小结，顺便复习一下。 标准类型常见类型Swift内置的常见标准类型为:  整数(Int..) 浮点数(Float、Double…) String Bool  可选类型可选类型是Swift独有的类型，其有两层含义:  一是变量是否有值(没有值时变量为nil)">
+<meta property="og:updated_time" content="2017-08-04T12:29:26.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="page">
-<meta name="twitter:description" content="最近我在学习Swift，通过&amp;lt;&amp;gt;对Swift这门语言有了一个大致的了解，因此准备写一篇文章对Swift的语法以及相关的语言特性做一个小结，顺便复习一下。 标准类型常见类型Swift内置的常见标准类型为:  整数(Int..) 浮点数(Float、Double…) String(支持Unicode编码的字符，所以在遍历时会有比较特殊的操作) Bool  可选类型可选类型是Swift独有的">
+<meta name="twitter:description" content="最近我在学习Swift，通过&amp;lt;&amp;gt;对Swift这门语言有了一个大致的了解，因此准备写一篇文章对Swift的语法以及相关的语言特性做一个小结，顺便复习一下。 标准类型常见类型Swift内置的常见标准类型为:  整数(Int..) 浮点数(Float、Double…) String Bool  可选类型可选类型是Swift独有的类型，其有两层含义:  一是变量是否有值(没有值时变量为nil)">
 
 
 
@@ -368,7 +368,7 @@
 <ul>
 <li>整数(Int..)</li>
 <li>浮点数(Float、Double…)</li>
-<li>String(支持Unicode编码的字符，所以在遍历时会有比较特殊的操作)</li>
+<li>String</li>
 <li>Bool</li>
 </ul>
 <h2 id="可选类型"><a href="#可选类型" class="headerlink" title="可选类型"></a>可选类型</h2><p>可选类型是Swift独有的类型，其有两层含义:</p>
@@ -425,10 +425,15 @@
 <ul>
 <li>数组</li>
 </ul>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> t: [<span class="type">Int</span>]</div><div class="line"><span class="keyword">var</span> t = [<span class="type">Int</span>]()</div><div class="line"><span class="keyword">var</span> t = [<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</div></pre></td></tr></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> arr: [<span class="type">Int</span>]</div><div class="line"><span class="keyword">var</span> arr = [<span class="type">Int</span>]()</div><div class="line"><span class="keyword">var</span> arr = [<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</div><div class="line"></div><div class="line"><span class="comment">//for循环遍历元素</span></div><div class="line"><span class="keyword">for</span> item <span class="keyword">in</span> arr &#123;</div><div class="line">	</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//遍历时获取索引</span></div><div class="line"><span class="keyword">for</span> (index,item) <span class="keyword">in</span> arr.enumerated() &#123;</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line">arr.<span class="built_in">count</span> <span class="comment">//获取数组元素个数</span></div><div class="line">arr.isEmpty <span class="comment">//判断数组是否为空</span></div><div class="line">arr.append(<span class="number">_</span>:) <span class="comment">//添加元素</span></div><div class="line">arr.removeLast() <span class="comment">//删除最后一个元素</span></div><div class="line">arr.removeAll() <span class="comment">//删除所有元素</span></div><div class="line">arr.insert(<span class="number">_</span>:at:) <span class="comment">//向特定索引出插入元素</span></div><div class="line">arr.remove(at:) <span class="comment">//删除特定索引处的元素</span></div><div class="line"></div><div class="line">arr += [<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>] <span class="comment">// 拼接两个数组</span></div></pre></td></tr></table></figure>
 <ul>
-<li>​</li>
+<li>集合</li>
 </ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> <span class="keyword">set</span> = <span class="type">Set</span>&lt;<span class="type">Int</span>&gt;()</div><div class="line"><span class="keyword">var</span> <span class="keyword">set</span>: <span class="type">Set</span>&lt;<span class="type">Int</span>&gt; = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</div><div class="line"></div><div class="line"><span class="comment">//遍历集合</span></div><div class="line"><span class="keyword">for</span> item <span class="keyword">in</span> <span class="keyword">set</span> &#123;</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//对集合元素排序后遍历</span></div><div class="line"><span class="keyword">for</span> item <span class="keyword">in</span> <span class="keyword">set</span>.sorted() &#123;</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">set</span>.<span class="built_in">count</span> <span class="comment">//获取集合元素个数</span></div><div class="line"><span class="keyword">set</span>.isEmpty <span class="comment">//判断集合是否为空</span></div><div class="line"><span class="keyword">set</span>.insert(<span class="number">_</span>:) <span class="comment">//插入元素</span></div><div class="line"><span class="keyword">set</span>.remove(<span class="number">_</span>:) <span class="comment">//删除元素</span></div><div class="line"><span class="keyword">set</span>.<span class="built_in">contains</span>(<span class="number">_</span>:) <span class="comment">//判断集合是否包含某元素</span></div><div class="line"></div><div class="line"><span class="comment">//还有一些集合操作（交、并、补）</span></div></pre></td></tr></table></figure>
+<ul>
+<li>字典</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> dic: [<span class="type">String</span>:<span class="type">Int</span>]</div><div class="line"><span class="keyword">var</span> dic = [<span class="type">String</span>:<span class="type">Int</span>]()</div><div class="line"><span class="keyword">var</span> dic = [<span class="string">"apple"</span>:<span class="number">10</span>, <span class="string">"pen"</span>:<span class="number">20</span>]</div><div class="line"></div><div class="line"><span class="comment">//遍历字典</span></div><div class="line"><span class="keyword">for</span> (key,value) <span class="keyword">in</span> dic &#123;</div><div class="line">  </div><div class="line">&#125;</div><div class="line"></div><div class="line">dic.<span class="built_in">count</span> <span class="comment">//获取字典键值对个数</span></div><div class="line">dic.isEmpty <span class="comment">//判断字典是否为空</span></div><div class="line"></div><div class="line">dic[<span class="string">"apple"</span>] <span class="comment">//获取key所对应的值，注意返回的是一个可选类型</span></div></pre></td></tr></table></figure>
 
       
     </div>
