@@ -93,17 +93,17 @@
 
 
 
-<meta name="description" content="最近我在学习Swift，通过&amp;lt;&amp;gt;对Swift这门语言有了一个大致的了解，因此准备写一篇文章对Swift的语法以及相关的语言特性做一个小结，顺便复习一下。 标准类型">
+<meta name="description" content="最近我在学习Swift，通过&amp;lt;&amp;gt;对Swift这门语言有了一个大致的了解，因此准备写一篇文章对Swift的语法以及相关的语言特性做一个小结，顺便复习一下。 标准类型常见类型Swift内置的常见标准类型为:  整数(Int..) 浮点数(Float、Double…) String(支持Unicode编码的字符，所以在遍历时会有比较特殊的操作) Bool  可选类型可选类型是Swift独有的">
 <meta name="keywords" content="Swift">
 <meta property="og:type" content="article">
 <meta property="og:title" content="page">
 <meta property="og:url" content="https://ShengAndXian.github.io/2017/08/04/Swift语法小记/index.html">
 <meta property="og:site_name" content="hys&#39;s blog">
-<meta property="og:description" content="最近我在学习Swift，通过&amp;lt;&amp;gt;对Swift这门语言有了一个大致的了解，因此准备写一篇文章对Swift的语法以及相关的语言特性做一个小结，顺便复习一下。 标准类型">
-<meta property="og:updated_time" content="2017-08-04T08:27:26.000Z">
+<meta property="og:description" content="最近我在学习Swift，通过&amp;lt;&amp;gt;对Swift这门语言有了一个大致的了解，因此准备写一篇文章对Swift的语法以及相关的语言特性做一个小结，顺便复习一下。 标准类型常见类型Swift内置的常见标准类型为:  整数(Int..) 浮点数(Float、Double…) String(支持Unicode编码的字符，所以在遍历时会有比较特殊的操作) Bool  可选类型可选类型是Swift独有的">
+<meta property="og:updated_time" content="2017-08-04T11:58:17.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="page">
-<meta name="twitter:description" content="最近我在学习Swift，通过&amp;lt;&amp;gt;对Swift这门语言有了一个大致的了解，因此准备写一篇文章对Swift的语法以及相关的语言特性做一个小结，顺便复习一下。 标准类型">
+<meta name="twitter:description" content="最近我在学习Swift，通过&amp;lt;&amp;gt;对Swift这门语言有了一个大致的了解，因此准备写一篇文章对Swift的语法以及相关的语言特性做一个小结，顺便复习一下。 标准类型常见类型Swift内置的常见标准类型为:  整数(Int..) 浮点数(Float、Double…) String(支持Unicode编码的字符，所以在遍历时会有比较特殊的操作) Bool  可选类型可选类型是Swift独有的">
 
 
 
@@ -364,7 +364,72 @@
 
       
         <p>最近我在学习Swift，通过&lt;<the swift="" programming="" language="">&gt;对Swift这门语言有了一个大致的了解，因此准备写一篇文章对Swift的语法以及相关的语言特性做一个小结，顺便复习一下。</the></p>
-<h1 id="标准类型"><a href="#标准类型" class="headerlink" title="标准类型"></a>标准类型</h1>
+<h1 id="标准类型"><a href="#标准类型" class="headerlink" title="标准类型"></a>标准类型</h1><h2 id="常见类型"><a href="#常见类型" class="headerlink" title="常见类型"></a>常见类型</h2><p>Swift内置的常见标准类型为:</p>
+<ul>
+<li>整数(Int..)</li>
+<li>浮点数(Float、Double…)</li>
+<li>String(支持Unicode编码的字符，所以在遍历时会有比较特殊的操作)</li>
+<li>Bool</li>
+</ul>
+<h2 id="可选类型"><a href="#可选类型" class="headerlink" title="可选类型"></a>可选类型</h2><p>可选类型是Swift独有的类型，其有两层含义:</p>
+<ul>
+<li>一是变量是否有值(没有值时变量为nil)</li>
+<li>二是变量的值是多少</li>
+</ul>
+<p>我们可以在变量类型后加一个问号或者感叹号来表示这是一个可选类型的变量，如下所示:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> t1: <span class="type">Int</span>?</div><div class="line"><span class="keyword">var</span> t2: <span class="type">Int</span>!</div></pre></td></tr></table></figure>
+<p>使用问号和感叹号的区别是：</p>
+<ul>
+<li>问号声明的可选类型变量，在使用时需要使用感叹号对其进行显式解包</li>
+<li>感叹号声明的可选类型变量，在使用时Swift会对其自动进行隐式解包，因此不需要加感叹号</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> t3: <span class="type">Int</span></div><div class="line">t3 = t1!</div><div class="line">t3 = t2</div></pre></td></tr></table></figure>
+<p>需要注意的是不论是显示解包还是隐式解包，<strong>只要对值为nil的变量进行解包就会触发运行时错误！</strong>因此，在使用可选类型的变量之前，最好对其进行nil检查。常见的检查方法有:</p>
+<ul>
+<li>直接判断变量是否为nil</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> t1 != <span class="literal">nil</span> &#123;</div><div class="line">  </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>使用可选绑定(optional binding)</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> <span class="keyword">let</span> t4 = t1 &#123;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这段代码的意思是，如果t1不为nil，则将t1解包，并把解包后的值赋给t4，否则不执行if内的语句。</p>
+<h2 id="关于String"><a href="#关于String" class="headerlink" title="关于String"></a>关于String</h2><p>String在Swift中有一些比较有意思的特性。</p>
+<h3 id="遍历字符串"><a href="#遍历字符串" class="headerlink" title="遍历字符串"></a>遍历字符串</h3><p>可以使用for-in循环遍历字符串，如下所示:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> str = <span class="string">"hello world"</span></div><div class="line"><span class="keyword">for</span> character <span class="keyword">in</span> str &#123;</div><div class="line">  <span class="built_in">print</span>(character)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>character是一个Character类型的变量，其最多只能储存一个字符。</p>
+<h3 id="连接字符串"><a href="#连接字符串" class="headerlink" title="连接字符串"></a>连接字符串</h3><p>通过+、+=、append等方式可以连接两个字符串，如下所示：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> str1 = <span class="string">"hello"</span></div><div class="line"><span class="keyword">var</span> str2 = <span class="string">" world"</span></div><div class="line">str1 = str1 + str2</div><div class="line">str1 += str2</div><div class="line">str1.append(str2)</div></pre></td></tr></table></figure>
+<h3 id="字符串插值"><a href="#字符串插值" class="headerlink" title="字符串插值"></a>字符串插值</h3><p>这是个很神奇的操作，并且看起来非常优雅。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> t = <span class="number">100</span></div><div class="line"><span class="keyword">var</span> str = <span class="string">"今天赚了\\(t)元"</span></div></pre></td></tr></table></figure>
+<h3 id="访问和修改字符串"><a href="#访问和修改字符串" class="headerlink" title="访问和修改字符串"></a>访问和修改字符串</h3><p>Swift中的字符串支持unicode编码，如下所示:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> str = <span class="string">"The USA flag is \u&#123;1F1FA&#125;\u&#123;1F1F8&#125;"</span> </div><div class="line"><span class="comment">//The USA flag is 🇺🇸</span></div></pre></td></tr></table></figure>
+<p>可以看到，🇺🇸是由两个Unicode标量组成的，而其他字符都是由一个Unicode标量组成。这说明我们不可采用直接索引的方式访问或修改一个字符，因为我们不知道哪几个Unicode标量组成了一个字符。</p>
+<p>访问字符串的正确方式是通过String自带的索引：</p>
+<ul>
+<li>startIndex可以获取字符串的第一个字符的索引</li>
+<li>endIndex可以获取字符串最后一个字符的<strong>后一位</strong>的索引</li>
+</ul>
+<p>同时，String提供三种方法访问字符串:</p>
+<ul>
+<li>index(before: )</li>
+<li>index(after: )</li>
+<li>index(_:offsetBy: )</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> str = <span class="string">"The USA flag is 🇺🇸"</span></div><div class="line">str[str.index(before: str.endIndex)] <span class="comment">//🇺🇸</span></div><div class="line">str[str.index(after: str.startIndex)] <span class="comment">//h</span></div><div class="line">str[str.index(str.startIndex, offserBy: <span class="number">4</span>)] <span class="comment">//U</span></div></pre></td></tr></table></figure>
+<h3 id="插入和删除"><a href="#插入和删除" class="headerlink" title="插入和删除"></a>插入和删除</h3><p>String提供insert(_:at:)方法用于插入字符，remove(at:)方法用于删除字符。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> str = <span class="string">"hello world"</span></div><div class="line">str.insert(<span class="string">"!"</span>, at: str.endIndex) <span class="comment">//"hello world!"</span></div><div class="line">str.remove(at: str.startIndex) <span class="comment">//"ello world"</span></div></pre></td></tr></table></figure>
+<h2 id="类型推断"><a href="#类型推断" class="headerlink" title="类型推断"></a>类型推断</h2><p>Swift内置强大的类型推断机制，当我们将一个值赋给某个变量时，Swift会根据值的类型自动推断出变量类型，因此很多时候我们都不需要指定变量的类型，如下所示:</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> t1 = <span class="number">10</span> <span class="comment">//自动推断t1为Int</span></div><div class="line"><span class="keyword">var</span> t2 = <span class="number">3.14</span> <span class="comment">//自动推断t2为Float</span></div><div class="line"><span class="keyword">var</span> t3 = <span class="string">"hello world"</span> <span class="comment">//自动推断t3为String</span></div><div class="line"><span class="keyword">var</span> t4 = <span class="literal">true</span> <span class="comment">//自动推断t4为Bool</span></div></pre></td></tr></table></figure>
+<h1 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h1><p>Swift内置的数据结构为:</p>
+<ul>
+<li>数组</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> t: [<span class="type">Int</span>]</div><div class="line"><span class="keyword">var</span> t = [<span class="type">Int</span>]()</div><div class="line"><span class="keyword">var</span> t = [<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</div></pre></td></tr></table></figure>
+<ul>
+<li>​</li>
+</ul>
+
       
     </div>
 
@@ -546,7 +611,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#标准类型"><span class="nav-number">1.</span> <span class="nav-text">标准类型</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#标准类型"><span class="nav-number">1.</span> <span class="nav-text">标准类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#常见类型"><span class="nav-number">1.1.</span> <span class="nav-text">常见类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#可选类型"><span class="nav-number">1.2.</span> <span class="nav-text">可选类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于String"><span class="nav-number">1.3.</span> <span class="nav-text">关于String</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#遍历字符串"><span class="nav-number">1.3.1.</span> <span class="nav-text">遍历字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#连接字符串"><span class="nav-number">1.3.2.</span> <span class="nav-text">连接字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字符串插值"><span class="nav-number">1.3.3.</span> <span class="nav-text">字符串插值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#访问和修改字符串"><span class="nav-number">1.3.4.</span> <span class="nav-text">访问和修改字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插入和删除"><span class="nav-number">1.3.5.</span> <span class="nav-text">插入和删除</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类型推断"><span class="nav-number">1.4.</span> <span class="nav-text">类型推断</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数据结构"><span class="nav-number">2.</span> <span class="nav-text">数据结构</span></a></li></ol></div>
             
 
           </div>
