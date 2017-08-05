@@ -112,7 +112,7 @@
 <meta property="og:url" content="https://ShengAndXian.github.io/2017/08/04/Swift语法小记/index.html">
 <meta property="og:site_name" content="hys&#39;s blog">
 <meta property="og:description" content="最近我在学习Swift，通过The Swift Programming language对Swift这门语言有了一个大致的了解，因此准备写一篇文章对Swift的语法以及相关的语言特性做一个小结，顺便复习一下。 一、标准类型1. 常见类型Swift内置的常见标准类型为:  整数(Int..) 浮点数(Float、Double…) String Bool  2. 可选类型可选类型是Swift独有的类型">
-<meta property="og:updated_time" content="2017-08-05T08:37:13.000Z">
+<meta property="og:updated_time" content="2017-08-05T08:39:35.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Swift语法小记">
 <meta name="twitter:description" content="最近我在学习Swift，通过The Swift Programming language对Swift这门语言有了一个大致的了解，因此准备写一篇文章对Swift的语法以及相关的语言特性做一个小结，顺便复习一下。 一、标准类型1. 常见类型Swift内置的常见标准类型为:  整数(Int..) 浮点数(Float、Double…) String Bool  2. 可选类型可选类型是Swift独有的类型">
@@ -505,7 +505,7 @@
 <p>很有意思的一点是，不论是数组、集合还是字典，其在底层都是由struct来实现的，因此<strong>数组、集合以及字典都是值类型！</strong>由此我们可能会产生一个疑问，像数组这种数据结构一般内部储存了大量数据，如果是值类型的话，每一次赋值都会将其所占有的内存拷贝一次，这样难道不会非常低效吗？实际上不是这样的，我们来看一个例子:</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> arr = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>]</div><div class="line"><span class="keyword">var</span> arr1 = arr <span class="comment">//将arr赋给arr1，这时候并没有发生内存拷贝，因为arr1没有任何行为</span></div><div class="line"><span class="keyword">var</span> arr2 = arr1 <span class="comment">//将arr1赋给arr2，这时候也没有发生内存拷贝，因为arr2没有任何行为</span></div><div class="line">arr2.append(<span class="number">5</span>) <span class="comment">//arr2做出了添加元素的行为，因此此时必须要进行内存拷贝，但需要注意的是，arr2拷贝的是arr的内存，而不是arr1的内存，arr1并未对arr的内存做任何拷贝！</span></div></pre></td></tr></table></figure>
 <p>可以看到，虽然数组是值类型，但是每次赋值时并不会马上把内存拷贝一次，而是等真正要使用被赋值的变量时才会进行拷贝，这样一来就可以把拷贝的消耗降到了最低。</p>
-
+<h1 id="六、控制流"><a href="#六、控制流" class="headerlink" title="六、控制流"></a>六、控制流</h1>
       
     </div>
 
@@ -543,22 +543,6 @@
       
       
 
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2017/07/26/占个坑/" rel="next" title="占个坑">
-                <i class="fa fa-chevron-left"></i> 占个坑
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-          </div>
-        </div>
       
 
       
@@ -630,7 +614,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">1</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -687,7 +671,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一、标准类型"><span class="nav-number">1.</span> <span class="nav-text">一、标准类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-常见类型"><span class="nav-number">1.1.</span> <span class="nav-text">1. 常见类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-可选类型"><span class="nav-number">1.2.</span> <span class="nav-text">2. 可选类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-关于String"><span class="nav-number">1.3.</span> <span class="nav-text">3. 关于String</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-遍历字符串"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1 遍历字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-连接字符串"><span class="nav-number">1.3.2.</span> <span class="nav-text">3.2 连接字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-字符串插值"><span class="nav-number">1.3.3.</span> <span class="nav-text">3.3 字符串插值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-访问和修改字符串"><span class="nav-number">1.3.4.</span> <span class="nav-text">3.4 访问和修改字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-插入和删除"><span class="nav-number">1.3.5.</span> <span class="nav-text">3.5 插入和删除</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-类型推断"><span class="nav-number">1.4.</span> <span class="nav-text">4. 类型推断</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二、特殊类型"><span class="nav-number">2.</span> <span class="nav-text">二、特殊类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-函数"><span class="nav-number">2.1.</span> <span class="nav-text">1. 函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-闭包"><span class="nav-number">2.2.</span> <span class="nav-text">2. 闭包</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-闭包的概念"><span class="nav-number">2.2.1.</span> <span class="nav-text">2.1 闭包的概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-闭包表达式"><span class="nav-number">2.2.2.</span> <span class="nav-text">2.2 闭包表达式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-逃逸闭包"><span class="nav-number">2.2.3.</span> <span class="nav-text">2.3 逃逸闭包</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三、自定义类型"><span class="nav-number">3.</span> <span class="nav-text">三、自定义类型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#四、值类型VS引用类型"><span class="nav-number">4.</span> <span class="nav-text">四、值类型VS引用类型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#五、数据结构"><span class="nav-number">5.</span> <span class="nav-text">五、数据结构</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一、标准类型"><span class="nav-number">1.</span> <span class="nav-text">一、标准类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-常见类型"><span class="nav-number">1.1.</span> <span class="nav-text">1. 常见类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-可选类型"><span class="nav-number">1.2.</span> <span class="nav-text">2. 可选类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-关于String"><span class="nav-number">1.3.</span> <span class="nav-text">3. 关于String</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-遍历字符串"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1 遍历字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-连接字符串"><span class="nav-number">1.3.2.</span> <span class="nav-text">3.2 连接字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-字符串插值"><span class="nav-number">1.3.3.</span> <span class="nav-text">3.3 字符串插值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-访问和修改字符串"><span class="nav-number">1.3.4.</span> <span class="nav-text">3.4 访问和修改字符串</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-插入和删除"><span class="nav-number">1.3.5.</span> <span class="nav-text">3.5 插入和删除</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-类型推断"><span class="nav-number">1.4.</span> <span class="nav-text">4. 类型推断</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二、特殊类型"><span class="nav-number">2.</span> <span class="nav-text">二、特殊类型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-函数"><span class="nav-number">2.1.</span> <span class="nav-text">1. 函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-闭包"><span class="nav-number">2.2.</span> <span class="nav-text">2. 闭包</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-闭包的概念"><span class="nav-number">2.2.1.</span> <span class="nav-text">2.1 闭包的概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-闭包表达式"><span class="nav-number">2.2.2.</span> <span class="nav-text">2.2 闭包表达式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-逃逸闭包"><span class="nav-number">2.2.3.</span> <span class="nav-text">2.3 逃逸闭包</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三、自定义类型"><span class="nav-number">3.</span> <span class="nav-text">三、自定义类型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#四、值类型VS引用类型"><span class="nav-number">4.</span> <span class="nav-text">四、值类型VS引用类型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#五、数据结构"><span class="nav-number">5.</span> <span class="nav-text">五、数据结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#六、控制流"><span class="nav-number">6.</span> <span class="nav-text">六、控制流</span></a></li></ol></div>
             
 
           </div>
