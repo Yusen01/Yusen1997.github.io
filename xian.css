@@ -1,5 +1,6 @@
 header {
     background-color: #FFDDDE;
+    margin-top: 0px;
     margin-left: 0px;
     margin-right: 0px;
     height: 110px;
@@ -7,10 +8,12 @@ header {
 
 .title1 {
     margin-top: 15px;
-    font-size: 17px;
+    font-size: 19px;
+    font-weight: bold;
 }
 
 .title2 {
     margin-top: 8px;
-    font-size: 17px;
+    font-size: 19px;
+    font-weight: bold;
 }
