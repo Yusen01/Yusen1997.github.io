@@ -2,7 +2,7 @@ header {
     background-color: #FFDDDE;
     margin-left: 0px;
     margin-right: 0px;
-    padding-top: 20px;
+    padding-top: 15px;
     height: 100px;
 }
 
@@ -13,4 +13,10 @@ header {
 .title2 {
     margin-top: 5px;
     font-size: 19px;
+}
+
+.passage {
+    margin-top: 20px;
+    margin-left: 25%;
+    margin-right: 25%;
 }
