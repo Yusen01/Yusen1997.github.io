@@ -10,6 +10,7 @@ body {
 }
 
 .showPhoto {
-    width: 80%;
-    height: 500px;
+    margin-left: 10%;
+    margin-right: 10%;
+    height: 250px;
 }
