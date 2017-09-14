@@ -105,17 +105,17 @@
 
 
 
-<meta name="description" content="今天在Leetcode上遇到一道很有意思的题，原题如下:   Single Number II  Given an array of integers, every element appears three times except for one, which appears exactly once. Find that single one. Note:Your algorithm sho">
+<meta name="description" content="今天在Leetcode上遇到一道很有意思的题，原题如下:  137 Single Number II Given an array of integers, every element appears three times except for one, which appears exactly once. Find that single one. Note:Your algorithm s">
 <meta name="keywords" content="位运算">
 <meta property="og:type" content="article">
 <meta property="og:title" content="位运算的巧妙运用">
 <meta property="og:url" content="https://ShengAndXian.github.io/2017/09/13/位运算的巧妙运用/index.html">
 <meta property="og:site_name" content="Yusen&#39;s blog">
-<meta property="og:description" content="今天在Leetcode上遇到一道很有意思的题，原题如下:   Single Number II  Given an array of integers, every element appears three times except for one, which appears exactly once. Find that single one. Note:Your algorithm sho">
-<meta property="og:updated_time" content="2017-09-14T08:42:26.000Z">
+<meta property="og:description" content="今天在Leetcode上遇到一道很有意思的题，原题如下:  137 Single Number II Given an array of integers, every element appears three times except for one, which appears exactly once. Find that single one. Note:Your algorithm s">
+<meta property="og:updated_time" content="2017-09-14T08:45:01.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="位运算的巧妙运用">
-<meta name="twitter:description" content="今天在Leetcode上遇到一道很有意思的题，原题如下:   Single Number II  Given an array of integers, every element appears three times except for one, which appears exactly once. Find that single one. Note:Your algorithm sho">
+<meta name="twitter:description" content="今天在Leetcode上遇到一道很有意思的题，原题如下:  137 Single Number II Given an array of integers, every element appears three times except for one, which appears exactly once. Find that single one. Note:Your algorithm s">
 
 
 
@@ -377,16 +377,14 @@
       
         <p>今天在Leetcode上遇到一道很有意思的题，原题如下:</p>
 <blockquote>
-<ol>
-<li>Single Number II</li>
-</ol>
+<p>137 Single Number II</p>
 <p>Given an array of integers, every element appears <em>three</em> times except for one, which appears exactly once. Find that single one.</p>
 <p><strong>Note:</strong><br>Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory?</p>
 </blockquote>
 <p>大概意思是给定一个整数序列，里面的大部分数都重复了三次，只有一个数只出现一次，我们需要找出这个数字。举个例子，1112223334，我们的输出应该是4。要求时间复杂度是O(n)，并且不能使用额外的内存(声明一些简单的变量当然是可以的)。</p>
 <p>一开始完全没思路，想了半天也想不出啥东西来。最后无奈的点开了discuss，里面有许多种解决方案，有些简短到只有代码，有些则复杂到让人没有想看的欲望。但其中有一个解答非常棒，答主把数字逻辑的知识运用到本问题上，并且由此给出解答这类题的通用方法。本文就是对这种方法的描述。需要注意的是，读者应该把注意力放在理解算法上，而不要关心算法是怎么想出来的(有时候还是蛮考验智商的= =)。</p>
 <p>首先注意到所有重复出现的数的重复次数为3，因此我们设基数(base)为3。对于一个二进制数，表达基数为3的一位整数(即0、1、2)只需要2位。因此我们设两个变量a和b，分别代表高位和低位。另外再设一个进位c。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">a	b	c	(next)  a     b</div><div class="line">0	0	0           0     0</div><div class="line">0	1	0           0     1</div><div class="line">1	0	0           1     0</div><div class="line">0	0	1           0     1</div><div class="line">0	1	1           1     0</div><div class="line">1	0	1           0     0</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">a	b	c           a     b</div><div class="line">0	0	0           0     0</div><div class="line">0	1	0           0     1</div><div class="line">1	0	0           1     0</div><div class="line">0	0	1           0     1</div><div class="line">0	1	1           1     0</div><div class="line">1	0	1           0     0</div></pre></td></tr></table></figure>
 <p>由于基数是3，因此当ab=10时，加1会使ab变为00。基于这样的想法，假设a和b初始值都为0，那么如果加3 * n个1(n = 0,1,2,…)，那么ab最终为00。</p>
 <p>接着我们就要导出两个比较重要的公式。根据数字逻辑的知识，对于给定的一张真值表，我们可以把一个输出变量表达成输入变量的组合，其中最简单的方法是将输出变量表达成输入变量的最小项之和(大概只能说成这样了，凑合看吧)。因此我们可以得到:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">a = (a &amp; ~b &amp; ~c) | (~a &amp; b &amp; c)</div><div class="line">b = (~a &amp; b &amp; ~c) | (~a &amp; ~b &amp; c)</div></pre></td></tr></table></figure>
@@ -401,7 +399,7 @@
 <p>我们把大部分整数的重复次数改为重复M次，并且把要找的数的重复次数改为N次，M &gt; N。显然，原题中M=3，N=1。对于任意的正整数M和N，我们都可以按上述思路来设计算法。</p>
 <p>举个例子，我们现在设M=4, N=2。</p>
 <p>由于表达基数为4的一位整数(0、1、2、3)只需要2位二进制数，因此设两个变量a和b，分别表示高位和低位，另外设一个进位c。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">a	b	c	(next)  a	b</div><div class="line">0	0	0           0   0</div><div class="line">0	1	0           0   1</div><div class="line">1	0	0           1   0</div><div class="line">1	1	0           1   1</div><div class="line">0	0	1           0   1</div><div class="line">0	1	1           1   0</div><div class="line">1	0	1           1   1</div><div class="line">1	1	1           0   0</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">a	b	c           a	b</div><div class="line">0	0	0           0   0</div><div class="line">0	1	0           0   1</div><div class="line">1	0	0           1   0</div><div class="line">1	1	0           1   1</div><div class="line">0	0	1           0   1</div><div class="line">0	1	1           1   0</div><div class="line">1	0	1           1   1</div><div class="line">1	1	1           0   0</div></pre></td></tr></table></figure>
 <p>由上述真值表，我们可以得到公式：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">a = (a &amp; ~b &amp; ~c) | (a &amp; b &amp; ~c) | (~a &amp; b &amp; c) | (a &amp; ~b &amp; c)</div><div class="line">b = (~a &amp; b &amp; ~c) | (a &amp; b &amp; ~c) | (~a &amp; ~b &amp; c) | (a &amp; ~b &amp; c)</div></pre></td></tr></table></figure>
 <p>通过之前的讨论，我们知道a | b就是我们要找的值(如果M &gt; N，这一结论始终成立)。接着我们就可以轻松的写出代码了～</p>
