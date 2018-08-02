@@ -1,0 +1,890 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Kubernetes 分布式 云计算," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="Kubernetes集群搭建一、环境三台Centos7服务器，1台作为master，其余2台作为node。 Ip地址如下：  mater 10.10.101.181 node1 10.10.101.182 node2 10.10.101.183   二、安装相应组件在三台机器上执行下列操作  关闭防火墙和selinux 123setenforce 0systemctl disable firewa">
+<meta name="keywords" content="Kubernetes 分布式 云计算">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kubernetes集群搭建">
+<meta property="og:url" content="https://ShengAndXian.github.io/2018/08/02/Kubernetes集群搭建/index.html">
+<meta property="og:site_name" content="Yusen&#39;s blog">
+<meta property="og:description" content="Kubernetes集群搭建一、环境三台Centos7服务器，1台作为master，其余2台作为node。 Ip地址如下：  mater 10.10.101.181 node1 10.10.101.182 node2 10.10.101.183   二、安装相应组件在三台机器上执行下列操作  关闭防火墙和selinux 123setenforce 0systemctl disable firewa">
+<meta property="og:image" content="https://shengandxian.github.io/var/folders/ck/b0f9pbxn04lbjkc7x26jwc100000gn/T/abnerworks.Typora/ECC28576-AEEA-478E-9B42-F1A295C546DB/k8s-f1.png">
+<meta property="og:image" content="https://shengandxian.github.io/Desktop/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-08-02%20%E4%B8%8B%E5%8D%884.38.51.png">
+<meta property="og:updated_time" content="2018-08-02T09:44:10.446Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kubernetes集群搭建">
+<meta name="twitter:description" content="Kubernetes集群搭建一、环境三台Centos7服务器，1台作为master，其余2台作为node。 Ip地址如下：  mater 10.10.101.181 node1 10.10.101.182 node2 10.10.101.183   二、安装相应组件在三台机器上执行下列操作  关闭防火墙和selinux 123setenforce 0systemctl disable firewa">
+<meta name="twitter:image" content="https://shengandxian.github.io/var/folders/ck/b0f9pbxn04lbjkc7x26jwc100000gn/T/abnerworks.Typora/ECC28576-AEEA-478E-9B42-F1A295C546DB/k8s-f1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://ShengAndXian.github.io/2018/08/02/Kubernetes集群搭建/"/>
+
+
+
+
+
+  <title>Kubernetes集群搭建 | Yusen's blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Yusen's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">我爱学习</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://ShengAndXian.github.io/2018/08/02/Kubernetes集群搭建/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yusen">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/head_pic.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yusen's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Kubernetes集群搭建</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-02T17:43:12+08:00">
+                2018-08-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/08/02/Kubernetes集群搭建/" class="leancloud_visitors" data-flag-title="Kubernetes集群搭建">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Kubernetes集群搭建"><a href="#Kubernetes集群搭建" class="headerlink" title="Kubernetes集群搭建"></a>Kubernetes集群搭建</h1><h2 id="一、环境"><a href="#一、环境" class="headerlink" title="一、环境"></a>一、环境</h2><p>三台Centos7服务器，1台作为master，其余2台作为node。</p>
+<p>Ip地址如下：</p>
+<ul>
+<li>mater 10.10.101.181</li>
+<li>node1 10.10.101.182</li>
+<li>node2 10.10.101.183</li>
+</ul>
+<p><img src="../../../../../../var/folders/ck/b0f9pbxn04lbjkc7x26jwc100000gn/T/abnerworks.Typora/ECC28576-AEEA-478E-9B42-F1A295C546DB/k8s-f1.png" alt="k8s-f1.png"></p>
+<h2 id="二、安装相应组件"><a href="#二、安装相应组件" class="headerlink" title="二、安装相应组件"></a>二、安装相应组件</h2><p>在三台机器上执行下列操作</p>
+<ul>
+<li><p>关闭防火墙和selinux</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">setenforce 0</div><div class="line">systemctl disable firewalld //关闭开机启动</div><div class="line">systemctl stop firewalld //关闭防火墙</div></pre></td></tr></table></figure>
+</li>
+<li><p>安装组件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install kubernetes etcd flannel docker</div></pre></td></tr></table></figure>
+</li>
+<li><p>配置host</p>
+<p>在/etc/hosts文件末尾添加</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">10.10.101.181 master</div><div class="line">10.10.101.182 node1</div><div class="line">10.10.101.183 node2</div></pre></td></tr></table></figure>
+</li>
+<li><p>配置/etc/kubernetes/config</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">KUBE_MASTER=&quot;--master=http://master:8080&quot;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="三、配置master"><a href="#三、配置master" class="headerlink" title="三、配置master"></a>三、配置master</h2><ul>
+<li><p>配置/etc/etcd/etcd.conf</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ETCD_LISTEN_CLIENT_URLS=&quot;http://0.0.0.0:2379&quot;</div><div class="line">ETCD_ADVERTISE_CLIENT_URLS=&quot;http://0.0.0.0:2379&quot;</div></pre></td></tr></table></figure>
+</li>
+<li><p>配置/etc/kubernetes/apiserver</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">KUBE_API_ADDRESS=&quot;--address=0.0.0.0&quot;</div><div class="line">KUBE_API_PORT=&quot;--port=8080&quot;</div><div class="line">KUBELET_PORT=&quot;--kubelet-port=10250&quot;</div><div class="line">KUBE_ETCD_SERVERS=&quot;--etcd-servers=http://master:2379&quot;</div><div class="line">KUBE_API_ARGS=“k8s”   # 需要自定义一个token</div></pre></td></tr></table></figure>
+</li>
+<li><p>开启etcd服务并配置网络</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">//这里我们配置172.30.0.0/16网段</div><div class="line">systemctl start etcd</div><div class="line">etcdctl mkdir /kube-centos/network</div><div class="line">etcdctl mk /kube-centos/network/config &quot;&#123; \&quot;Network\&quot;: \&quot;172.30.0.0/16\&quot;, \&quot;SubnetLen\&quot;: 24, \&quot;Backend\&quot;: &#123; \&quot;Type\&quot;: \&quot;vxlan\&quot; &#125; &#125;&quot;</div></pre></td></tr></table></figure>
+</li>
+<li><p>配置/etc/sysconfig/flanneld</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">FLANNEL_ETCD_ENDPOINTS=&quot;http://master:2379&quot;</div><div class="line">FLANNEL_ETCD_PREFIX=&quot;/kube-centos/network&quot;</div></pre></td></tr></table></figure>
+</li>
+<li><p>启动所有服务</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">for SERVICES in etcd kube-apiserver kube-controller-manager kube-scheduler flanneld; </div><div class="line">do</div><div class="line">	systemctl restart $SERVICES</div><div class="line">	systemctl enable $SERVICES</div><div class="line">	systemctl status $SERVICES</div><div class="line">done</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="四、配置node"><a href="#四、配置node" class="headerlink" title="四、配置node"></a>四、配置<strong>node</strong></h2><ul>
+<li><p>配置/etc/kubernetes/kubelet</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">KUBELET_ADDRESS=&quot;--address=0.0.0.0&quot;</div><div class="line">KUBELET_PORT=&quot;--port=10250&quot;</div><div class="line">KUBELET_HOSTNAME=&quot;--hostname-override=node1”</div><div class="line">KUBELET_API_SERVER=&quot;--api-servers=http://master:8080&quot;</div><div class="line">KUBELET_ARGS=“k8s” #如果前面master上的apiserver配置了token，这里别忘了填上</div></pre></td></tr></table></figure>
+</li>
+<li><p>配置/etc/sysconfig/flanneld</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">FLANNEL_ETCD_ENDPOINTS=&quot;http://master:2379&quot;</div><div class="line">FLANNEL_ETCD_PREFIX=&quot;/kube-centos/network&quot;</div></pre></td></tr></table></figure>
+</li>
+<li><p>启动所有服务</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">for SERVICES in kube-proxy kubelet flanneld docker; </div><div class="line">do</div><div class="line">    systemctl restart $SERVICES</div><div class="line">   	systemctl enable $SERVICES</div><div class="line">    systemctl status $SERVICES</div><div class="line">done</div></pre></td></tr></table></figure>
+</li>
+<li><p>配置kubectl</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">kubectl config set-cluster default-cluster --server=http://master:8080</div><div class="line">kubectl config set-context default-context --cluster=default-cluster --user=default-admin</div><div class="line">kubectl config use-context default-context</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="五、查看集群状态"><a href="#五、查看集群状态" class="headerlink" title="五、查看集群状态"></a>五、查看集群状态</h2><p><img src="../../../../Desktop/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-08-02%20%E4%B8%8B%E5%8D%884.38.51.png" alt="屏幕快照 2018-08-02 下午4.38.51"></p>
+<h2 id="六、部署应用"><a href="#六、部署应用" class="headerlink" title="六、部署应用"></a>六、部署应用</h2><ul>
+<li><p>编写yaml文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">apiVersion: extensions/v1beta1</div><div class="line">kind: Deployment</div><div class="line">metadata:</div><div class="line">  name: nginx-deployment # 这是部署的名称，必须唯一</div><div class="line">spec:</div><div class="line">  replicas: 2 # 设定部署跑2个pods，pods符合template策略</div><div class="line">  template:</div><div class="line">    metadata:</div><div class="line">      labels:</div><div class="line">        app: nginx  # 设定label的名称为 app=nginx</div><div class="line">    spec:</div><div class="line">      containers:</div><div class="line">      - name: nginx</div><div class="line">        image: nginx:1.7.9  # 选择1.7.9的nginx镜像</div><div class="line">        ports:</div><div class="line">        - containerPort: 80</div></pre></td></tr></table></figure>
+</li>
+<li><p>部署</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">kubectl create -f ./nginx-deploy.yaml</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="七、一些坑"><a href="#七、一些坑" class="headerlink" title="七、一些坑"></a>七、一些坑</h2><p>当用kubectl进行部署时，我们会发现pod无法创建，使用kubectl describe pod podname查看，发现出现了details: (open /etc/docker/certs.d/registry.access.redhat.com/redhat-ca.crt: no such file or directory)错误，于是google一下，发现是缺少了证书，然后根据网上的方法，使用yum install *rhsm*安装了相应的软件，然而证书文件仍然没有被创建，再次google后，发现rhsm系列包已经被更新了，所以该方法无效，之后成功找到了创建证书的方法，本以为这样问题就能解决了，然而虽然证书已经有了，但需要拉取的pod-infrastructure镜像无法在国内访问，于是又开始配置镜像，试了很多镜像都不行，一度怀疑镜像站出错了，最后发现连docker官方的国内镜像站都无法拉取，于是我断定pod-infrastructure不在国内的镜像仓库内。</p>
+<p>pod-infrastructure实际上是pod运行所需的一个基础镜像，实际上有许多镜像可以替代它，通过docker search pod-infrastructure我们可以找到很多替代品，并且这些镜像是可以访问到的。因此我们从搜索结果中选择一个，然后修改kubelet的配置，将KUBELET_POD_INFRA_CONTAINER字段的值改为我们选择的镜像。之后重启kubelet，重新部署应用，这时候部署应该能够顺利进行。</p>
+<p>总结一下：</p>
+<ul>
+<li>添加docker镜像</li>
+<li>docker search pod-infrastructure</li>
+<li>修改kubelet配置</li>
+<li>重启kubelet，重新部署应用</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Kubernetes-分布式-云计算/" rel="tag"># Kubernetes 分布式 云计算</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yOTMzOS81OTA3"></div>
+    
+  </div>
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/head_pic.jpg"
+               alt="Yusen" />
+          <p class="site-author-name" itemprop="name">Yusen</p>
+           
+              <p class="site-description motion-element" itemprop="description">Github:https://github.com/ShengAndXian</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Kubernetes集群搭建"><span class="nav-number">1.</span> <span class="nav-text">Kubernetes集群搭建</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、环境"><span class="nav-number">1.1.</span> <span class="nav-text">一、环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、安装相应组件"><span class="nav-number">1.2.</span> <span class="nav-text">二、安装相应组件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、配置master"><span class="nav-number">1.3.</span> <span class="nav-text">三、配置master</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、配置node"><span class="nav-number">1.4.</span> <span class="nav-text">四、配置node</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、查看集群状态"><span class="nav-number">1.5.</span> <span class="nav-text">五、查看集群状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六、部署应用"><span class="nav-number">1.6.</span> <span class="nav-text">六、部署应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#七、一些坑"><span class="nav-number">1.7.</span> <span class="nav-text">七、一些坑</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yusen</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("5D36qMqpdGWPR54lVQXrLK3i-gzGzoHsz", "QDWhA0MlABzitDoWhh9zgMQh");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
